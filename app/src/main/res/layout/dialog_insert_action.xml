@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:paddingLeft="15dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="356dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close_black_24dp"
+        android:layout_alignParentRight="true"/>
+    <TextView
+        android:id="@+id/tv_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tên hoạt động :"
+        android:textSize="15sp"
+        android:textColor="#000"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"/>
+    <EditText
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/edt_name_action"
+        android:layout_toRightOf="@id/tv_action"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:hint=" action name"/>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_error_title"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@id/edt_name_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x Tên không hợp lệ"
+        android:textColor="#D50000"/>
+    <TextView
+        android:layout_below="@id/tv_action"
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thời gian thực hiện :"
+        android:textSize="15sp"
+        android:textColor="#000"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:layout_toRightOf="@id/tv_time"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/spinner_time"
+        android:layout_below="@id/tv_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.AppCompatSpinner>
+
+    <TextView
+        android:layout_below="@id/tv_time"
+        android:id="@+id/tv_kind_of_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loại hoạt động :"
+        android:textSize="15sp"
+        android:textColor="#000"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:layout_toRightOf="@id/tv_kind_of_action"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/spinner_kind_of_action"
+        android:layout_below="@id/spinner_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.AppCompatSpinner>
+    <TextView
+        android:visibility="gone"
+        android:layout_below="@id/tv_action"
+        android:id="@+id/tv_error_time"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/spinner_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x lịch bị trùng"
+        android:textColor="#D50000"/>
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:id="@+id/iv_notifi"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/tv_kind_of_action"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_notification"/>
+    <Switch
+        android:layout_toRightOf="@id/iv_notifi"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:text=" Thông báo             "
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sw_notification"
+        android:layout_below="@id/tv_kind_of_action"
+        />
+
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:id="@+id/iv_do_not_disturb"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/iv_notifi"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/do_not_disturb"/>
+    <Switch
+        android:layout_toRightOf="@id/iv_do_not_disturb"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:text=" Không làm phiền  "
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sw_do_not_disturb"
+        android:layout_below="@id/sw_notification"
+        />
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="96dp"
+        android:layout_height="56dp"
+        android:text="Lưu"
+        android:textAllCaps="false"
+        android:layout_below="@id/sw_do_not_disturb"
+        android:layout_toRightOf="@id/sw_do_not_disturb"
+        android:layout_marginLeft="-40dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/shape_button"
+        android:textColor="#FFF"
+        />
+    <ImageView
+        android:layout_below="@id/sw_do_not_disturb"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/iv_img_action"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/no_action"/>
+
+</RelativeLayout>

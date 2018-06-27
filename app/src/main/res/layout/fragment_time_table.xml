@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/relative_layout_A"
+        android:layout_width="56dp"
+        android:layout_height="56dp">
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relative_layout_B"
+        android:layout_toRightOf="@id/relative_layout_A"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+       <HorizontalScrollView
+           android:id="@+id/horizontal_scroll_view_B"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <LinearLayout
+               android:layout_width="784dp"
+               android:layout_height="56dp"
+               android:background="@color/colorPrimaryDark"
+               android:orientation="horizontal">
+
+               <TextView
+                   android:layout_width="112dp"
+                   android:layout_height="56dp"
+                   android:gravity="center"
+                   android:text="Mon"
+                   android:textColor="#FFF"
+                   android:textSize="20dp" />
+
+               <TextView
+                   android:textColor="#FFF"
+                   android:layout_width="112dp"
+                   android:layout_height="56dp"
+                   android:gravity="center"
+                   android:text="Tue"
+                   android:textSize="20dp" />
+
+               <TextView
+                   android:textColor="#FFF"
+                   android:layout_width="112dp"
+                   android:layout_height="56dp"
+                   android:gravity="center"
+                   android:text="Wed"
+                   android:textSize="20dp" />
+
+               <TextView
+                   android:textColor="#FFF"
+                   android:layout_width="112dp"
+                   android:layout_height="56dp"
+                   android:gravity="center"
+                   android:text="Thu"
+                   android:textSize="20dp" />
+
+               <TextView
+                   android:textColor="#FFF"
+                   android:layout_width="112dp"
+                   android:layout_height="56dp"
+                   android:gravity="center"
+                   android:text="Fri"
+                   android:textSize="20dp" />
+
+               <TextView
+                   android:textColor="#FFF"
+                   android:layout_width="112dp"
+                   android:layout_height="56dp"
+                   android:gravity="center"
+                   android:text="Sat"
+                   android:textSize="20dp" />
+
+               <TextView
+                   android:textColor="#FFF"
+                   android:layout_width="112dp"
+                   android:layout_height="56dp"
+                   android:gravity="center"
+                   android:text="Sun"
+                   android:textSize="20dp" />
+
+           </LinearLayout>
+       </HorizontalScrollView>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relative_layout_C"
+        android:layout_below="@id/relative_layout_A"
+        android:layout_width="56dp"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relative_layout_D"
+        android:layout_below="@id/relative_layout_B"
+        android:layout_toRightOf="@id/relative_layout_A"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <HorizontalScrollView
+            android:id="@+id/horizontal_scroll_view_D"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_data"
+                    android:layout_width="784dp"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+    </RelativeLayout>
+</RelativeLayout>

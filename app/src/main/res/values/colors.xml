@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorDefault">#E1F5FE</color>
+    <color name="colorNoAction">#EEEEEE</color>
+    <color name="colorOutSideAction">#81D4FA</color>
+    <color name="colorHomework">#8C9EFF</color>
+    <color name="colorEntertainment">#FFF59D</color>
+    <color name="colorRelax">#E1BEE7</color>
+    
+</resources>

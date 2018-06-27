@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">TimeManager</string>
+    <string-array name="time">
+        <item>
+            1 giờ
+        </item>
+        <item>
+            2 giờ
+        </item>
+        <item>
+            3 giờ
+        </item>
+        <item>
+            4 giờ
+        </item>
+        <item>
+            5 giờ
+        </item>
+        <item>
+            6 giờ
+        </item>
+    </string-array>
+
+    <string-array name="kind_of_action">
+        <item>
+            Không xác định
+        </item>
+        <item>
+           Hoạt động bên ngoài
+        </item>
+        <item>
+            Hoạt động tại nhà
+        </item>
+        <item>
+            Hoạt động giải trí
+        </item>
+        <item>
+            Hoạt động nghỉ ngơi
+        </item>
+    </string-array>
+</resources>
