@@ -18,28 +18,28 @@ import tl.com.timemanager.Service.TimeService;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
-import static tl.com.timemanager.Constant.COUNT_DAY;
+import static tl.com.timemanager.Constant.COUNT_TIME;
 import static tl.com.timemanager.Constant.NO_ACTION;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
 public class SeenActionDialog extends DialogFragment implements View.OnClickListener {
 
-    private static final String TAG = InsertActionDiaglog.class.getSimpleName();
-    private ImageView ivAction;
-    private TextView tvAction;
-    private ImageView ivClose;
-    private Button btnModify;
-    private Button btnDelete;
-    private TextView tvTimeStart;
-    private TextView tvTimeEnd;
-    private TextView tvKindOfAction;
-    private ImageView ivNotification;
-    private ImageView ivDoNotDisturb;
+    protected static final String TAG = InsertActionDialog.class.getSimpleName();
+    protected ImageView ivAction;
+    protected TextView tvAction;
+    protected ImageView ivClose;
+    protected Button btnModify;
+    protected Button btnDelete;
+    protected TextView tvTimeStart;
+    protected TextView tvTimeEnd;
+    protected TextView tvKindOfAction;
+    protected ImageView ivNotification;
+    protected ImageView ivDoNotDisturb;
 
     private int idItemData;
-    private TimeService service;
-    private InsertActionDiaglog.IDataChangedListener listener;
+    protected TimeService service;
+    private InsertActionDialog.IDataChangedListener listener;
 
 
     @NonNull
@@ -61,15 +61,15 @@ public class SeenActionDialog extends DialogFragment implements View.OnClickList
         this.service = service;
     }
 
-    public InsertActionDiaglog.IDataChangedListener getListener() {
+    public InsertActionDialog.IDataChangedListener getListener() {
         return listener;
     }
 
-    public void setListener(InsertActionDiaglog.IDataChangedListener listener) {
+    public void setListener(InsertActionDialog.IDataChangedListener listener) {
         this.listener = listener;
     }
 
-    private void initView(View view) {
+    protected void initView(View view) {
 
         ivAction = view.findViewById(R.id.iv_img_action);
         ivClose = view.findViewById(R.id.iv_close);
@@ -90,12 +90,13 @@ public class SeenActionDialog extends DialogFragment implements View.OnClickList
 
     }
 
-    private void setItemData() {
+    protected void setItemData() {
         ItemData item = service.getData(idItemData);
         tvAction.setText(item.getTitle());
         int timeStart = item.getTime() - item.getFlag();
+        if(timeStart < 0) timeStart =timeStart+COUNT_TIME;
         tvTimeStart.setText(timeStart + " h");
-        tvTimeEnd.setText(timeStart + item.getTimeDoIt() + " h");
+        tvTimeEnd.setText((timeStart + item.getTimeDoIt()) + " h");
         switch (item.getAction()) {
             case NO_ACTION:
                 ivAction.setImageResource(R.drawable.no_action);
@@ -123,7 +124,7 @@ public class SeenActionDialog extends DialogFragment implements View.OnClickList
             ivNotification.setVisibility(View.VISIBLE);
         } else ivNotification.setVisibility(View.GONE);
 
-        if (item.isTurnOffMedia()) {
+        if (item.isDoNotDisturb()) {
             ivDoNotDisturb.setVisibility(View.VISIBLE);
         } else ivDoNotDisturb.setVisibility(View.GONE);
     }
@@ -135,11 +136,7 @@ public class SeenActionDialog extends DialogFragment implements View.OnClickList
                 dismiss();
                 break;
             case R.id.btn_modify:
-                InsertActionDiaglog insertActionDiaglog = new InsertActionDiaglog();
-                insertActionDiaglog.setIdItemData(idItemData);
-                insertActionDiaglog.setService(service);
-                insertActionDiaglog.setListener((InsertActionDiaglog.IDataChangedListener) getActivity());
-                insertActionDiaglog.show(getActivity().getSupportFragmentManager(), "example dialog");
+                showDialogModifyAction();
                 dismiss();
                 break;
             case R.id.btn_delete:
@@ -149,7 +146,15 @@ public class SeenActionDialog extends DialogFragment implements View.OnClickList
 
     }
 
-    private void showDialogDelete() {
+    protected void showDialogModifyAction() {
+        InsertActionDialog insertActionDialog = new InsertActionDialog();
+        insertActionDialog.setIdItemData(idItemData);
+        insertActionDialog.setService(service);
+        insertActionDialog.setListener(listener);
+        insertActionDialog.show(getActivity().getSupportFragmentManager(), "example dialog");
+    }
+
+    protected void showDialogDelete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Xoá hoạt động");
         builder.setMessage("Bạn có chắc chắn xoá hoạt động này đi không");
@@ -164,7 +169,6 @@ public class SeenActionDialog extends DialogFragment implements View.OnClickList
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 deleteAction();
-                listener.changedData();
                 dismiss();
                 dialogInterface.dismiss();
             }
@@ -175,14 +179,9 @@ public class SeenActionDialog extends DialogFragment implements View.OnClickList
 
     }
 
-
-    private void deleteAction() {
-        int i = idItemData - service.getData(idItemData).getFlag() * COUNT_DAY;
-        int count = service.getData(idItemData).getTimeDoIt();
-        for (int j = 0; j < count; j++) {
-            service.getData(i).setActive(false);
-            i = i + COUNT_DAY;
-        }
+    protected void deleteAction() {
+        service.deleteAction(idItemData);
+        listener.changedData();
     }
 
 }

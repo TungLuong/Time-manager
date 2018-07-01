@@ -7,8 +7,9 @@ public interface Constant {
     int AMUSING_ACTION= 3;
     int RELAX_ACTION = 4;
 
+    int TIME_MIN = 5;
+    int TIME_MAX = 22;
     int COUNT_DAY = 7;
-    int COUNT_TIME = 24;
-    int START_TIME = 6;
+    int COUNT_TIME = TIME_MAX - TIME_MIN + 1;
 
 }

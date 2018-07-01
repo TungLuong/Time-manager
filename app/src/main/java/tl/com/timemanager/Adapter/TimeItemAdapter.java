@@ -16,13 +16,14 @@ import tl.com.timemanager.Item.ItemData;
 import tl.com.timemanager.R;
 
 import static tl.com.timemanager.Constant.COUNT_TIME;
+import static tl.com.timemanager.Constant.TIME_MIN;
 
 public class TimeItemAdapter extends RecyclerView.Adapter<TimeItemAdapter.ViewHolder> {
 
     private List<Integer> time = new ArrayList<>();
     public TimeItemAdapter() {
         for(int i =0;i<COUNT_TIME;i++){
-            time.add(i);
+            time.add(i + TIME_MIN);
         }
     }
 

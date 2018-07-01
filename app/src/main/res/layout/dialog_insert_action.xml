@@ -3,7 +3,7 @@
     android:paddingLeft="15dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="356dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/iv_close"
@@ -42,7 +42,46 @@
         android:textColor="#D50000"/>
     <TextView
         android:layout_below="@id/tv_action"
-        android:id="@+id/tv_time"
+        android:id="@+id/tv_time_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thời gian bắt đầu :"
+        android:textSize="15sp"
+        android:textColor="#000"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"/>
+    <EditText
+        android:inputType="numberDecimal"
+        android:layout_below="@id/tv_action"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/edt_time_start"
+        android:layout_toRightOf="@id/tv_time_start"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:hint=" time"/>
+    <TextView
+        android:layout_below="@id/tv_action"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/edt_time_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" giờ" />
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_error_time_start"
+        android:layout_below="@id/tv_action"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/edt_time_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:text=" x thời gian không hợp lệ"
+        android:textColor="#D50000"/>
+    <TextView
+        android:layout_below="@id/tv_time_start"
+        android:id="@+id/tv_time_do_it"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thời gian thực hiện :"
@@ -52,17 +91,17 @@
         android:layout_marginLeft="10dp"/>
 
     <android.support.v7.widget.AppCompatSpinner
-        android:layout_toRightOf="@id/tv_time"
+        android:layout_toRightOf="@id/tv_time_do_it"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/spinner_time"
-        android:layout_below="@id/tv_action"
+        android:layout_below="@id/tv_time_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </android.support.v7.widget.AppCompatSpinner>
 
     <TextView
-        android:layout_below="@id/tv_time"
+        android:layout_below="@id/tv_time_do_it"
         android:id="@+id/tv_kind_of_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,7 +122,7 @@
     </android.support.v7.widget.AppCompatSpinner>
     <TextView
         android:visibility="gone"
-        android:layout_below="@id/tv_action"
+        android:layout_below="@id/tv_time_start"
         android:id="@+id/tv_error_time"
         android:layout_marginTop="20dp"
         android:layout_toRightOf="@id/spinner_time"

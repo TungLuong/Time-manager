@@ -1,42 +1,25 @@
 package tl.com.timemanager.Item;
 
-public class ItemData {
-    private boolean isActive = false;
-    private boolean isModifying = false;
+import android.support.annotation.NonNull;
+
+import static tl.com.timemanager.Constant.TIME_MIN;
+
+public class ItemAction implements Comparable{
     private String title;
     private int day;
-    private int time;
-    private int flag;
+    private int time = TIME_MIN;
     private int action;
     private boolean notification;
     private boolean doNotDisturb;
-    private int colorId;
+    private boolean isModifying = false;
     private int timeDoIt;
 
-
-    public ItemData(){
-
+    public String getTitle() {
+        return title;
     }
 
-    public ItemData(int day, int time) {
-        this.day = day;
-        this.time = time;
-    }
-
-    public int getTimeDoIt() {
-        return timeDoIt;
-    }
-
-    public void setTimeDoIt(int timeDoIt) {
-        this.timeDoIt = timeDoIt;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getDay() {
@@ -53,14 +36,6 @@ public class ItemData {
 
     public void setTime(int time) {
         this.time = time;
-    }
-
-    public int getFlag() {
-        return flag;
-    }
-
-    public void setFlag(int flag) {
-        this.flag = flag;
     }
 
     public int getAction() {
@@ -87,21 +62,12 @@ public class ItemData {
         this.doNotDisturb = doNotDisturb;
     }
 
-
-    public String getTitle() {
-        return title;
+    public int getTimeDoIt() {
+        return timeDoIt;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(int colorId) {
-        this.colorId = colorId;
+    public void setTimeDoIt(int timeDoIt) {
+        this.timeDoIt = timeDoIt;
     }
 
     public boolean isModifying() {
@@ -110,5 +76,13 @@ public class ItemData {
 
     public void setModifying(boolean modifying) {
         isModifying = modifying;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        ItemAction itemAction = (ItemAction) o;
+        int a = getTime();
+        int b = itemAction.getTime();
+        return a > b ? +1 : a < b ? -1 : 0;
     }
 }
