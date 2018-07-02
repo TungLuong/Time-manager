@@ -1,6 +1,6 @@
 package tl.com.timemanager.Item;
 
-public class ItemData {
+public class ItemDataInTimeTable {
     private boolean isActive = false;
     private boolean isModifying = false;
     private String title;
@@ -14,11 +14,11 @@ public class ItemData {
     private int timeDoIt;
 
 
-    public ItemData(){
+    public ItemDataInTimeTable(){
 
     }
 
-    public ItemData(int day, int time) {
+    public ItemDataInTimeTable(int day, int time) {
         this.day = day;
         this.time = time;
     }

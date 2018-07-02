@@ -1,7 +1,5 @@
 package tl.com.timemanager.Adapter;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +10,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import tl.com.timemanager.Item.ItemData;
 import tl.com.timemanager.R;
 
 import static tl.com.timemanager.Constant.COUNT_TIME;

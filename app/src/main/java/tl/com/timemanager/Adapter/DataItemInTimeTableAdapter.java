@@ -1,37 +1,27 @@
 package tl.com.timemanager.Adapter;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import tl.com.timemanager.Item.ItemData;
+import tl.com.timemanager.Item.ItemDataInTimeTable;
 import tl.com.timemanager.R;
-import tl.com.timemanager.utils.IGetPosition;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
-import static tl.com.timemanager.Constant.COUNT_DAY;
-import static tl.com.timemanager.Constant.COUNT_TIME;
 import static tl.com.timemanager.Constant.NO_ACTION;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
-public class DataItemAdapter  extends RecyclerView.Adapter<DataItemAdapter.ViewHolder> implements View.OnClickListener {
+public class DataItemInTimeTableAdapter extends RecyclerView.Adapter<DataItemInTimeTableAdapter.ViewHolder> {
 
     private IDataItem iDataItem;
     private int currentFocus = 0;
-    public DataItemAdapter(IDataItem iDataItem) {
+    public DataItemInTimeTableAdapter(IDataItem iDataItem) {
         this.iDataItem = iDataItem;
     }
 
@@ -39,11 +29,20 @@ public class DataItemAdapter  extends RecyclerView.Adapter<DataItemAdapter.ViewH
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.item_data, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.item_data_in_time_table, parent, false);
         final ViewHolder viewHolder = new ViewHolder(itemView);
-        viewHolder.itemView.setOnClickListener(this);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.ll_root:
+                        int position = viewHolder.getAdapterPosition();
+                        iDataItem.onClickItem(position);
+                        break;
+                }
+            }
+        });
 
-        viewHolder.itemView.setTag((IGetPosition) viewHolder::getAdapterPosition);
         return viewHolder;
     }
 
@@ -58,7 +57,7 @@ public class DataItemAdapter  extends RecyclerView.Adapter<DataItemAdapter.ViewH
 //           }
 //       });
 
-        ItemData item = iDataItem.getData(position);
+        ItemDataInTimeTable item = iDataItem.getData(position);
         if(!item.isActive()) {
             if (position == currentFocus) {
                 holder.itemView.setBackgroundResource(R.drawable.ic_insert);
@@ -103,16 +102,6 @@ public class DataItemAdapter  extends RecyclerView.Adapter<DataItemAdapter.ViewH
         return iDataItem.getCount();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ll_root:
-                IGetPosition position = (IGetPosition)v.getTag();
-                iDataItem.onClickItem(position.getPosition());
-                break;
-        }
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView tvTitle;
 
@@ -125,7 +114,7 @@ public class DataItemAdapter  extends RecyclerView.Adapter<DataItemAdapter.ViewH
 
     public interface IDataItem{
         int getCount();
-        ItemData getData(int position);
+        ItemDataInTimeTable getData(int position);
         void onClickItem(int position);
     }
 

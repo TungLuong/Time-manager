@@ -2,6 +2,7 @@ package tl.com.timemanager.Adapter;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,28 +51,28 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemAction action = iActionItem.getData(position);
-        holder.tvTime.setText(action.getTime() + " h - " + (action.getTime() + action.getTimeDoIt())%COUNT_TIME  +" h ");
+        holder.tvTime.setText(action.getTime() + " h - " + (action.getTime() + action.getTimeDoIt())  +" h ");
         holder.tvTitle.setText(action.getTitle() + "");
         switch (action.getAction()){
             case NO_ACTION:
                 holder.ivAction.setImageResource(R.drawable.no_action);
-                holder.background.setBackgroundResource(R.color.colorNoAction);
+                holder.background.setBackgroundResource(R.drawable.background_no_action);
                 break;
             case OUTSIDE_ACTION:
                 holder.ivAction.setImageResource(R.drawable.school);
-                holder.background.setBackgroundResource(R.color.colorOutSideAction);
+                holder.background.setBackgroundResource(R.drawable.background_action_outside);
                 break;
             case AT_HOME_ACTION:
                 holder.ivAction.setImageResource(R.drawable.homework);
-                holder.background.setBackgroundResource(R.color.colorHomework);
+                holder.background.setBackgroundResource(R.drawable.background_action_at_home);
                 break;
             case AMUSING_ACTION:
                 holder.ivAction.setImageResource(R.drawable.giaitri);
-                holder.background.setBackgroundResource(R.color.colorEntertainment);
+                holder.background.setBackgroundResource(R.drawable.background_action_entertainment);
                 break;
             case RELAX_ACTION:
                 holder.ivAction.setImageResource(R.drawable.sleep);
-                holder.background.setBackgroundResource(R.color.colorRelax);
+                holder.background.setBackgroundResource(R.drawable.background_action_relax);
                 break;
         }
 

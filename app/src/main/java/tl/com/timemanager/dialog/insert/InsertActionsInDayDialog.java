@@ -9,7 +9,6 @@ import java.util.List;
 
 import tl.com.timemanager.Item.ItemAction;
 import tl.com.timemanager.R;
-import tl.com.timemanager.dialog.insert.InsertActionDialog;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
@@ -82,6 +81,7 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
             setModifyingData(false);
         }
         edtTimeStart.setText(item.getTime() + "");
+        checkInvalidTimeStart();
 
     }
 
@@ -92,7 +92,6 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
     }
 
     protected void checkSameTime() {
-        int j = 0;
         List<ItemAction> itemActions = service.getActionsInDays().get(day);
         List<ItemAction> actions = new ArrayList<>();
         for (ItemAction action : itemActions) {
@@ -101,19 +100,21 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
 //        ItemAction item = actions.get(idItemAction);
         ItemAction item = actions.remove(idItemAction);
         try {
-            int time = Integer.valueOf(String.valueOf(edtTimeStart.getText() + ""));
-            while (j < count) {
-                time = time + j;
-                if (actions.size() > 0) {
-                    for (ItemAction action : actions) {
-                        if (action.getTime() <= time && action.getTime() + action.getTimeDoIt() >= time && !item.isModifying()) {
-                            tvErrorTime.setVisibility(View.VISIBLE);
-                            return;
-                        }
-                    }
-                    j++;
-                }else {
-                     break;
+            int timeStart = Integer.valueOf(String.valueOf(edtTimeStart.getText() + ""));
+            int timeEnd = timeStart + count;
+            if (actions.size() > 0) {
+                for (ItemAction action : actions) {
+                    int start = action.getTime();
+                    int end = action.getTime() + action.getTimeDoIt();
+                   if(end <= timeStart || start >= timeEnd){
+                       tvErrorTime.setVisibility(View.GONE);
+                   }
+                   else {
+                       if(!item.isModifying()) {
+                           tvErrorTime.setVisibility(View.VISIBLE);
+                           return;
+                       }
+                   }
                 }
             }
             tvErrorTime.setVisibility(View.GONE);
@@ -141,24 +142,43 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
         if (edtTimeStart.getText().toString().trim().length() > 0) {
             int time = Integer.valueOf(edtTimeStart.getText().toString());
             if (time >= TIME_MIN && time <= TIME_MAX) {
-                int j = 0;
-                List<ItemAction> actions = service.getActionsInDays().get(day);
-                ItemAction item = service.getActionsInDays().get(day).get(idItemAction);
-                while (j < count) {
-                    time = time + j;
-                    for (ItemAction action : actions) {
-                        if (action.getTime() <= time && action.getTime() + action.getTimeDoIt() >= time && !item.isModifying()) {
-                            tvErrorTimeStart.setVisibility(View.VISIBLE);
-                            return;
+                List<ItemAction> itemActions = service.getActionsInDays().get(day);
+                List<ItemAction> actions = new ArrayList<>();
+                for (ItemAction action : itemActions) {
+                    actions.add(action);
+                }
+//        ItemAction item = actions.get(idItemAction);
+                ItemAction item = actions.remove(idItemAction);
+                try {
+                    int timeStart = time;
+                    int timeEnd = timeStart + count;
+                    if (actions.size() > 0) {
+                        for (ItemAction action : actions) {
+                            int start = action.getTime();
+                            int end = action.getTime() + action.getTimeDoIt();
+                            if(end <= timeStart || start >= timeEnd){
+                                tvErrorTimeStart.setVisibility(View.GONE);
+                            }
+                            else {
+                                if(!item.isModifying()) {
+                                    tvErrorTimeStart.setVisibility(View.VISIBLE);
+                                    return;
+                                }
+                            }
                         }
                     }
-                    j++;
+                    tvErrorTimeStart.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    tvErrorTimeStart.setVisibility(View.VISIBLE);
                 }
                 checkSameTime();
-                tvErrorTimeStart.setVisibility(View.GONE);
-            } else {
+            }
+            else {
                 tvErrorTimeStart.setVisibility(View.VISIBLE);
             }
+        }
+        else {
+            tvErrorTimeStart.setVisibility(View.VISIBLE);
         }
     }
 

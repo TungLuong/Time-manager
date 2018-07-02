@@ -6,9 +6,7 @@ import android.view.View;
 
 import tl.com.timemanager.Item.ItemAction;
 import tl.com.timemanager.R;
-import tl.com.timemanager.dialog.insert.BaseInsertDialog;
 import tl.com.timemanager.dialog.insert.InsertActionsInDayDialog;
-import tl.com.timemanager.dialog.seen.SeenActionDialog;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;

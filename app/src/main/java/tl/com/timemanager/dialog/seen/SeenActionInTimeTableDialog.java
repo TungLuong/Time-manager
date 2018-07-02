@@ -1,22 +1,12 @@
 package tl.com.timemanager.dialog.seen;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import tl.com.timemanager.Item.ItemData;
+import tl.com.timemanager.Item.ItemDataInTimeTable;
 import tl.com.timemanager.R;
-import tl.com.timemanager.Service.TimeService;
-import tl.com.timemanager.dialog.insert.InsertActionDialog;
+import tl.com.timemanager.dialog.insert.InsertActionInTimeTableDialog;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
@@ -25,12 +15,12 @@ import static tl.com.timemanager.Constant.NO_ACTION;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
-public class SeenActionDialog extends BaseSeenDialog implements View.OnClickListener {
+public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.OnClickListener {
 
 
     private int idItemData;
 
-    public SeenActionDialog(@NonNull Context context) {
+    public SeenActionInTimeTableDialog(@NonNull Context context) {
         super(context);
     }
 
@@ -39,7 +29,7 @@ public class SeenActionDialog extends BaseSeenDialog implements View.OnClickList
     }
 
     protected void setData() {
-        ItemData item = service.getData(idItemData);
+        ItemDataInTimeTable item = service.getData(idItemData);
         tvAction.setText(item.getTitle());
         int timeStart = item.getTime() - item.getFlag();
         if(timeStart < 0) timeStart =timeStart+COUNT_TIME;
@@ -78,12 +68,12 @@ public class SeenActionDialog extends BaseSeenDialog implements View.OnClickList
     }
 
     protected void showDialogModifyAction() {
-        InsertActionDialog insertActionDialog = new InsertActionDialog(getContext());
-        insertActionDialog.setIdItemData(idItemData);
-        insertActionDialog.setService(service);
-        insertActionDialog.setiListener(iListener);
-        insertActionDialog.initView();
-        insertActionDialog.show();
+        InsertActionInTimeTableDialog insertActionInTimeTableDialog = new InsertActionInTimeTableDialog(getContext());
+        insertActionInTimeTableDialog.setIdItemData(idItemData);
+        insertActionInTimeTableDialog.setService(service);
+        insertActionInTimeTableDialog.setiListener(iListener);
+        insertActionInTimeTableDialog.initView();
+        insertActionInTimeTableDialog.show();
     }
 
     protected void deleteAction() {

@@ -15,23 +15,23 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 
-import tl.com.timemanager.Adapter.DataItemAdapter;
+import tl.com.timemanager.Adapter.DataItemInTimeTableAdapter;
 import tl.com.timemanager.Adapter.TimeItemAdapter;
 import tl.com.timemanager.Base.BaseFragment;
-import tl.com.timemanager.Item.ItemData;
+import tl.com.timemanager.Item.ItemDataInTimeTable;
 import tl.com.timemanager.MainActivity;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
-import tl.com.timemanager.dialog.insert.InsertActionDialog;
-import tl.com.timemanager.dialog.seen.SeenActionDialog;
+import tl.com.timemanager.dialog.insert.InsertActionInTimeTableDialog;
+import tl.com.timemanager.dialog.seen.SeenActionInTimeTableDialog;
 
-public class TimeTableFragment extends BaseFragment implements DataItemAdapter.IDataItem, View.OnClickListener, InsertActionDialog.IDataChangedListener {
+public class TimeTableFragment extends BaseFragment implements DataItemInTimeTableAdapter.IDataItem, View.OnClickListener, InsertActionInTimeTableDialog.IDataChangedListener {
 
     private static final String TAG = TimeTableFragment.class.getSimpleName() ;
     private RecyclerView rcvTime;
     private RecyclerView rcvData;
     private TimeService timeService;
-    private DataItemAdapter dataItemAdapter;
+    private DataItemInTimeTableAdapter dataItemInTimeTableAdapter;
     private int currPos;
 
     private RelativeLayout test ;
@@ -78,8 +78,8 @@ public class TimeTableFragment extends BaseFragment implements DataItemAdapter.I
         final boolean[] firstIsTouched = {false};
         final boolean[] secondIsTouched = {false};
 
-        dataItemAdapter = new DataItemAdapter(this);
-        rcvData.setAdapter(dataItemAdapter);
+        dataItemInTimeTableAdapter = new DataItemInTimeTableAdapter(this);
+        rcvData.setAdapter(dataItemInTimeTableAdapter);
 
         rcvData.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -136,15 +136,15 @@ public class TimeTableFragment extends BaseFragment implements DataItemAdapter.I
     }
 
     @Override
-    public ItemData getData(int position) {
+    public ItemDataInTimeTable getData(int position) {
         return timeService.getData(position);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClickItem(int position) {
-        ItemData itemData = timeService.getData(position);
-        if(itemData.isActive()){
+        ItemDataInTimeTable itemDataInTimeTable = timeService.getData(position);
+        if(itemDataInTimeTable.isActive()){
             displaySeenActionDialog(position);
         }
         else {
@@ -155,13 +155,13 @@ public class TimeTableFragment extends BaseFragment implements DataItemAdapter.I
                 currPos = position;
             }
 
-            dataItemAdapter.updatePositionFocus(position);
+            dataItemInTimeTableAdapter.updatePositionFocus(position);
         }
 
     }
 
     private void displaySeenActionDialog(int position) {
-        SeenActionDialog dialog = new SeenActionDialog(getActivity());
+        SeenActionInTimeTableDialog dialog = new SeenActionInTimeTableDialog(getActivity());
         dialog.setIdItemData(position);
         dialog.setService(timeService);
         dialog.setiListener(this);
@@ -170,7 +170,7 @@ public class TimeTableFragment extends BaseFragment implements DataItemAdapter.I
     }
 
     private void displayInsertActionDialog(int position) {
-        InsertActionDialog dialog = new InsertActionDialog(getActivity());
+        InsertActionInTimeTableDialog dialog = new InsertActionInTimeTableDialog(getActivity());
         dialog.setIdItemData(position);
         dialog.setService(timeService);
         dialog.setiListener(this);
@@ -187,7 +187,7 @@ public class TimeTableFragment extends BaseFragment implements DataItemAdapter.I
 
     @Override
     public void changedDataItem() {
-        dataItemAdapter.notifyDataSetChanged();
+        dataItemInTimeTableAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -2,23 +2,12 @@ package tl.com.timemanager.dialog.insert;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import tl.com.timemanager.Item.ItemAction;
-import tl.com.timemanager.Item.ItemData;
+import tl.com.timemanager.Item.ItemDataInTimeTable;
 import tl.com.timemanager.R;
-import tl.com.timemanager.Service.TimeService;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
@@ -29,14 +18,14 @@ import static tl.com.timemanager.Constant.RELAX_ACTION;
 import static tl.com.timemanager.Constant.TIME_MAX;
 import static tl.com.timemanager.Constant.TIME_MIN;
 
-public class InsertActionDialog extends BaseInsertDialog {
+public class InsertActionInTimeTableDialog extends BaseInsertDialog {
 
-    private static final String TAG = InsertActionDialog.class.getSimpleName();
+    private static final String TAG = InsertActionInTimeTableDialog.class.getSimpleName();
 
     private int idItemData;
     private int oldIdItemData;
 
-    public InsertActionDialog(@NonNull Context context) {
+    public InsertActionInTimeTableDialog(@NonNull Context context) {
         super(context);
     }
 
@@ -49,7 +38,7 @@ public class InsertActionDialog extends BaseInsertDialog {
         oldIdItemData = idItemData;
         int i = idItemData - service.getData(idItemData).getFlag() * COUNT_DAY;
 //        if(i < 0) i=  service.getData(idItemData).getDay()  + ((COUNT_TIME-1)*COUNT_DAY) +i;
-        ItemData item = service.getData(i);
+        ItemDataInTimeTable item = service.getData(i);
         if (item.isActive()) {
             isModify = true;
             edtAction.setText(item.getTitle());
@@ -95,7 +84,7 @@ public class InsertActionDialog extends BaseInsertDialog {
     }
 
     protected void setModifyingData(boolean b) {
-        ItemData item = service.getData(oldIdItemData);
+        ItemDataInTimeTable item = service.getData(oldIdItemData);
         int i = oldIdItemData - item.getFlag() * COUNT_DAY;
         int count = item.getTimeDoIt();
         int j = 0;
@@ -116,7 +105,7 @@ public class InsertActionDialog extends BaseInsertDialog {
                 tvErrorTime.setVisibility(View.VISIBLE);
                 return;
             }
-            ItemData item = service.getData(i);
+            ItemDataInTimeTable item = service.getData(i);
             if (item.isActive() && !item.isModifying()) {
                 tvErrorTime.setVisibility(View.VISIBLE);
                 return;
@@ -184,7 +173,7 @@ public class InsertActionDialog extends BaseInsertDialog {
         boolean doNotDisturb = swDoNotDisturb.isChecked();
         String title = String.valueOf(edtAction.getText());
         while (j < count && i < service.getCount()) {
-            ItemData item = service.getData(i);
+            ItemDataInTimeTable item = service.getData(i);
             if (!item.isActive()) {
                 item.setAction(kindOfAction);
                 item.setActive(true);
@@ -202,13 +191,13 @@ public class InsertActionDialog extends BaseInsertDialog {
     }
 
     private void createNewAction() {
-        ItemData itemData = service.getData(idItemData);
+        ItemDataInTimeTable itemDataInTimeTable = service.getData(idItemData);
         String title = String.valueOf(edtAction.getText());
         ItemAction action = new ItemAction();
         action.setTitle(title);
         action.setAction(kindOfAction);
-        action.setDay(itemData.getDay());
-        action.setTime(itemData.getTime());
+        action.setDay(itemDataInTimeTable.getDay());
+        action.setTime(itemDataInTimeTable.getTime());
         action.setTimeDoIt(count);
         action.setNotification(swNotification.isChecked());
         action.setDoNotDisturb(swDoNotDisturb.isChecked());
