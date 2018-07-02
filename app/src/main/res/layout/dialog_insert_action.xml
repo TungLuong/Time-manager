@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:layout_marginTop="-20dp"
     android:paddingLeft="15dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:minWidth="256dp"
+    android:background="#FFFFFF"
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/iv_close"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="25dp"
         android:layout_marginRight="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +37,7 @@
     <TextView
         android:visibility="gone"
         android:id="@+id/tv_error_title"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="45dp"
         android:layout_toRightOf="@id/edt_name_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +75,7 @@
         android:visibility="gone"
         android:id="@+id/tv_error_time_start"
         android:layout_below="@id/tv_action"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:layout_toRightOf="@id/edt_time_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,6 +94,7 @@
         android:layout_marginLeft="10dp"/>
 
     <android.support.v7.widget.AppCompatSpinner
+        android:background="#FFFFFF"
         android:layout_toRightOf="@id/tv_time_do_it"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
@@ -112,6 +116,7 @@
         android:layout_marginLeft="10dp"/>
 
     <android.support.v7.widget.AppCompatSpinner
+        android:background="#FFFFFF"
         android:layout_toRightOf="@id/tv_kind_of_action"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
@@ -177,14 +182,14 @@
         android:textAllCaps="false"
         android:layout_below="@id/sw_do_not_disturb"
         android:layout_toRightOf="@id/sw_do_not_disturb"
-        android:layout_marginLeft="-40dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/shape_button"
         android:textColor="#FFF"
         />
     <ImageView
         android:layout_below="@id/sw_do_not_disturb"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="30dp"
         android:id="@+id/iv_img_action"

@@ -8,12 +8,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 
@@ -24,8 +22,8 @@ import tl.com.timemanager.Item.ItemData;
 import tl.com.timemanager.MainActivity;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
-import tl.com.timemanager.dialog.InsertActionDialog;
-import tl.com.timemanager.dialog.SeenActionDialog;
+import tl.com.timemanager.dialog.insert.InsertActionDialog;
+import tl.com.timemanager.dialog.seen.SeenActionDialog;
 
 public class TimeTableFragment extends BaseFragment implements DataItemAdapter.IDataItem, View.OnClickListener, InsertActionDialog.IDataChangedListener {
 
@@ -163,29 +161,37 @@ public class TimeTableFragment extends BaseFragment implements DataItemAdapter.I
     }
 
     private void displaySeenActionDialog(int position) {
-        SeenActionDialog dialog = new SeenActionDialog();
+        SeenActionDialog dialog = new SeenActionDialog(getActivity());
         dialog.setIdItemData(position);
         dialog.setService(timeService);
-        dialog.setListener(this);
-        dialog.show(getActivity().getSupportFragmentManager(), "example dialog");
+        dialog.setiListener(this);
+        dialog.initView();
+        dialog.show();
     }
 
     private void displayInsertActionDialog(int position) {
-        InsertActionDialog dialog = new InsertActionDialog();
+        InsertActionDialog dialog = new InsertActionDialog(getActivity());
         dialog.setIdItemData(position);
         dialog.setService(timeService);
-        dialog.setListener(this);
-        dialog.show(getActivity().getSupportFragmentManager(), "example dialog");
+        dialog.setiListener(this);
+        dialog.initView();
+        dialog.show();
     }
 
-    @Override
-    public void changedData() {
-        dataItemAdapter.notifyDataSetChanged();
-    }
 
     @Override
     public void onClick(View v) {
 
         ((MainActivity)getActivity()).addDaysInWeekFragment();
+    }
+
+    @Override
+    public void changedDataItem() {
+        dataItemAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void changedActionItem() {
+
     }
 }

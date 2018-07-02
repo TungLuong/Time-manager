@@ -83,7 +83,6 @@ public class DataItemAdapter  extends RecyclerView.Adapter<DataItemAdapter.ViewH
                 holder.tvTitle.setText("");
             }
         }
-        holder.tvTitle.setText(position+"");
     }
 
     public void updatePositionFocus(int position) {

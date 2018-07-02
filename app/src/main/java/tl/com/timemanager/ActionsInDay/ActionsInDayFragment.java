@@ -18,12 +18,12 @@ import tl.com.timemanager.Base.BaseFragment;
 import tl.com.timemanager.Item.ItemAction;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
-import tl.com.timemanager.dialog.InsertActionDialog;
-import tl.com.timemanager.dialog.InsertActionsInDayDialog;
-import tl.com.timemanager.dialog.SeenActionsInDayDialog;
+import tl.com.timemanager.dialog.insert.BaseInsertDialog;
+import tl.com.timemanager.dialog.insert.InsertActionsInDayDialog;
+import tl.com.timemanager.dialog.seen.SeenActionsInDayDialog;
 
 @SuppressLint("ValidFragment")
-public class ActionsInDayFragment extends BaseFragment implements ActionItemAdapter.IActionItem, View.OnClickListener, InsertActionsInDayDialog.IDataActionChangedListener {
+public class ActionsInDayFragment extends BaseFragment implements ActionItemAdapter.IActionItem, View.OnClickListener, BaseInsertDialog.IDataChangedListener {
 
     private ImageView ivInsertAction;
     private RecyclerView rcvAction;
@@ -83,26 +83,33 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
     }
 
     private void displayInsertActionDialog(int day,int position) {
-        InsertActionsInDayDialog dialog = new InsertActionsInDayDialog();
+        InsertActionsInDayDialog dialog = new InsertActionsInDayDialog(getActivity());
         dialog.setIdItemAction(position);
         dialog.setDay(day);
         dialog.setService(service);
-        dialog.setiDataActionChangedListener(this);
-        dialog.show(getActivity().getSupportFragmentManager(), "example dialog");
+        dialog.initView();
+        dialog.setiListener(this);
+        dialog.show();
     }
 
     private void displaySeenActionsInDayDialog(int day,int position){
-        SeenActionsInDayDialog dialog = new SeenActionsInDayDialog();
+        SeenActionsInDayDialog dialog = new SeenActionsInDayDialog(getActivity());
         dialog.setIdItemAction(position);
         dialog.setDay(day);
         dialog.setService(service);
-        dialog.setiDataActionChangedListener(this);
-        dialog.show(getActivity().getSupportFragmentManager(), "example dialog");
+        dialog.initView();
+        dialog.setiListener(this);
+        dialog.show();
     }
 
 
     @Override
-    public void changedDataAction() {
+    public void changedDataItem() {
+
+    }
+
+    @Override
+    public void changedActionItem() {
         actionItemAdapter.notifyDataSetChanged();
     }
 }

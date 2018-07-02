@@ -1,22 +1,29 @@
-package tl.com.timemanager.dialog;
+package tl.com.timemanager.dialog.seen;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import tl.com.timemanager.Item.ItemAction;
-import tl.com.timemanager.Item.ItemData;
 import tl.com.timemanager.R;
+import tl.com.timemanager.dialog.insert.BaseInsertDialog;
+import tl.com.timemanager.dialog.insert.InsertActionsInDayDialog;
+import tl.com.timemanager.dialog.seen.SeenActionDialog;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
-import static tl.com.timemanager.Constant.COUNT_TIME;
 import static tl.com.timemanager.Constant.NO_ACTION;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
-public class SeenActionsInDayDialog extends SeenActionDialog {
-    private InsertActionsInDayDialog.IDataActionChangedListener iDataActionChangedListener;
+public class SeenActionsInDayDialog extends BaseSeenDialog {
+
     private int idItemAction;
     private int day;
+
+    public SeenActionsInDayDialog(@NonNull Context context) {
+        super(context);
+    }
 
     public void setIdItemAction(int idItemAction) {
         this.idItemAction = idItemAction;
@@ -26,11 +33,8 @@ public class SeenActionsInDayDialog extends SeenActionDialog {
         this.day = day;
     }
 
-    public void setiDataActionChangedListener(InsertActionsInDayDialog.IDataActionChangedListener iDataActionChangedListener) {
-        this.iDataActionChangedListener = iDataActionChangedListener;
-    }
 
-    protected void setItemData() {
+    protected void setData() {
         ItemAction item = service.getActionsInDays().get(day).get(idItemAction);
         tvAction.setText(item.getTitle());
         int timeStart = item.getTime();
@@ -70,16 +74,16 @@ public class SeenActionsInDayDialog extends SeenActionDialog {
     }
 
     protected void showDialogModifyAction() {
-        InsertActionsInDayDialog dialog = new InsertActionsInDayDialog();
+        InsertActionsInDayDialog dialog = new InsertActionsInDayDialog(getContext());
         dialog.setIdItemAction(idItemAction);
         dialog.setService(service);
-        dialog.setiDataActionChangedListener(iDataActionChangedListener);
-        dialog.show(getActivity().getSupportFragmentManager(), "example dialog");
+        dialog.setiListener(iListener);
+        dialog.show();
     }
 
     @Override
     protected void deleteAction() {
         service.deleteActionByIdItemAction(day,idItemAction);
-        iDataActionChangedListener.changedDataAction();
+        iListener.changedActionItem();
     }
 }

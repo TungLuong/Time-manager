@@ -1,0 +1,157 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 1048576 bytes for AllocateHeap
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (memory/allocation.inline.hpp:61), pid=640, tid=0x0000000000001840
+#
+# JRE version:  (8.0_152-b02) (build )
+# Java VM: OpenJDK 64-Bit Server VM (25.152-b02 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000005193800):  JavaThread "Unknown thread" [_thread_in_vm, id=6208, stack(0x0000000005090000,0x0000000005190000)]
+
+Stack: [0x0000000005090000,0x0000000005190000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x0000000005193800 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=6208, stack(0x0000000005090000,0x0000000005190000)]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ PSYoungGen      total 18944K, used 327K [0x00000000eb400000, 0x00000000ec900000, 0x0000000100000000)
+  eden space 16384K, 2% used [0x00000000eb400000,0x00000000eb451ec8,0x00000000ec400000)
+  from space 2560K, 0% used [0x00000000ec680000,0x00000000ec680000,0x00000000ec900000)
+  to   space 2560K, 0% used [0x00000000ec400000,0x00000000ec400000,0x00000000ec680000)
+ ParOldGen       total 44032K, used 0K [0x00000000c1c00000, 0x00000000c4700000, 0x00000000eb400000)
+  object space 44032K, 0% used [0x00000000c1c00000,0x00000000c1c00000,0x00000000c4700000)
+ Metaspace       used 772K, capacity 4480K, committed 4480K, reserved 1056768K
+  class space    used 73K, capacity 384K, committed 384K, reserved 1048576K
+
+Card table byte_map: [0x0000000014650000,0x0000000014850000] byte_map_base: 0x0000000014042000
+
+Marking Bits: (ParMarkBitMap*) 0x000000006f0b4970
+ Begin Bits: [0x0000000014da0000, 0x0000000015d30000)
+ End Bits:   [0x0000000015d30000, 0x0000000016cc0000)
+
+Polling page: 0x0000000003380000
+
+CodeCache: size=245760Kb used=328Kb max_used=328Kb free=245431Kb
+ bounds [0x0000000005290000, 0x0000000005500000, 0x0000000014290000]
+ total_blobs=57 nmethods=0 adapters=38
+ compilation: enabled
+
+Compilation events (0 events):
+No events
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.077 loading class java/lang/Short
+Event: 0.077 loading class java/lang/Short done
+Event: 0.077 loading class java/lang/Integer
+Event: 0.078 loading class java/lang/Integer done
+Event: 0.078 loading class java/lang/Long
+Event: 0.078 loading class java/lang/Long done
+Event: 0.079 loading class java/lang/NullPointerException
+Event: 0.079 loading class java/lang/NullPointerException done
+Event: 0.079 loading class java/lang/ArithmeticException
+Event: 0.079 loading class java/lang/ArithmeticException done
+
+
+Dynamic libraries:
+0x00007ff7c04f0000 - 0x00007ff7c0521000 	C:\Program Files\Android\Android Studio\jre\bin\java.exe
+0x00007ffaffae0000 - 0x00007ffaffcc0000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffafdb40000 - 0x00007ffafdbee000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ffafcb10000 - 0x00007ffafcd76000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ffafe3b0000 - 0x00007ffafe451000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ffafd9c0000 - 0x00007ffafda5d000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffafd600000 - 0x00007ffafd65b000 	C:\WINDOWS\System32\sechost.dll
+0x00007ffafdd80000 - 0x00007ffafde9f000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ffafdbf0000 - 0x00007ffafdd7f000 	C:\WINDOWS\System32\USER32.dll
+0x00007ffafcf30000 - 0x00007ffafcf50000 	C:\WINDOWS\System32\win32u.dll
+0x00007ffafd120000 - 0x00007ffafd148000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffafbf80000 - 0x00007ffafc113000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ffafbee0000 - 0x00007ffafbf7b000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ffafce30000 - 0x00007ffafcf26000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffaee1e0000 - 0x00007ffaee449000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.16299.431_none_15c7d3ee93659e73\COMCTL32.dll
+0x00007ffafd2f0000 - 0x00007ffafd5f8000 	C:\WINDOWS\System32\combase.dll
+0x00007ffafca40000 - 0x00007ffafcab2000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ffafd8c0000 - 0x00007ffafd8ed000 	C:\WINDOWS\System32\IMM32.DLL
+0x000000006e810000 - 0x000000006e8e2000 	C:\Program Files\Android\Android Studio\jre\jre\bin\msvcr100.dll
+0x000000006e8f0000 - 0x000000006f12f000 	C:\Program Files\Android\Android Studio\jre\jre\bin\server\jvm.dll
+0x00007ffafe3a0000 - 0x00007ffafe3a8000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ffaee1b0000 - 0x00007ffaee1d3000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffafaad0000 - 0x00007ffafaad9000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffaee180000 - 0x00007ffaee1aa000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007ffafcac0000 - 0x00007ffafcb0a000 	C:\WINDOWS\System32\cfgmgr32.dll
+0x00007ffaf37a0000 - 0x00007ffaf37aa000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffafe460000 - 0x00007ffafe4cc000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ffaeffe0000 - 0x00007ffaeffef000 	C:\Program Files\Android\Android Studio\jre\jre\bin\verify.dll
+0x00007ffae7c60000 - 0x00007ffae7c89000 	C:\Program Files\Android\Android Studio\jre\jre\bin\java.dll
+0x00007ffaefd60000 - 0x00007ffaefd76000 	C:\Program Files\Android\Android Studio\jre\jre\bin\zip.dll
+
+VM Arguments:
+jvm_args: -Dretrolambda.bytecodeVersion=50 -Dretrolambda.classpath=C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\realm-android-library-5.3.1.aar\d80d2ef2ca2207d529259615b9c08b61\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\modules-2\files-2.1\io.realm\realm-annotations\5.3.1\314fca65a3dbd4e09d04f96a2efa824b6ff268d0\realm-annotations-5.3.1.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\feab6604db6fa1b6f1d93437a5c5b4d5\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\tableview-2.2.0.aar\53a98f5b6bd1143ed213ac0bb4cfc78b\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\726bbf7fed62b5544b4799a54010ea25\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\a25dfd715f412d95b1eccfc20a416e05\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-27.1.1.aar\20f4987a63d6356dd412468326aee012\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.2\25ea2e8b0c338a877313bd4672d3fe056ea78f0d\jsr305-3.0.2.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\relinker-1.2.2.aar\a4319a4536ce8168549eca3e7f4dea93\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\transition-27.1.1.aar\6bceffb4510b597082e9115bd2313477\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\a32b5ef97f3a57f9490064ca0f2d8afb\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\4648d2bcade20416a483d1340ddd30cc\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\23767155f22c9c9b07ce478d5b8407cd\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\7c2f2dd69b4c89cd952cf691b02bf843\jars\classes.jar;C:\Users\ADMIN\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\50fc1abf7cd98494bfdf7c4158cf28bb\jars\classes.jar;C:\-Dretrolambda.classpathFile=C:\Users\ADMIN\AppData\Local\Temp\inc-349650110265046176.path -Dretrolambda.inputDir=C:\Users\ADMIN\Documents\GitHub\Time-manager\app\build\intermediates\classes\debug -Dretrolambda.outputDir=C:\Users\ADMIN\Documents\GitHub\Time-manager\app\build\intermediates\transforms\retrolambda\debug\0 -Dfile.encoding=windows-1252 -Duser.country=US -Duser.language=en -Duser.variant 
+java_command: net.orfjackal.retrolambda.Main
+java_class_path (initial): C:\Users\ADMIN\.gradle\caches\modules-2\files-2.1\net.orfjackal.retrolambda\retrolambda\2.5.1\3db6629d3ba0168c580af3be44fe54014dfb105\retrolambda-2.5.1.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_144
+PATH=C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Java\jdk1.8.0_144\bin;D:\apache-maven-3.5.3-bin\bin;C:\Program Files\Git\cmd;C:\Users\ADMIN\AppData\Local\Microsoft\WindowsApps;C:\Users\ADMIN\AppData\Local\GitHubDesktop\bin
+USERNAME=ADMIN
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 78 Stepping 3, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 16299 (10.0.16299.431)
+
+CPU:total 4 (initial active 4) (2 cores per cpu, 2 threads per core) family 6 model 78 stepping 3, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx
+
+Memory: 4k page, physical 4075684k(223112k free), swap 12478496k(5976k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.152-b02) for windows-amd64 JRE (1.8.0_152-release-1024-b02), built by "builder" with MS VC++ 10.0 (VS2010)
+
+time: Sun Jul 01 21:07:00 2018
+elapsed time: 0 seconds (0d 0h 0m 0s)
+

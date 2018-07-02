@@ -1,11 +1,15 @@
-package tl.com.timemanager.dialog;
+package tl.com.timemanager.dialog.insert;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tl.com.timemanager.Item.ItemAction;
 import tl.com.timemanager.R;
+import tl.com.timemanager.dialog.insert.InsertActionDialog;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
@@ -15,25 +19,27 @@ import static tl.com.timemanager.Constant.RELAX_ACTION;
 import static tl.com.timemanager.Constant.TIME_MAX;
 import static tl.com.timemanager.Constant.TIME_MIN;
 
-public class InsertActionsInDayDialog extends InsertActionDialog {
+public class InsertActionsInDayDialog extends BaseInsertDialog {
+
     private int day;
     private int idItemAction;
     private int oldInItemAction;
+
+    public InsertActionsInDayDialog(@NonNull Context context) {
+        super(context);
+    }
+
     public void setDay(int day) {
         this.day = day;
     }
-    private IDataActionChangedListener iDataActionChangedListener;
 
     public void setIdItemAction(int idItemAction) {
         this.idItemAction = idItemAction;
     }
 
-    public void setiDataActionChangedListener(IDataActionChangedListener iDataActionChangedListener) {
-        this.iDataActionChangedListener = iDataActionChangedListener;
-    }
 
     @Override
-    protected void setItemData() {
+    protected void setData() {
         oldInItemAction = idItemAction;
 //        if(i < 0) i=  service.getData(idItemData).getDay()  + ((COUNT_TIME-1)*COUNT_DAY) +i;
         ItemAction item = service.getActionsInDays().get(day).get(idItemAction);
@@ -70,12 +76,12 @@ public class InsertActionsInDayDialog extends InsertActionDialog {
             }
         }
 
-        if(isModify){
+        if (isModify) {
             setModifyingData(true);
-        }else {
+        } else {
             setModifyingData(false);
         }
-        edtTimeStart.setText(item.getTime()+"");
+        edtTimeStart.setText(item.getTime() + "");
 
     }
 
@@ -86,24 +92,32 @@ public class InsertActionsInDayDialog extends InsertActionDialog {
     }
 
     protected void checkSameTime() {
-        int j=0;
-        List<ItemAction> actions = service.getActionsInDays().get(day);
-        ItemAction item = service.getActionsInDays().get(day).get(idItemAction);
-
+        int j = 0;
+        List<ItemAction> itemActions = service.getActionsInDays().get(day);
+        List<ItemAction> actions = new ArrayList<>();
+        for (ItemAction action : itemActions) {
+            actions.add(action);
+        }
+//        ItemAction item = actions.get(idItemAction);
+        ItemAction item = actions.remove(idItemAction);
         try {
             int time = Integer.valueOf(String.valueOf(edtTimeStart.getText() + ""));
-            while (j < count ) {
+            while (j < count) {
                 time = time + j;
-                for(ItemAction action : actions){
-                    if(action.getTime() <= time && action.getTime()+action.getTimeDoIt() >= time && !item.isModifying()){
-                        tvErrorTime.setVisibility(View.VISIBLE);
-                        return ;
+                if (actions.size() > 0) {
+                    for (ItemAction action : actions) {
+                        if (action.getTime() <= time && action.getTime() + action.getTimeDoIt() >= time && !item.isModifying()) {
+                            tvErrorTime.setVisibility(View.VISIBLE);
+                            return;
+                        }
                     }
+                    j++;
+                }else {
+                     break;
                 }
-                j++;
             }
             tvErrorTime.setVisibility(View.GONE);
-        }catch (Exception e){
+        } catch (Exception e) {
             tvErrorTime.setVisibility(View.VISIBLE);
         }
 
@@ -111,7 +125,7 @@ public class InsertActionsInDayDialog extends InsertActionDialog {
 
     protected void createData() {
         String title = String.valueOf(edtAction.getText());
-        int time = Integer.valueOf(String.valueOf(edtTimeStart.getText()+""));
+        int time = Integer.valueOf(String.valueOf(edtTimeStart.getText() + ""));
         ItemAction action = service.getActionsInDays().get(day).get(idItemAction);
         action.setTitle(title);
         action.setAction(kindOfAction);
@@ -156,8 +170,8 @@ public class InsertActionsInDayDialog extends InsertActionDialog {
                     isModify = false;
                     setModifyingData(false);
                 }
-                service.deleteActionByIdItemAction(day,oldInItemAction);
-                iDataActionChangedListener.changedDataAction();
+                service.deleteActionByIdItemAction(day, oldInItemAction);
+                iListener.changedActionItem();
                 dismiss();
                 break;
             case R.id.btn_save:
@@ -168,15 +182,12 @@ public class InsertActionsInDayDialog extends InsertActionDialog {
                     createData();
                     isModify = false;
                     setModifyingData(false);
-                    iDataActionChangedListener.changedDataAction();
+                    service.sortActionByTime(day);
+                    iListener.changedActionItem();
                     dismiss();
                 }
                 break;
         }
-    }
-
-    public interface IDataActionChangedListener{
-        void changedDataAction();
     }
 
 
