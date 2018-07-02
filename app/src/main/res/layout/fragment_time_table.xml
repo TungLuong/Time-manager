@@ -24,10 +24,11 @@
                 <LinearLayout
                     android:layout_width="784dp"
                     android:layout_height="56dp"
-                    android:background="@color/colorPrimaryDark"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:background="@drawable/shape_item_day"
+                        android:padding="1dp"
                         android:layout_width="112dp"
                         android:layout_height="56dp"
                         android:gravity="center"
@@ -36,6 +37,8 @@
                         android:textSize="20dp" />
 
                     <TextView
+                        android:background="@drawable/shape_item_day"
+                        android:padding="1dp"
                         android:textColor="#FFF"
                         android:layout_width="112dp"
                         android:layout_height="56dp"
@@ -44,6 +47,8 @@
                         android:textSize="20dp" />
 
                     <TextView
+                        android:background="@drawable/shape_item_day"
+                        android:padding="1dp"
                         android:textColor="#FFF"
                         android:layout_width="112dp"
                         android:layout_height="56dp"
@@ -52,6 +57,8 @@
                         android:textSize="20dp" />
 
                     <TextView
+                        android:background="@drawable/shape_item_day"
+                        android:padding="1dp"
                         android:textColor="#FFF"
                         android:layout_width="112dp"
                         android:layout_height="56dp"
@@ -60,6 +67,8 @@
                         android:textSize="20dp" />
 
                     <TextView
+                        android:background="@drawable/shape_item_day"
+                        android:padding="1dp"
                         android:textColor="#FFF"
                         android:layout_width="112dp"
                         android:layout_height="56dp"
@@ -68,6 +77,8 @@
                         android:textSize="20dp" />
 
                     <TextView
+                        android:background="@drawable/shape_item_day"
+                        android:padding="1dp"
                         android:textColor="#FFF"
                         android:layout_width="112dp"
                         android:layout_height="56dp"
@@ -76,6 +87,8 @@
                         android:textSize="20dp" />
 
                     <TextView
+                        android:background="@drawable/shape_item_day"
+                        android:padding="1dp"
                         android:textColor="#FFF"
                         android:layout_width="112dp"
                         android:layout_height="56dp"

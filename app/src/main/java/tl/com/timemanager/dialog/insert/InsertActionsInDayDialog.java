@@ -147,7 +147,6 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
                 for (ItemAction action : itemActions) {
                     actions.add(action);
                 }
-//        ItemAction item = actions.get(idItemAction);
                 ItemAction item = actions.remove(idItemAction);
                 try {
                     int timeStart = time;

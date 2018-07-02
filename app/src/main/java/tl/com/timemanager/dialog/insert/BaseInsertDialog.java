@@ -35,7 +35,7 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
     protected Switch swNotification;
     protected Switch swDoNotDisturb;
     protected int kindOfAction;
-    protected int count;
+    protected int count = 1;
     protected TimeService service;
     protected TextView tvErrorTime;
     protected TextView tvErrorTitle;
