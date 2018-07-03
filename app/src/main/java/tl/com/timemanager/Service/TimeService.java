@@ -17,6 +17,7 @@ import tl.com.timemanager.MyBinder;
 
 import static tl.com.timemanager.Constant.COUNT_DAY;
 import static tl.com.timemanager.Constant.COUNT_TIME;
+import static tl.com.timemanager.Constant.TIME_MAX;
 import static tl.com.timemanager.Constant.TIME_MIN;
 
 public class TimeService extends Service {
@@ -42,7 +43,7 @@ public class TimeService extends Service {
         }
         actionsInDays = new ArrayList<>();
         for(int i = 0;i<COUNT_DAY;i++){
-            actionsInDays.add(new ArrayList<>());
+            actionsInDays.add(new ArrayList<ItemAction>());
         }
     }
 
@@ -58,20 +59,15 @@ public class TimeService extends Service {
         return binder;
     }
 
-    public int getCount(){
+    public int getCountItemData(){
         Log.d(TAG,"size.........."+dataList.size()+"");
         if(dataList == null) return 0;
         else return dataList.size();
     }
 
-    public ItemDataInTimeTable getData(int position){
+    public ItemDataInTimeTable getItemDataInTimeTable(int position){
         return dataList.get(position);
     }
-
-    public void resetClickInsert(int position){
-
-    }
-
 
 
     public void sortActionByTime(int day){
@@ -84,11 +80,11 @@ public class TimeService extends Service {
 
     public void deleteAction(int idItemData) {
 
-        int i = idItemData - getData(idItemData).getFlag() * COUNT_DAY;
-        ItemDataInTimeTable item = getData(i);
+        int i = idItemData - getItemDataInTimeTable(idItemData).getFlag() * COUNT_DAY;
+        ItemDataInTimeTable item = getItemDataInTimeTable(i);
         int count = item.getTimeDoIt();
 
-        List<ItemAction> actions = getActionsInDays().get(getData(i).getDay());
+        List<ItemAction> actions = getActionsInDays().get(getItemDataInTimeTable(i).getDay());
         for(ItemAction action : actions){
             if(action.getTime() == item.getTime() && action.getDay() == item.getDay()){
                 actions.remove(action);
@@ -97,8 +93,8 @@ public class TimeService extends Service {
         }
 
         int j =0;
-        while (j < count && i < getCount()){
-            item = getData(i);
+        while (j < count && i < getCountItemData()){
+            item = getItemDataInTimeTable(i);
             item.setActive(false);
             item.setAction(0);
             item.setNotification(false);
@@ -109,6 +105,32 @@ public class TimeService extends Service {
             i = i + COUNT_DAY;
             j++;
         }
+    }
 
+    public int setNewTimeForAction(int day,int position){
+        List<ItemAction> itemActions = getActionsInDays().get(day);
+        List<ItemAction> actions = new ArrayList<>();
+        actions.addAll(itemActions);
+        int timeDoIt  = actions.get(position).getTimeDoIt();
+        if (actions.size() > 0){
+            int timeStart;
+            int timeEnd;
+            for(int i = position; i < actions.size() - 1;i++){
+                ItemAction actionOne = actions.get(i);
+                ItemAction actionTwo = actions.get(i+1);
+                 timeStart = actionOne.getTime() + actionOne.getTimeDoIt();
+                 timeEnd = actionTwo.getTime();
+                if(timeEnd-timeStart >= timeDoIt){
+                    return timeStart;
+                }
+            }
+            ItemAction actionOne = actions.get(actions.size() - 1);
+            timeStart = actionOne.getTime() + actionOne.getTimeDoIt();
+            timeEnd = TIME_MAX;
+            if(timeEnd - timeStart >= timeDoIt){
+                return timeStart;
+            }
+        }
+        return -1;
     }
 }

@@ -29,7 +29,7 @@ public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.
     }
 
     protected void setData() {
-        ItemDataInTimeTable item = service.getData(idItemData);
+        ItemDataInTimeTable item = service.getItemDataInTimeTable(idItemData);
         tvAction.setText(item.getTitle());
         int timeStart = item.getTime() - item.getFlag();
         if(timeStart < 0) timeStart =timeStart+COUNT_TIME;

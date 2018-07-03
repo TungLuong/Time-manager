@@ -132,18 +132,18 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
     @Override
     public int getCount() {
         if(timeService == null) return 0;
-        return timeService.getCount();
+        return timeService.getCountItemData();
     }
 
     @Override
     public ItemDataInTimeTable getData(int position) {
-        return timeService.getData(position);
+        return timeService.getItemDataInTimeTable(position);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClickItem(int position) {
-        ItemDataInTimeTable itemDataInTimeTable = timeService.getData(position);
+        ItemDataInTimeTable itemDataInTimeTable = timeService.getItemDataInTimeTable(position);
         if(itemDataInTimeTable.isActive()){
             displaySeenActionDialog(position);
         }

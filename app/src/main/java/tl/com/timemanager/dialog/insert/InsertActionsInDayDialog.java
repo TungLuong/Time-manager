@@ -40,7 +40,7 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
     @Override
     protected void setData() {
         oldInItemAction = idItemAction;
-//        if(i < 0) i=  service.getData(idItemData).getDay()  + ((COUNT_TIME-1)*COUNT_DAY) +i;
+//        if(i < 0) i=  service.getItemDataInTimeTable(idItemData).getDay()  + ((COUNT_TIME-1)*COUNT_DAY) +i;
         ItemAction item = service.getActionsInDays().get(day).get(idItemAction);
         if (item.getTitle() != null) {
             isModify = true;

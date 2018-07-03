@@ -49,7 +49,7 @@ public class DataItemInTimeTableAdapter extends RecyclerView.Adapter<DataItemInT
     @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-       //holder.tvTitle.setText( "( "+iDataItem.getData(position).getTime()+","+ iDataItem.getData(position).getDay() +" )");
+       //holder.tvTitle.setText( "( "+iDataItem.getItemDataInTimeTable(position).getTime()+","+ iDataItem.getItemDataInTimeTable(position).getDay() +" )");
 //       holder.itemView.setOnClickListener(new View.OnClickListener() {
 //           @Override
 //           public void onClick(View v) {
