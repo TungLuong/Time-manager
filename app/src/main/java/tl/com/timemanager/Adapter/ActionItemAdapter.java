@@ -2,7 +2,6 @@ package tl.com.timemanager.Adapter;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.zip.Inflater;
-
 import tl.com.timemanager.Item.ItemAction;
 import tl.com.timemanager.R;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
-import static tl.com.timemanager.Constant.COUNT_TIME;
 import static tl.com.timemanager.Constant.NO_ACTION;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
@@ -51,7 +47,7 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemAction action = iActionItem.getData(position);
-        holder.tvTime.setText(action.getTime() + " h - " + (action.getTime() + action.getTimeDoIt())  +" h ");
+        holder.tvTime.setText(action.getHourOfDay() + " h - " + (action.getHourOfDay() + action.getTimeDoIt())  +" h ");
         holder.tvTitle.setText(action.getTitle() + "");
         switch (action.getAction()){
             case NO_ACTION:

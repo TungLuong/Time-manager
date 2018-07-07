@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:text=" time "
+        android:text=" hourOfDay "
         android:textSize="15dp"
         android:textColor="#000"/>
 

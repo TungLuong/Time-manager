@@ -49,7 +49,7 @@ public class DataItemInTimeTableAdapter extends RecyclerView.Adapter<DataItemInT
     @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-       //holder.tvTitle.setText( "( "+iDataItem.getItemDataInTimeTable(position).getTime()+","+ iDataItem.getItemDataInTimeTable(position).getDay() +" )");
+       //holder.tvTitle.setText( "( "+iDataItem.getItemDataInTimeTable(position).getHourOfDay()+","+ iDataItem.getItemDataInTimeTable(position).getDayOfWeek() +" )");
 //       holder.itemView.setOnClickListener(new View.OnClickListener() {
 //           @Override
 //           public void onClick(View v) {
@@ -60,7 +60,7 @@ public class DataItemInTimeTableAdapter extends RecyclerView.Adapter<DataItemInT
         ItemDataInTimeTable item = iDataItem.getData(position);
         if(!item.isActive()) {
             if (position == currentFocus) {
-                holder.itemView.setBackgroundResource(R.drawable.ic_insert);
+                holder.itemView.setBackgroundResource(R.drawable.ic_add_circle_outline_black_24dp);
             } else {
                 holder.itemView.setBackgroundResource(R.color.colorDefault);
             }

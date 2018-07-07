@@ -1,27 +1,33 @@
 package tl.com.timemanager.Item;
 
-public class ItemDataInTimeTable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class ItemDataInTimeTable extends RealmObject{
+
+    @PrimaryKey
+    private int id;
+
+
     private boolean isActive = false;
     private boolean isModifying = false;
     private String title;
-    private int day;
-    private int time;
     private int flag;
     private int action;
     private boolean notification;
     private boolean doNotDisturb;
-    private int colorId;
     private int timeDoIt;
+    private int dayOfWeek;
+    private int hourOfDay;
 
-
-    public ItemDataInTimeTable(){
-
+    public ItemDataInTimeTable() {
     }
 
-    public ItemDataInTimeTable(int day, int time) {
-        this.day = day;
-        this.time = time;
+    public ItemDataInTimeTable(int dayOfWeek, int hourOfDay) {
+        this.dayOfWeek = dayOfWeek;
+        this.hourOfDay = hourOfDay;
     }
+
 
     public int getTimeDoIt() {
         return timeDoIt;
@@ -39,20 +45,20 @@ public class ItemDataInTimeTable {
         isActive = active;
     }
 
-    public int getDay() {
-        return day;
+    public int getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
-    public int getTime() {
-        return time;
+    public int getHourOfDay() {
+        return hourOfDay;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setHourOfDay(int hourOfDay) {
+        this.hourOfDay = hourOfDay;
     }
 
     public int getFlag() {
@@ -96,12 +102,8 @@ public class ItemDataInTimeTable {
         this.title = title;
     }
 
-    public int getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(int colorId) {
-        this.colorId = colorId;
+    public int getId() {
+        return id;
     }
 
     public boolean isModifying() {
@@ -110,5 +112,9 @@ public class ItemDataInTimeTable {
 
     public void setModifying(boolean modifying) {
         isModifying = modifying;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

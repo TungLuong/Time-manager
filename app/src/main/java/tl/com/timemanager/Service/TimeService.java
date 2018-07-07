@@ -1,16 +1,20 @@
 package tl.com.timemanager.Service;
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import tl.com.timemanager.DataBase.Data;
 import tl.com.timemanager.Item.ItemAction;
 import tl.com.timemanager.Item.ItemDataInTimeTable;
 import tl.com.timemanager.MyBinder;
@@ -23,29 +27,79 @@ import static tl.com.timemanager.Constant.TIME_MIN;
 public class TimeService extends Service {
     String TAG = TimeService.class.getSimpleName();
 
-    private List<ItemDataInTimeTable> dataList = new ArrayList<>();
-    private List<List<ItemAction>> actionsInDays;
+    private List<ItemDataInTimeTable> itemDatas = new ArrayList<>();
+    private  List<List<ItemAction>> actionsInWeek;
+//    private RealmAsyncTask transaction;
+    private Data data;
     @Override
     public void onCreate() {
         super.onCreate();
+        data = new Data();
         initData();
+        readDB();
     }
 
-    public List<List<ItemAction>> getActionsInDays() {
-        return actionsInDays;
+    public List<List<ItemAction>> getActionsInWeek() {
+        return actionsInWeek;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void initData() {
-        for(int i =0;i<COUNT_TIME;i++){
-            for(int j =0;j<COUNT_DAY;j++){
-                dataList.add(new ItemDataInTimeTable(j,i + TIME_MIN));
+
+        List<ItemDataInTimeTable> list = data.getAllItemData();
+        if( list.size() == 0 ) {
+            for (int i = 0; i < COUNT_TIME; i++) {
+                for (int j = 0; j < COUNT_DAY; j++) {
+                    ItemDataInTimeTable itemData = new ItemDataInTimeTable(j,(i+TIME_MIN));
+                    data.insertItemData(itemData);
+                    Log.d(TAG,"time =    " + itemData.getHourOfDay());
+                }
             }
         }
-        actionsInDays = new ArrayList<>();
+        list = data.getAllItemData();
+        itemDatas.addAll(list);
+        actionsInWeek = new ArrayList<>();
         for(int i = 0;i<COUNT_DAY;i++){
-            actionsInDays.add(new ArrayList<ItemAction>());
+            actionsInWeek.add(new ArrayList<ItemAction>());
+        }
+        setActionsInCurrentWeek();
+    }
+
+    public void setActionsInCurrentWeek(){
+        Calendar calendar = Calendar.getInstance();
+        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+        int year = calendar.get(Calendar.YEAR);
+        updateActionsInWeek(weekOfYear,year);
+
+    }
+
+    public void setModifyForItemData(Boolean isModify, ItemDataInTimeTable item ){
+        data.setModifyForItemData(isModify,item);
+    }
+
+    public void updateActionsInWeek(int weekOfYear, int year){
+        List<ItemAction> actions = data.getActionsInWeek(weekOfYear,year);
+        if (actions != null){
+            actionsInWeek.clear();
+            for(int i = 0;i<COUNT_DAY;i++){
+                actionsInWeek.add(new ArrayList<ItemAction>());
+            }
+            for (ItemAction action : actions){
+                actionsInWeek.get(action.getDayOfWeek()).add(action);
+            }
         }
     }
+
+    public void insertItemAction(int dayOfWeek,ItemAction action){
+        Calendar calendar = Calendar.getInstance();
+        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+        int year = calendar.get(Calendar.YEAR);
+        action.setWeekOfYear(weekOfYear);
+        action.setYear(year);
+        getActionsInWeek().get(dayOfWeek).add(action);
+        data.insertItemAction(action);
+    }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -60,34 +114,50 @@ public class TimeService extends Service {
     }
 
     public int getCountItemData(){
-        Log.d(TAG,"size.........."+dataList.size()+"");
-        if(dataList == null) return 0;
-        else return dataList.size();
+        Log.d(TAG,"size.........."+ itemDatas.size()+"");
+        if(itemDatas == null) return 0;
+        else return itemDatas.size();
     }
 
     public ItemDataInTimeTable getItemDataInTimeTable(int position){
-        return dataList.get(position);
+        return itemDatas.get(position);
+    }
+
+    public int getCountActionsInDay(int day){
+//        if (weekAction == null || weekAction.getActionsInWeek() == null
+//                || weekAction.getActionsInWeek().get(day) == null) return 0;
+//        return weekAction.getActionsInWeek().get(day).size();
+        if(actionsInWeek.get(day) == null) return 0;
+        return actionsInWeek.get(day).size();
+    }
+
+    public ItemAction getItemAction(int day,int position){
+        return actionsInWeek.get(day).get(position);
     }
 
 
     public void sortActionByTime(int day){
-        Collections.sort(actionsInDays.get(day));
+        Collections.sort(actionsInWeek.get(day));
     }
 
-    public void deleteActionByIdItemAction(int day,int idItemData){
-        actionsInDays.get(day).remove(idItemData);
+    public void deleteActionByPositionItemAction(int day, int posItemAction){
+        ItemAction action = actionsInWeek.get(day).remove(posItemAction);
+        data.deleteItemAction(action);
     }
 
-    public void deleteAction(int idItemData) {
+    public void deleteActionByPositionItemData(int posItemData) {
 
-        int i = idItemData - getItemDataInTimeTable(idItemData).getFlag() * COUNT_DAY;
+        int i = posItemData - getItemDataInTimeTable(posItemData).getFlag() * COUNT_DAY;
         ItemDataInTimeTable item = getItemDataInTimeTable(i);
         int count = item.getTimeDoIt();
 
-        List<ItemAction> actions = getActionsInDays().get(getItemDataInTimeTable(i).getDay());
-        for(ItemAction action : actions){
-            if(action.getTime() == item.getTime() && action.getDay() == item.getDay()){
-                actions.remove(action);
+        int dayOfWeek = getItemDataInTimeTable(i).getDayOfWeek();
+        List<ItemAction> actions = actionsInWeek.get(dayOfWeek);
+        int size = actions.size();
+        for(int k =0; k < size;k++){
+            ItemAction action = actions.get(k);
+            if(action.getHourOfDay() == item.getHourOfDay() && action.getDayOfWeek() == item.getDayOfWeek()){
+                deleteActionByPositionItemAction(dayOfWeek,k);
                 break;
             }
         }
@@ -95,20 +165,22 @@ public class TimeService extends Service {
         int j =0;
         while (j < count && i < getCountItemData()){
             item = getItemDataInTimeTable(i);
-            item.setActive(false);
-            item.setAction(0);
-            item.setNotification(false);
-            item.setDoNotDisturb(false);
-            item.setTitle("");
-            item.setFlag(0);
-            item.setTimeDoIt(0);
+            ItemDataInTimeTable newItem = new ItemDataInTimeTable();
+            newItem.setId(item.getId());
+            newItem.setHourOfDay(item.getHourOfDay());
+            newItem.setDayOfWeek(item.getDayOfWeek());
+            updateItemData(newItem);
             i = i + COUNT_DAY;
             j++;
         }
     }
 
+    public void updateTimeTable() {
+       data.updateTimeTable(itemDatas);
+    }
+
     public int setNewTimeForAction(int day,int position){
-        List<ItemAction> itemActions = getActionsInDays().get(day);
+        List<ItemAction> itemActions = actionsInWeek.get(day);
         List<ItemAction> actions = new ArrayList<>();
         actions.addAll(itemActions);
         int timeDoIt  = actions.get(position).getTimeDoIt();
@@ -118,19 +190,70 @@ public class TimeService extends Service {
             for(int i = position; i < actions.size() - 1;i++){
                 ItemAction actionOne = actions.get(i);
                 ItemAction actionTwo = actions.get(i+1);
-                 timeStart = actionOne.getTime() + actionOne.getTimeDoIt();
-                 timeEnd = actionTwo.getTime();
+                 timeStart = actionOne.getHourOfDay() + actionOne.getTimeDoIt();
+                 timeEnd = actionTwo.getHourOfDay();
                 if(timeEnd-timeStart >= timeDoIt){
                     return timeStart;
                 }
             }
             ItemAction actionOne = actions.get(actions.size() - 1);
-            timeStart = actionOne.getTime() + actionOne.getTimeDoIt();
+            timeStart = actionOne.getHourOfDay() + actionOne.getTimeDoIt();
             timeEnd = TIME_MAX;
             if(timeEnd - timeStart >= timeDoIt){
                 return timeStart;
             }
         }
         return -1;
+    }
+//
+//    public void writeToDB(){
+//        realm.executeTransactionAsync(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                for(ItemDataInTimeTable item : itemDatas) {
+//                    ItemDataInTimeTable itemData = realm.createObject(ItemDataInTimeTable.class);
+//                    itemData.setDayOfWeek(item.getDayOfWeek());
+//                    itemData.setHourOfDay(item.getHourOfDay());
+//                }
+//            }
+//        });
+//    }
+
+//    private void modifyDB(){
+//        itemDatas.get(0).setHourOfDay(0);
+//        itemDatas.get(0).setDayOfWeek(0);
+//        realm.beginTransaction();
+//        realm.insertOrUpdate(itemDatas);
+//        realm.cancelTransaction();
+//    }
+    public void readDB(){
+        String output = "";
+        for(ItemDataInTimeTable item : itemDatas){
+            output = output +" ("+item.getHourOfDay()+"," +item.getDayOfWeek() + " )";
+        }
+        Log.d(TAG,"read DB :" + output);
+    }
+
+    public void updateItemData(ItemDataInTimeTable item) {
+        data.updateItemData(item);
+    }
+
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        realm.close();
+//    }
+
+//    public void onStop () {
+//        if (transaction != null && !transaction.isCancelled()) {
+//            transaction.cancel();
+//        }
+//    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        data.close();
     }
 }

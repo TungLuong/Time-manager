@@ -10,6 +10,14 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(config);
+        Realm.getInstance(config);
+    }
 
+    @Override
+    public void onTerminate() {
+        Realm.getDefaultInstance().close();
+        super.onTerminate();
     }
 }

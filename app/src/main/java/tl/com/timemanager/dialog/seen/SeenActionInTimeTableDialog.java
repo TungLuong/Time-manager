@@ -18,20 +18,20 @@ import static tl.com.timemanager.Constant.RELAX_ACTION;
 public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.OnClickListener {
 
 
-    private int idItemData;
+    private int positionItemData;
 
     public SeenActionInTimeTableDialog(@NonNull Context context) {
         super(context);
     }
 
-    public void setIdItemData(int idItemData) {
-        this.idItemData = idItemData;
+    public void setPositionItemData(int positionItemData) {
+        this.positionItemData = positionItemData;
     }
 
     protected void setData() {
-        ItemDataInTimeTable item = service.getItemDataInTimeTable(idItemData);
+        ItemDataInTimeTable item = service.getItemDataInTimeTable(positionItemData);
         tvAction.setText(item.getTitle());
-        int timeStart = item.getTime() - item.getFlag();
+        int timeStart = item.getHourOfDay() - item.getFlag();
         if(timeStart < 0) timeStart =timeStart+COUNT_TIME;
         tvTimeStart.setText(timeStart + " h");
         tvTimeEnd.setText((timeStart + item.getTimeDoIt()) + " h");
@@ -69,7 +69,7 @@ public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.
 
     protected void showDialogModifyAction() {
         InsertActionInTimeTableDialog insertActionInTimeTableDialog = new InsertActionInTimeTableDialog(getContext());
-        insertActionInTimeTableDialog.setIdItemData(idItemData);
+        insertActionInTimeTableDialog.setPositionItemData(positionItemData);
         insertActionInTimeTableDialog.setService(service);
         insertActionInTimeTableDialog.setiListener(iListener);
         insertActionInTimeTableDialog.initView();
@@ -77,7 +77,7 @@ public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.
     }
 
     protected void deleteAction() {
-        service.deleteAction(idItemData);
+        service.deleteActionByPositionItemData(positionItemData);
         iListener.changedDataItem();
     }
 

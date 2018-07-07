@@ -20,28 +20,28 @@ import static tl.com.timemanager.Constant.TIME_MIN;
 
 public class InsertActionsInDayDialog extends BaseInsertDialog {
 
-    private int day;
-    private int idItemAction;
-    private int oldInItemAction;
+    private int dayOfWeek;
+    private int positionItemAction;
+    private int oldPositionItemAction;
 
     public InsertActionsInDayDialog(@NonNull Context context) {
         super(context);
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
-    public void setIdItemAction(int idItemAction) {
-        this.idItemAction = idItemAction;
+    public void setPositionItemAction(int positionItemAction) {
+        this.positionItemAction = positionItemAction;
     }
 
 
     @Override
     protected void setData() {
-        oldInItemAction = idItemAction;
-//        if(i < 0) i=  service.getItemDataInTimeTable(idItemData).getDay()  + ((COUNT_TIME-1)*COUNT_DAY) +i;
-        ItemAction item = service.getActionsInDays().get(day).get(idItemAction);
+        oldPositionItemAction = positionItemAction;
+//        if(i < 0) i=  service.getItemDataInTimeTable(idItemData).getDayOfWeek()  + ((COUNT_TIME-1)*COUNT_DAY) +i;
+        ItemAction item = service.getActionsInWeek().get(dayOfWeek).get(positionItemAction);
         if (item.getTitle() != null) {
             isModify = true;
             edtAction.setText(item.getTitle());
@@ -80,32 +80,32 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
         } else {
             setModifyingData(false);
         }
-        edtTimeStart.setText(item.getTime() + "");
+        edtTimeStart.setText(item.getHourOfDay() + "");
         checkInvalidTimeStart();
 
     }
 
     @Override
     protected void setModifyingData(boolean b) {
-        ItemAction item = service.getActionsInDays().get(day).get(oldInItemAction);
+        ItemAction item = service.getActionsInWeek().get(dayOfWeek).get(oldPositionItemAction);
         item.setModifying(b);
     }
 
     protected void checkSameTime() {
-        List<ItemAction> itemActions = service.getActionsInDays().get(day);
+        List<ItemAction> itemActions = service.getActionsInWeek().get(dayOfWeek);
         List<ItemAction> actions = new ArrayList<>();
         for (ItemAction action : itemActions) {
             actions.add(action);
         }
-//        ItemAction item = actions.get(idItemAction);
-        ItemAction item = actions.remove(idItemAction);
+//        ItemAction item = actions.get(positionItemAction);
+        ItemAction item = actions.remove(positionItemAction);
         try {
             int timeStart = Integer.valueOf(String.valueOf(edtTimeStart.getText() + ""));
             int timeEnd = timeStart + count;
             if (actions.size() > 0) {
                 for (ItemAction action : actions) {
-                    int start = action.getTime();
-                    int end = action.getTime() + action.getTimeDoIt();
+                    int start = action.getHourOfDay();
+                    int end = action.getHourOfDay() + action.getTimeDoIt();
                    if(end <= timeStart || start >= timeEnd){
                        tvErrorTime.setVisibility(View.GONE);
                    }
@@ -124,14 +124,14 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
 
     }
 
-    protected void createData() {
+    protected void updateData() {
         String title = String.valueOf(edtAction.getText());
         int time = Integer.valueOf(String.valueOf(edtTimeStart.getText() + ""));
-        ItemAction action = service.getActionsInDays().get(day).get(idItemAction);
+        ItemAction action = service.getActionsInWeek().get(dayOfWeek).get(positionItemAction);
         action.setTitle(title);
         action.setAction(kindOfAction);
-        action.setDay(day);
-        action.setTime(time);
+        action.setDayOfWeek(dayOfWeek);
+        action.setHourOfDay(time);
         action.setTimeDoIt(count);
         action.setNotification(swNotification.isChecked());
         action.setDoNotDisturb(swDoNotDisturb.isChecked());
@@ -142,19 +142,19 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
         if (edtTimeStart.getText().toString().trim().length() > 0) {
             int time = Integer.valueOf(edtTimeStart.getText().toString());
             if (time >= TIME_MIN && time <= TIME_MAX) {
-                List<ItemAction> itemActions = service.getActionsInDays().get(day);
+                List<ItemAction> itemActions = service.getActionsInWeek().get(dayOfWeek);
                 List<ItemAction> actions = new ArrayList<>();
                 for (ItemAction action : itemActions) {
                     actions.add(action);
                 }
-                ItemAction item = actions.remove(idItemAction);
+                ItemAction item = actions.remove(positionItemAction);
                 try {
                     int timeStart = time;
                     int timeEnd = timeStart + count;
                     if (actions.size() > 0) {
                         for (ItemAction action : actions) {
-                            int start = action.getTime();
-                            int end = action.getTime() + action.getTimeDoIt();
+                            int start = action.getHourOfDay();
+                            int end = action.getHourOfDay() + action.getTimeDoIt();
                             if(end <= timeStart || start >= timeEnd){
                                 tvErrorTimeStart.setVisibility(View.GONE);
                             }
@@ -189,7 +189,7 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
                     isModify = false;
                     setModifyingData(false);
                 }
-                service.deleteActionByIdItemAction(day, oldInItemAction);
+                service.deleteActionByPositionItemAction(dayOfWeek, oldPositionItemAction);
                 iListener.changedActionItem();
                 dismiss();
                 break;
@@ -198,10 +198,10 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
                 if (tvErrorTime.getVisibility() == View.GONE
                         && tvErrorTitle.getVisibility() == View.GONE
                         && tvErrorTimeStart.getVisibility() == View.GONE) {
-                    createData();
+                    updateData();
                     isModify = false;
                     setModifyingData(false);
-                    service.sortActionByTime(day);
+                    service.sortActionByTime(dayOfWeek);
                     iListener.changedActionItem();
                     dismiss();
                 }

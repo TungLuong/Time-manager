@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Calendar;
+
 import tl.com.timemanager.Adapter.DaysInWeekAdapter;
 import tl.com.timemanager.Base.BaseFragment;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
+import tl.com.timemanager.dialog.calendar.CalendarDialog;
 
-public class DaysInWeekFragment extends BaseFragment {
+public class DaysInWeekFragment extends BaseFragment implements CalendarDialog.IDateChangedListener {
 
     private TabLayout tab;
     private ViewPager pager ;
@@ -39,5 +42,32 @@ public class DaysInWeekFragment extends BaseFragment {
         pager.setAdapter(adapter);
         tab.setupWithViewPager(pager);
 
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        setCurrentFragment(day);
+    }
+
+    @Override
+    public void setCurrentItemFragment(int dayOfWeek){
+        setCurrentFragment(dayOfWeek);
+    }
+
+    @Override
+    public void updateActionsInWeek(int weekOfYear, int year) {
+        timeService.updateActionsInWeek(weekOfYear,year);
+    }
+
+    public void setCurrentFragment(int day) {
+        int position = 0;
+        switch (day){
+            case 1 : position = 6; break;
+            case 2 : position = 0; break;
+            case 3 : position = 1; break;
+            case 4 : position = 2; break;
+            case 5 : position = 3; break;
+            case 6 : position = 4; break;
+            case 7 : position = 5; break;
+        }
+        pager.setCurrentItem(position);
     }
 }

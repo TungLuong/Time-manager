@@ -16,26 +16,26 @@ import static tl.com.timemanager.Constant.RELAX_ACTION;
 
 public class SeenActionsInDayDialog extends BaseSeenDialog {
 
-    private int idItemAction;
-    private int day;
+    private int positionItemAction;
+    private int dayOfWeek;
 
     public SeenActionsInDayDialog(@NonNull Context context) {
         super(context);
     }
 
-    public void setIdItemAction(int idItemAction) {
-        this.idItemAction = idItemAction;
+    public void setPositionItemAction(int positionItemAction) {
+        this.positionItemAction = positionItemAction;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
 
     protected void setData() {
-        ItemAction item = service.getActionsInDays().get(day).get(idItemAction);
+        ItemAction item = service.getActionsInWeek().get(dayOfWeek).get(positionItemAction);
         tvAction.setText(item.getTitle());
-        int timeStart = item.getTime();
+        int timeStart = item.getHourOfDay();
 
         tvTimeStart.setText(timeStart + " h");
         tvTimeEnd.setText((timeStart + item.getTimeDoIt()) + " h");
@@ -73,7 +73,8 @@ public class SeenActionsInDayDialog extends BaseSeenDialog {
 
     protected void showDialogModifyAction() {
         InsertActionsInDayDialog dialog = new InsertActionsInDayDialog(getContext());
-        dialog.setIdItemAction(idItemAction);
+        dialog.setPositionItemAction(positionItemAction);
+        dialog.setDayOfWeek(dayOfWeek);
         dialog.setService(service);
         dialog.setiListener(iListener);
         dialog.show();
@@ -81,7 +82,7 @@ public class SeenActionsInDayDialog extends BaseSeenDialog {
 
     @Override
     protected void deleteAction() {
-        service.deleteActionByIdItemAction(day,idItemAction);
+        service.deleteActionByPositionItemAction(dayOfWeek, positionItemAction);
         iListener.changedActionItem();
     }
 }

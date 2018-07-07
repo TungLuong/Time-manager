@@ -28,10 +28,11 @@
     <EditText
         android:layout_marginTop="30dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginRight="35dp"
         android:id="@+id/edt_name_action"
         android:layout_toRightOf="@id/tv_action"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:textSize="15sp"
         android:hint=" action name"/>
     <TextView
@@ -61,9 +62,9 @@
         android:id="@+id/edt_time_start"
         android:layout_toRightOf="@id/tv_time_start"
         android:layout_width="50dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:textSize="15sp"
-        android:hint=" time"/>
+        android:hint=" hourOfDay"/>
     <TextView
         android:layout_below="@id/tv_action"
         android:layout_marginTop="20dp"

@@ -2,17 +2,56 @@ package tl.com.timemanager.Item;
 
 import android.support.annotation.NonNull;
 
+import javax.annotation.PropertyKey;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 import static tl.com.timemanager.Constant.TIME_MIN;
 
-public class ItemAction implements Comparable{
+public class ItemAction extends RealmObject implements Comparable {
+
+    @PrimaryKey
+    private int id;
+
+
     private String title;
-    private int day;
-    private int time = TIME_MIN;
     private int action;
     private boolean notification;
     private boolean doNotDisturb;
     private boolean isModifying = false;
     private int timeDoIt;
+    private int dayOfWeek;
+    private int hourOfDay = TIME_MIN;
+    private int weekOfYear;
+    private int year;
+
+    public int getWeekOfYear() {
+        return weekOfYear;
+    }
+
+    public void setWeekOfYear(int weekOfYear) {
+        this.weekOfYear = weekOfYear;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public ItemAction() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -22,20 +61,20 @@ public class ItemAction implements Comparable{
         this.title = title;
     }
 
-    public int getDay() {
-        return day;
+    public int getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
-    public int getTime() {
-        return time;
+    public int getHourOfDay() {
+        return hourOfDay;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setHourOfDay(int hourOfDay) {
+        this.hourOfDay = hourOfDay;
     }
 
     public int getAction() {
@@ -81,8 +120,9 @@ public class ItemAction implements Comparable{
     @Override
     public int compareTo(@NonNull Object o) {
         ItemAction itemAction = (ItemAction) o;
-        int a = getTime();
-        int b = itemAction.getTime();
+        int a = getHourOfDay();
+        int b = itemAction.getHourOfDay();
         return a > b ? +1 : a < b ? -1 : 0;
     }
+
 }

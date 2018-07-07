@@ -24,12 +24,12 @@ public class DaysInWeekAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         if(timeService == null) return 0;
-        return timeService.getActionsInDays().size();
+        return timeService.getActionsInWeek().size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if(position == 6) return "Chủ nhật";
-        return "Thứ " +(position + 2);
+        if(position == 6) return "CN";
+        return "T " +(position + 2);
     }
 }

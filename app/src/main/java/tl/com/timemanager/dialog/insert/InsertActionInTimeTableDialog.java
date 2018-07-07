@@ -22,22 +22,22 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
 
     private static final String TAG = InsertActionInTimeTableDialog.class.getSimpleName();
 
-    private int idItemData;
-    private int oldIdItemData;
+    private int positionItemData;
+    private int oldPositionIdItemData;
 
     public InsertActionInTimeTableDialog(@NonNull Context context) {
         super(context);
     }
 
-    public void setIdItemData(int idItemData) {
-        this.idItemData = idItemData;
+    public void setPositionItemData(int positionItemData) {
+        this.positionItemData = positionItemData;
     }
 
 
     protected void setData() {
-        oldIdItemData = idItemData;
-        int i = idItemData - service.getItemDataInTimeTable(idItemData).getFlag() * COUNT_DAY;
-//        if(i < 0) i=  service.getItemDataInTimeTable(idItemData).getDay()  + ((COUNT_TIME-1)*COUNT_DAY) +i;
+        oldPositionIdItemData = positionItemData;
+        int i = positionItemData - service.getItemDataInTimeTable(positionItemData).getFlag() * COUNT_DAY;
+//        if(i < 0) i=  service.getItemDataInTimeTable(positionItemData).getDayOfWeek()  + ((COUNT_TIME-1)*COUNT_DAY) +i;
         ItemDataInTimeTable item = service.getItemDataInTimeTable(i);
         if (item.isActive()) {
             isModify = true;
@@ -78,18 +78,19 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
             setModifyingData(false);
         }
 
-        edtTimeStart.setText(item.getTime() + "");
+        edtTimeStart.setText(item.getHourOfDay() + "");
 
 
     }
 
     protected void setModifyingData(boolean b) {
-        ItemDataInTimeTable item = service.getItemDataInTimeTable(oldIdItemData);
-        int i = oldIdItemData - item.getFlag() * COUNT_DAY;
+        ItemDataInTimeTable item = service.getItemDataInTimeTable(oldPositionIdItemData);
+        int i = oldPositionIdItemData - item.getFlag() * COUNT_DAY;
         int count = item.getTimeDoIt();
         int j = 0;
         while (j < count && i < service.getCountItemData()) {
-            service.getItemDataInTimeTable(i).setModifying(b);
+            ItemDataInTimeTable itemData  = service.getItemDataInTimeTable(i);
+            service.setModifyForItemData(b,itemData);
             i = i + COUNT_DAY;
             j++;
         }
@@ -100,7 +101,7 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
         int j = 0;
         int i;
         while (j < count) {
-            i = idItemData + COUNT_DAY * j;
+            i = positionItemData + COUNT_DAY * j;
             if (i >= service.getCountItemData()) {
                 tvErrorTime.setVisibility(View.VISIBLE);
                 return;
@@ -138,9 +139,9 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
                         && tvErrorTitle.getVisibility() == View.GONE
                         && tvErrorTimeStart.getVisibility() == View.GONE) {
                     if (isModify) {
-                        service.deleteAction(oldIdItemData);
+                        service.deleteActionByPositionItemData(oldPositionIdItemData);
                     }
-                    createData();
+                    updateData();
                     isModify = false;
                     setModifyingData(false);
                     iListener.changedDataItem();
@@ -154,27 +155,31 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
 //                        edtTimeStart.setText(hourOfDay+"");
 //                    }
 //                };
-//                int hour =service.getItemDataInTimeTable(idItemData).getTime();
+//                int hour =service.getItemDataInTimeTable(positionItemData).getHourOfDay();
 //                TimePickerDialog dialog = new TimePickerDialog(getActivity(),android.R.style.Theme_Holo_Light_Dialog,listener,hour,0,true);
 //                dialog.show();
         }
     }
 
 
-    protected void createData() {
+    protected void updateData() {
         if (isModify) {
-            idItemData = idItemData - service.getItemDataInTimeTable(idItemData).getFlag() * COUNT_DAY;
+            positionItemData = positionItemData - service.getItemDataInTimeTable(positionItemData).getFlag() * COUNT_DAY;
         }
-        createNewAction();
+        updateItemAction();
 
-        int i = idItemData;
+        int i = positionItemData;
         int j = 0;
         boolean notifi = swNotification.isChecked();
         boolean doNotDisturb = swDoNotDisturb.isChecked();
         String title = String.valueOf(edtAction.getText());
         while (j < count && i < service.getCountItemData()) {
-            ItemDataInTimeTable item = service.getItemDataInTimeTable(i);
-            if (!item.isActive()) {
+            ItemDataInTimeTable itemData = service.getItemDataInTimeTable(i);
+            if (!itemData.isActive()) {
+                ItemDataInTimeTable item = new ItemDataInTimeTable();
+                item.setDayOfWeek(itemData.getDayOfWeek());
+                item.setHourOfDay(itemData.getHourOfDay());
+                item.setId(itemData.getId());
                 item.setAction(kindOfAction);
                 item.setActive(true);
                 item.setNotification(notifi);
@@ -182,33 +187,36 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
                 item.setTitle(title);
                 item.setFlag(j);
                 item.setTimeDoIt(count);
-                j++;
+                service.updateItemData(item);
             }
+            j++;
             i = i + COUNT_DAY;
 //            if(i >= service.getCountItemData() + COUNT_DAY) break;
 //            else if (i >= service.getCountItemData()) i = ( i - COUNT_DAY * COUNT_TIME  ) + 1;
         }
+        service.updateTimeTable();
     }
 
-    private void createNewAction() {
-        ItemDataInTimeTable itemDataInTimeTable = service.getItemDataInTimeTable(idItemData);
+    private void updateItemAction() {
+        ItemDataInTimeTable itemDataInTimeTable = service.getItemDataInTimeTable(positionItemData);
         String title = String.valueOf(edtAction.getText());
         ItemAction action = new ItemAction();
         action.setTitle(title);
         action.setAction(kindOfAction);
-        action.setDay(itemDataInTimeTable.getDay());
-        action.setTime(itemDataInTimeTable.getTime());
+        action.setDayOfWeek(itemDataInTimeTable.getDayOfWeek());
+        action.setHourOfDay(itemDataInTimeTable.getHourOfDay());
         action.setTimeDoIt(count);
         action.setNotification(swNotification.isChecked());
         action.setDoNotDisturb(swDoNotDisturb.isChecked());
-        service.getActionsInDays().get(service.getItemDataInTimeTable(idItemData).getDay()).add(action);
+        int day = service.getItemDataInTimeTable(positionItemData).getDayOfWeek();
+        service.getActionsInWeek().get(day).add(action);
     }
 
     protected void checkInvalidTimeStart() {
         if (edtTimeStart.getText().toString().trim().length() > 0) {
             int time = Integer.valueOf(edtTimeStart.getText().toString());
             if (time >= TIME_MIN && time <= TIME_MAX) {
-                int day = service.getItemDataInTimeTable(idItemData).getDay();
+                int day = service.getItemDataInTimeTable(positionItemData).getDayOfWeek();
                 int newId = day + COUNT_DAY * (time - TIME_MIN);
                 if (newId > service.getCountItemData()) {
                     tvErrorTimeStart.setVisibility(View.VISIBLE);
@@ -218,7 +226,7 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
                     tvErrorTimeStart.setVisibility(View.VISIBLE);
                     return;
                 }
-                idItemData = newId;
+                positionItemData = newId;
                 checkSameTime();
                 tvErrorTimeStart.setVisibility(View.GONE);
             } else {

@@ -151,7 +151,6 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
             if (currPos == position) {
                 displayInsertActionDialog(position);
             } else {
-                timeService.resetClickInsert(currPos);
                 currPos = position;
             }
 
@@ -162,7 +161,7 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
 
     private void displaySeenActionDialog(int position) {
         SeenActionInTimeTableDialog dialog = new SeenActionInTimeTableDialog(getActivity());
-        dialog.setIdItemData(position);
+        dialog.setPositionItemData(position);
         dialog.setService(timeService);
         dialog.setiListener(this);
         dialog.initView();
@@ -171,7 +170,7 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
 
     private void displayInsertActionDialog(int position) {
         InsertActionInTimeTableDialog dialog = new InsertActionInTimeTableDialog(getActivity());
-        dialog.setIdItemData(position);
+        dialog.setPositionItemData(position);
         dialog.setService(timeService);
         dialog.setiListener(this);
         dialog.initView();

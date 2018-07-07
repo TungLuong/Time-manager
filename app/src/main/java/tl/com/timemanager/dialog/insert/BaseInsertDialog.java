@@ -5,7 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
+import tl.com.timemanager.dialog.seen.BaseSeenDialog;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
@@ -24,7 +30,7 @@ import static tl.com.timemanager.Constant.NO_ACTION;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
-public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.OnItemSelectedListener, View.OnClickListener, TextWatcher {
+public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.OnItemSelectedListener, View.OnClickListener, TextWatcher, TextView.OnEditorActionListener {
 
     protected ImageView ivAction;
     protected Spinner spin_time;
@@ -100,7 +106,7 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
         ivAction = findViewById(R.id.iv_img_action);
 
         spin_time = (Spinner) findViewById(R.id.spinner_time);
-        ArrayAdapter<CharSequence> adapter_time = ArrayAdapter.createFromResource(getContext(), R.array.time, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter_time = ArrayAdapter.createFromResource(getContext(), R.array.hour, android.R.layout.simple_spinner_item);
         adapter_time.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_time.setAdapter(adapter_time);
         spin_time.setOnItemSelectedListener(this);
@@ -127,7 +133,6 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
         btnSave.setOnClickListener(this);
         edtAction.addTextChangedListener(this);
         edtTimeStart.addTextChangedListener(this);
-        edtTimeStart.setOnClickListener(this);
         setData();
 
 
@@ -220,7 +225,7 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
     }
 
 
-    protected void createData() {
+    protected void updateData() {
 
     }
 
@@ -249,6 +254,15 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
 
     protected void checkInvalidTimeStart() {
 
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 
     public interface IDataChangedListener {
