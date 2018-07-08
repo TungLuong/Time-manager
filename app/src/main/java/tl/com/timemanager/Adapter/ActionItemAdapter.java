@@ -46,7 +46,7 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ItemAction action = iActionItem.getData(position);
+        ItemAction action = iActionItem.getItemAction(position);
         holder.tvTime.setText(action.getHourOfDay() + " h - " + (action.getHourOfDay() + action.getTimeDoIt())  +" h ");
         holder.tvTitle.setText(action.getTitle() + "");
         switch (action.getAction()){
@@ -96,7 +96,7 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
 
     public interface IActionItem{
         int getCount();
-        ItemAction getData(int position);
+        ItemAction getItemAction(int position);
         void onClickItem(int position);
 
     }

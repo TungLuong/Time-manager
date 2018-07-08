@@ -30,13 +30,12 @@ import tl.com.timemanager.dialog.seen.SeenActionsInDayDialog;
 @SuppressLint("ValidFragment")
 public class ActionsInDayFragment extends BaseFragment implements ActionItemAdapter.IActionItem, View.OnClickListener, BaseInsertDialog.IDataChangedListener {
 
-    private ImageView ivInsertAction;
-    private ImageView ivOpenCalendar;
     private RecyclerView rcvAction;
     private TimeService service;
-    private List<ItemAction> data;
     private ActionItemAdapter actionItemAdapter;
     private int dayOfWeek;
+    private int weekOfYear;
+    private int year;
     private FloatingActionButton fabInsert,fabPlus, fabOpenCalendar;
     private Animation animFabClose,animFabOpen,animRotateClose,animRotateOpen;
     private boolean isOpen;
@@ -50,13 +49,23 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
     }
 
     @SuppressLint("ValidFragment")
-    public ActionsInDayFragment(TimeService service, int day) {
+    public ActionsInDayFragment(TimeService service, int dayOfWeek,int weekOfYear,int year) {
         this.service = service;
-        this.dayOfWeek = day;
+        this.dayOfWeek = dayOfWeek;
+        this.weekOfYear = weekOfYear;
+        this.year = year;
     }
 
+    public void setWeekOfYear(int weekOfYear) {
+        this.weekOfYear = weekOfYear;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+
     private void init(View view) {
-        data = service.getActionsInWeek().get(dayOfWeek);
         //  ivInsertAction = view.findViewById(R.id.iv_insert_action);
         //  ivOpenCalendar = view.findViewById(R.id.iv_open_calender);
         rcvAction = view.findViewById(R.id.rcv_actions);
@@ -89,13 +98,13 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
 
     @Override
     public int getCount() {
-        if (data == null) return 0;
-        return data.size();
+        if (service.getActionsInDay(dayOfWeek) == null) return 0;
+        return service.getActionsInDay(dayOfWeek).size();
     }
 
     @Override
-    public ItemAction getData(int position) {
-        return data.get(position);
+    public ItemAction getItemAction(int position) {
+        return service.getActionsInDay(dayOfWeek).get(position);
     }
 
     @Override
@@ -110,6 +119,10 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
             case R.id.fab_insert:
                 int size = service.getCountActionsInDay(dayOfWeek);
                 ItemAction action = new ItemAction();
+                action.setTimeDoIt(1);
+                action.setDayOfWeek(dayOfWeek);
+                action.setWeekOfYear(weekOfYear);
+                action.setYear(year);
                 if(size > 0) {
                     int time = service.setNewTimeForAction(dayOfWeek, 0);
                     action.setHourOfDay(time);
@@ -148,6 +161,10 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
     private void displayCalendarDialog() {
         CalendarDialog dialog = new CalendarDialog(getActivity());
         dialog.setIDateChangedListener((CalendarDialog.IDateChangedListener) getParentFragment());
+        dialog.setDayOfWeek(dayOfWeek);
+        dialog.setWeekOfYear(weekOfYear);
+        dialog.setYear(year);
+        dialog.initCalendar();
         dialog.show();
     }
 
@@ -179,6 +196,8 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
 
     @Override
     public void changedActionItem() {
-        actionItemAdapter.notifyDataSetChanged();
+        if(actionItemAdapter != null) {
+            actionItemAdapter.notifyDataSetChanged();
+        }
     }
 }

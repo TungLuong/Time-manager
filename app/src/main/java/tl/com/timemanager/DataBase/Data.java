@@ -118,4 +118,10 @@ public class Data {
     public void close(){
         realm.close();
     }
+
+    public void setModifyForItemAction(boolean b, ItemAction item) {
+        realm.beginTransaction();
+        item.setModifying(b);
+        realm.commitTransaction();
+    }
 }

@@ -36,16 +36,18 @@ public class TimeService extends Service {
         super.onCreate();
         data = new Data();
         initData();
-        readDB();
     }
 
     public List<List<ItemAction>> getActionsInWeek() {
         return actionsInWeek;
     }
 
+    public List<ItemAction> getActionsInDay(int day){
+        return actionsInWeek.get(day);
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void initData() {
-
         List<ItemDataInTimeTable> list = data.getAllItemData();
         if( list.size() == 0 ) {
             for (int i = 0; i < COUNT_TIME; i++) {
@@ -58,10 +60,6 @@ public class TimeService extends Service {
         }
         list = data.getAllItemData();
         itemDatas.addAll(list);
-        actionsInWeek = new ArrayList<>();
-        for(int i = 0;i<COUNT_DAY;i++){
-            actionsInWeek.add(new ArrayList<ItemAction>());
-        }
         setActionsInCurrentWeek();
     }
 
@@ -79,24 +77,25 @@ public class TimeService extends Service {
 
     public void updateActionsInWeek(int weekOfYear, int year){
         List<ItemAction> actions = data.getActionsInWeek(weekOfYear,year);
-        if (actions != null){
-            actionsInWeek.clear();
+        if (actions.size() != 0){
+            actionsInWeek = new ArrayList<>();
             for(int i = 0;i<COUNT_DAY;i++){
                 actionsInWeek.add(new ArrayList<ItemAction>());
             }
             for (ItemAction action : actions){
-                actionsInWeek.get(action.getDayOfWeek()).add(action);
+                int dayOfWeek = action.getDayOfWeek();
+                actionsInWeek.get(dayOfWeek).add(action);
+            }
+        }else {
+            actionsInWeek = new ArrayList<>();
+            for(int i = 0;i<COUNT_DAY;i++){
+                actionsInWeek.add(new ArrayList<ItemAction>());
             }
         }
     }
 
     public void insertItemAction(int dayOfWeek,ItemAction action){
-        Calendar calendar = Calendar.getInstance();
-        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
-        int year = calendar.get(Calendar.YEAR);
-        action.setWeekOfYear(weekOfYear);
-        action.setYear(year);
-        getActionsInWeek().get(dayOfWeek).add(action);
+        actionsInWeek.get(dayOfWeek).add(action);
         data.insertItemAction(action);
     }
 
@@ -255,5 +254,13 @@ public class TimeService extends Service {
     public void onDestroy() {
         super.onDestroy();
         data.close();
+    }
+
+    public void setModifyForItemAction(boolean b, ItemAction item) {
+        data.setModifyForItemAction(b,item);
+    }
+
+    public void updateItemAction(ItemAction action) {
+        data.updateItemAction(action);
     }
 }

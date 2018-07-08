@@ -117,6 +117,7 @@ public class ItemAction extends RealmObject implements Comparable {
         isModifying = modifying;
     }
 
+
     @Override
     public int compareTo(@NonNull Object o) {
         ItemAction itemAction = (ItemAction) o;

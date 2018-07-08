@@ -10,14 +10,26 @@ import tl.com.timemanager.Service.TimeService;
 public class DaysInWeekAdapter extends FragmentPagerAdapter {
 
     private TimeService timeService;
-    public DaysInWeekAdapter(FragmentManager fm,TimeService timeService) {
+    private int weekOfYear;
+    private int year;
+    public DaysInWeekAdapter(FragmentManager fm,TimeService timeService,int weekOfYear,int year) {
         super(fm);
         this.timeService = timeService;
+        this.weekOfYear = weekOfYear;
+        this.year = year;
+    }
+
+    public void setWeekOfYear(int weekOfYear) {
+        this.weekOfYear = weekOfYear;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     @Override
     public Fragment getItem(int position) {
-        ActionsInDayFragment fragment = new ActionsInDayFragment(timeService,position);
+        ActionsInDayFragment fragment = new ActionsInDayFragment(timeService,position,weekOfYear,year);
         return fragment;
     }
 
@@ -29,7 +41,7 @@ public class DaysInWeekAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if(position == 6) return "CN";
-        return "T " +(position + 2);
+        if(position == 0) return "CN";
+        return "T " +(position + 1);
     }
 }

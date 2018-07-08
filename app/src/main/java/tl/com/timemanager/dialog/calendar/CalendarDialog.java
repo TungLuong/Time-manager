@@ -18,6 +18,9 @@ public class CalendarDialog extends BottomSheetDialog implements View.OnClickLis
     private CalendarView calendarView;
     private ImageView ivClose;
     private IDateChangedListener iDateChangedListener;
+    private int dayOfWeek;
+    private int weekOfYear;
+    private int year;
     public CalendarDialog(@NonNull Context context) {
         super(context,R.style.Theme_Design_Light_BottomSheetDialog);
         setContentView(R.layout.dialog_calender);
@@ -28,13 +31,35 @@ public class CalendarDialog extends BottomSheetDialog implements View.OnClickLis
         this.iDateChangedListener = iDateChangedListener;
     }
 
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public void setWeekOfYear(int weekOfYear) {
+        this.weekOfYear = weekOfYear;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     private void initView() {
         calendarView= findViewById(R.id.calendar);
         ivClose = findViewById(R.id.iv_close);
         ivClose.setOnClickListener(this);
-
         calendarView.setOnDateChangeListener(this);
-        calendarView.setFirstDayOfWeek(2);
+
+    }
+
+    public void initCalendar() {
+        int day = dayOfWeek + 1;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
+        calendar.set(Calendar.DAY_OF_WEEK, day);
+        long milliTime = calendar.getTimeInMillis();
+        calendarView.setDate (milliTime, true, true);
     }
 
     @Override
@@ -49,14 +74,15 @@ public class CalendarDialog extends BottomSheetDialog implements View.OnClickLis
         Calendar calendar = new GregorianCalendar();
         calendar.set(year,month,dayOfMonth);
         int day = calendar.get(Calendar.DAY_OF_WEEK);
+        int dayOfWeek = day - 1;
         int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
-        iDateChangedListener.setCurrentItemFragment(day);
-        iDateChangedListener.updateActionsInWeek(weekOfYear,year);
+        iDateChangedListener.setCurrentItemFragment(dayOfWeek);
+        iDateChangedListener.updateActionsInWeek(dayOfWeek,weekOfYear,year);
 
     }
 
     public interface IDateChangedListener {
         void setCurrentItemFragment(int day);
-        void updateActionsInWeek(int weekOfYear, int year);
+        void updateActionsInWeek(int dayOfWeek, int weekOfYear, int year);
     }
 }

@@ -4,25 +4,36 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.List;
 
+import tl.com.timemanager.ActionsInDay.ActionsInDayFragment;
 import tl.com.timemanager.Adapter.DaysInWeekAdapter;
 import tl.com.timemanager.Base.BaseFragment;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
 import tl.com.timemanager.dialog.calendar.CalendarDialog;
 
+import static tl.com.timemanager.Constant.COUNT_DAY;
+
 public class DaysInWeekFragment extends BaseFragment implements CalendarDialog.IDateChangedListener {
 
+    private static final String TITLE_WEEK_OF_YEAR = "Hoạt động trong tuần " ;
     private TabLayout tab;
     private ViewPager pager ;
     private DaysInWeekAdapter adapter;
     private TimeService timeService;
+    private TextView tvWeekOfYear;
+    private int weekOfYear;
+    private int year;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,15 +47,25 @@ public class DaysInWeekFragment extends BaseFragment implements CalendarDialog.I
     }
 
     private void initView(View view) {
+
+
+        tvWeekOfYear = view.findViewById(R.id.tv_weekOfYear);
         tab = view.findViewById(R.id.tab);
         pager = view.findViewById(R.id.viewpager);
-        adapter = new DaysInWeekAdapter(getChildFragmentManager(),timeService);
+
+        Calendar calendar = Calendar.getInstance();
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+        year = calendar.get(Calendar.YEAR);
+
+        tvWeekOfYear.setText(TITLE_WEEK_OF_YEAR + weekOfYear);
+
+
+        adapter = new DaysInWeekAdapter(getChildFragmentManager(),timeService,weekOfYear,year);
         pager.setAdapter(adapter);
         tab.setupWithViewPager(pager);
 
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        setCurrentFragment(day);
+        setCurrentFragment(dayOfWeek);
     }
 
     @Override
@@ -53,21 +74,31 @@ public class DaysInWeekFragment extends BaseFragment implements CalendarDialog.I
     }
 
     @Override
-    public void updateActionsInWeek(int weekOfYear, int year) {
+    public void updateActionsInWeek(int dayOfWeek, int weekOfYear, int year) {
         timeService.updateActionsInWeek(weekOfYear,year);
+        tvWeekOfYear.setText(TITLE_WEEK_OF_YEAR + weekOfYear);
+        this.year = year;
+        this.weekOfYear = weekOfYear;
+        adapter.setWeekOfYear(weekOfYear);
+        adapter.setYear(year);
+        changedDateInChildFragment();
+        adapter.notifyDataSetChanged();
     }
 
-    public void setCurrentFragment(int day) {
-        int position = 0;
-        switch (day){
-            case 1 : position = 6; break;
-            case 2 : position = 0; break;
-            case 3 : position = 1; break;
-            case 4 : position = 2; break;
-            case 5 : position = 3; break;
-            case 6 : position = 4; break;
-            case 7 : position = 5; break;
-        }
-        pager.setCurrentItem(position);
+    private void changedDateInChildFragment() {
+
+       List<Fragment> fragments =  getChildFragmentManager().getFragments();
+       if(fragments != null) {
+           for (Fragment fragment : fragments) {
+               ((ActionsInDayFragment)fragment).setYear(year);
+               ((ActionsInDayFragment)fragment).setWeekOfYear(weekOfYear);
+               ((ActionsInDayFragment)fragment).changedActionItem();
+           }
+       }
     }
+
+    public void setCurrentFragment(int dayOfWeek) {
+        pager.setCurrentItem(dayOfWeek);
+    }
+
 }

@@ -76,6 +76,7 @@ public class SeenActionsInDayDialog extends BaseSeenDialog {
         dialog.setPositionItemAction(positionItemAction);
         dialog.setDayOfWeek(dayOfWeek);
         dialog.setService(service);
+        dialog.initView();
         dialog.setiListener(iListener);
         dialog.show();
     }

@@ -14,6 +14,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <TextView
+                android:id="@+id/tv_weekOfYear"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:gravity="center"

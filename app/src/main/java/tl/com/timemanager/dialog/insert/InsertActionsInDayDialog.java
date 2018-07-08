@@ -88,7 +88,7 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
     @Override
     protected void setModifyingData(boolean b) {
         ItemAction item = service.getActionsInWeek().get(dayOfWeek).get(oldPositionItemAction);
-        item.setModifying(b);
+        service.setModifyForItemAction(b,item);
     }
 
     protected void checkSameTime() {
@@ -127,14 +127,21 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
     protected void updateData() {
         String title = String.valueOf(edtAction.getText());
         int time = Integer.valueOf(String.valueOf(edtTimeStart.getText() + ""));
-        ItemAction action = service.getActionsInWeek().get(dayOfWeek).get(positionItemAction);
+        ItemAction itemAction = service.getActionsInWeek().get(dayOfWeek).remove(positionItemAction);
+        ItemAction action = new ItemAction();
+        action.setId(itemAction.getId());
+        action.setDayOfWeek(itemAction.getDayOfWeek());
+        action.setYear(itemAction.getYear());
+        action.setModifying(itemAction.isModifying());
+        action.setWeekOfYear(itemAction.getWeekOfYear());
         action.setTitle(title);
         action.setAction(kindOfAction);
-        action.setDayOfWeek(dayOfWeek);
         action.setHourOfDay(time);
         action.setTimeDoIt(count);
         action.setNotification(swNotification.isChecked());
         action.setDoNotDisturb(swDoNotDisturb.isChecked());
+        service.updateItemAction(action);
+        service.getActionsInWeek().get(dayOfWeek).add(action);
 
     }
 
@@ -189,7 +196,7 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
                     isModify = false;
                     setModifyingData(false);
                 }
-                service.deleteActionByPositionItemAction(dayOfWeek, oldPositionItemAction);
+                else service.deleteActionByPositionItemAction(dayOfWeek, oldPositionItemAction);
                 iListener.changedActionItem();
                 dismiss();
                 break;
