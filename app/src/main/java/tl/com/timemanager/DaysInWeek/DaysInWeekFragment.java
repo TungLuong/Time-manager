@@ -44,6 +44,7 @@ public class DaysInWeekFragment extends BaseFragment implements CalendarDialog.I
 
     public void setTimeService(TimeService timeService) {
         this.timeService = timeService;
+        this.timeService.updateActionsInWeekFromTimeTable();
     }
 
     private void initView(View view) {

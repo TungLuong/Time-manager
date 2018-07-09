@@ -47,6 +47,7 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
 
     public void setTimeService(TimeService timeService) {
         this.timeService = timeService;
+        this.timeService.setActionsInCurrentWeek();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -125,8 +126,8 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
 //        rcvTime.scrollToPosition(START_TIME);
 //        rcvData.scrollToPosition(START_TIME*COUNT_DAY);
 
-        test = view.findViewById(R.id.relative_layout_A);
-        test.setOnClickListener(this);
+//        test = view.findViewById(R.id.relative_layout_A);
+//        test.setOnClickListener(this);
     }
 
     @Override
@@ -177,13 +178,6 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
         dialog.show();
     }
 
-
-    @Override
-    public void onClick(View v) {
-
-        ((MainActivity)getActivity()).addDaysInWeekFragment();
-    }
-
     @Override
     public void changedDataItem() {
         dataItemInTimeTableAdapter.notifyDataSetChanged();
@@ -191,6 +185,11 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
 
     @Override
     public void changedActionItem() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }

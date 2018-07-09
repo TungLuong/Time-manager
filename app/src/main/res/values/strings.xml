@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TimeManager</string>
+    <string name="open">Mở</string>
+    <string name="close">Đóng</string>
     <string-array name="hour">
         <item>
             1 giờ

@@ -60,7 +60,7 @@ public class DataItemInTimeTableAdapter extends RecyclerView.Adapter<DataItemInT
         ItemDataInTimeTable item = iDataItem.getData(position);
         if(!item.isActive()) {
             if (position == currentFocus) {
-                holder.itemView.setBackgroundResource(R.drawable.ic_add_circle_outline_black_24dp);
+                holder.itemView.setBackgroundResource(R.drawable.plus_1);
             } else {
                 holder.itemView.setBackgroundResource(R.color.colorDefault);
             }

@@ -114,7 +114,6 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(getContext(),"@@@",Toast.LENGTH_SHORT).show();
         switch (v.getId()){
             case R.id.fab_insert:
                 int size = service.getCountActionsInDay(dayOfWeek);

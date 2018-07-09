@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -263,4 +264,54 @@ public class TimeService extends Service {
     public void updateItemAction(ItemAction action) {
         data.updateItemAction(action);
     }
+
+    public void insertItemActionFromTimeTable(int dayOfWeek, ItemAction action) {
+        if(checkValidInsert(dayOfWeek,action)) {
+            Calendar calendar = Calendar.getInstance();
+            int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+            int year = calendar.get(Calendar.YEAR);
+            action.setWeekOfYear(weekOfYear);
+            action.setYear(year);
+            insertItemAction(dayOfWeek, action);
+        }
+    }
+
+    public void updateActionsInWeekFromTimeTable(){
+        for(ItemDataInTimeTable itemData : itemDatas){
+            if(itemData.isActive() && itemData.getFlag() == 0){
+                ItemAction action = new ItemAction();
+                action.setTitle(itemData.getTitle());
+                action.setAction(itemData.getAction());
+                action.setDayOfWeek(itemData.getDayOfWeek());
+                action.setHourOfDay(itemData.getHourOfDay());
+                action.setTimeDoIt(itemData.getTimeDoIt());
+                action.setNotification(itemData.isNotification());
+                action.setDoNotDisturb(itemData.isDoNotDisturb());
+                int day = itemData.getDayOfWeek();
+                insertItemActionFromTimeTable(day,action);
+            }
+        }
+    }
+
+    public boolean checkValidInsert(int day , ItemAction itemAction){
+        List<ItemAction> actions = getActionsInDay(day);
+        int timeStart = itemAction.getHourOfDay();
+        int timeEnd = timeStart + itemAction.getTimeDoIt();
+        boolean valid = true;
+        if (actions.size() > 0) {
+            for (ItemAction action : actions) {
+                int start = action.getHourOfDay();
+                int end = action.getHourOfDay() + action.getTimeDoIt();
+                if(end <= timeStart || start >= timeEnd){
+
+                }
+                else {
+                   return false;
+                }
+            }
+        }
+        return valid;
+    }
+
+
 }

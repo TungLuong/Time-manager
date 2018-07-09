@@ -209,7 +209,7 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
         action.setNotification(swNotification.isChecked());
         action.setDoNotDisturb(swDoNotDisturb.isChecked());
         int day = service.getItemDataInTimeTable(positionItemData).getDayOfWeek();
-        service.getActionsInWeek().get(day).add(action);
+        service.insertItemActionFromTimeTable(day,action);
     }
 
     protected void checkInvalidTimeStart() {
