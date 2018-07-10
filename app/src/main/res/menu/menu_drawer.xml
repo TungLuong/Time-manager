@@ -3,13 +3,16 @@
     <item
         android:id="@+id/it_actions_in_day"
         android:title="Hoạt động trong ngày"
+        android:icon="@drawable/ic_watch_later_black_24dp"
         />
     <item
         android:id="@+id/it_time_table"
-        android:title="Thời gian biểu">
+        android:title="Thời gian biểu"
+        android:icon="@drawable/ic_time_table_24dp">
     </item>
     <item android:title="Thống kê hoàn thành"
-        android:id="@+id/it_statistics">
+        android:id="@+id/it_statistics"
+        android:icon="@drawable/ic_assignment_black_24dp">
     </item>
 
 

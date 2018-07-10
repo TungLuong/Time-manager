@@ -68,7 +68,7 @@ public class DataItemInTimeTableAdapter extends RecyclerView.Adapter<DataItemInT
         }
         else {
             switch (item.getAction()){
-                case NO_ACTION : holder.itemView.setBackgroundResource(R.color.colorNoAction);break;
+                case NO_ACTION : holder.itemView.setBackgroundResource(R.color.colorFreeTime);break;
                 case OUTSIDE_ACTION : holder.itemView.setBackgroundResource(R.color.colorOutSideAction); break;
                 case AT_HOME_ACTION : holder.itemView.setBackgroundResource(R.color.colorHomework); break;
                 case AMUSING_ACTION : holder.itemView.setBackgroundResource(R.color.colorEntertainment); break;

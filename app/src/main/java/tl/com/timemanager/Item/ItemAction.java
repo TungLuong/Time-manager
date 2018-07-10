@@ -26,6 +26,25 @@ public class ItemAction extends RealmObject implements Comparable {
     private int weekOfYear;
     private int year;
 
+    private boolean isComplete = false;
+    private boolean done = false;
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     public int getWeekOfYear() {
         return weekOfYear;
     }

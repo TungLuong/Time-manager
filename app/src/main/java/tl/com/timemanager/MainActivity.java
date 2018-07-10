@@ -124,7 +124,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         );
         transaction.replace(R.id.content,fragment,DaysInWeekFragment.class.getName());
         fragment.setTimeService(timeService);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -140,7 +139,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         );
         transaction.replace(R.id.content,fragment,ActionsInDayFragment.class.getName());
         fragment.setTimeService(timeService);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 

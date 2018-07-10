@@ -21,6 +21,8 @@ import static tl.com.timemanager.Constant.RELAX_ACTION;
 
 public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.ViewHolder> {
 
+    private static final float ALPHA_DEFAULT = 0.4f;
+    private static final float ALPHA_ACTION_DONE = 0.9f ;
     private IActionItem iActionItem;
 
 
@@ -49,10 +51,16 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
         ItemAction action = iActionItem.getItemAction(position);
         holder.tvTime.setText(action.getHourOfDay() + " h - " + (action.getHourOfDay() + action.getTimeDoIt())  +" h ");
         holder.tvTitle.setText(action.getTitle() + "");
+        if(action.isDone()){
+            holder.background.setAlpha( ALPHA_ACTION_DONE );
+        }
+        else {
+            holder.background.setAlpha( ALPHA_DEFAULT );
+        }
         switch (action.getAction()){
             case NO_ACTION:
-                holder.ivAction.setImageResource(R.drawable.no_action);
-                holder.background.setBackgroundResource(R.drawable.background_no_action);
+                holder.ivAction.setImageResource(R.drawable.free_time);
+                holder.background.setBackgroundResource(R.drawable.background_free_time);
                 break;
             case OUTSIDE_ACTION:
                 holder.ivAction.setImageResource(R.drawable.school);

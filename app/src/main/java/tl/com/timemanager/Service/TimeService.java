@@ -78,19 +78,17 @@ public class TimeService extends Service {
 
     public void updateActionsInWeek(int weekOfYear, int year){
         List<ItemAction> actions = data.getActionsInWeek(weekOfYear,year);
+        actionsInWeek = new ArrayList<>();
+        for(int i = 0;i<COUNT_DAY;i++){
+            actionsInWeek.add(new ArrayList<ItemAction>());
+        }
         if (actions.size() != 0){
-            actionsInWeek = new ArrayList<>();
-            for(int i = 0;i<COUNT_DAY;i++){
-                actionsInWeek.add(new ArrayList<ItemAction>());
-            }
             for (ItemAction action : actions){
                 int dayOfWeek = action.getDayOfWeek();
                 actionsInWeek.get(dayOfWeek).add(action);
             }
-        }else {
-            actionsInWeek = new ArrayList<>();
             for(int i = 0;i<COUNT_DAY;i++){
-                actionsInWeek.add(new ArrayList<ItemAction>());
+                sortActionByTime(i);
             }
         }
     }

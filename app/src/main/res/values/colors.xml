@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorDefault">#E1F5FE</color>
-    <color name="colorNoAction">#EEEEEE</color>
+    <color name="colorFreeTime">#FFCDD2</color>
     <color name="colorOutSideAction">#81D4FA</color>
     <color name="colorHomework">#8C9EFF</color>
     <color name="colorEntertainment">#FFF59D</color>

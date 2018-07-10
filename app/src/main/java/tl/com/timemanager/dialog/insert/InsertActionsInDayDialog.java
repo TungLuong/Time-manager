@@ -88,7 +88,7 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
     @Override
     protected void setModifyingData(boolean b) {
         ItemAction item = service.getActionsInWeek().get(dayOfWeek).get(oldPositionItemAction);
-        service.setModifyForItemAction(b,item);
+        service.setModifyForItemAction(b, item);
     }
 
     protected void checkSameTime() {
@@ -106,15 +106,12 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
                 for (ItemAction action : actions) {
                     int start = action.getHourOfDay();
                     int end = action.getHourOfDay() + action.getTimeDoIt();
-                   if(end <= timeStart || start >= timeEnd){
-                       tvErrorTime.setVisibility(View.GONE);
-                   }
-                   else {
-                       if(!item.isModifying()) {
-                           tvErrorTime.setVisibility(View.VISIBLE);
-                           return;
-                       }
-                   }
+                    if (end <= timeStart || start >= timeEnd) {
+                        tvErrorTime.setVisibility(View.GONE);
+                    } else {
+                        tvErrorTime.setVisibility(View.VISIBLE);
+                        return;
+                    }
                 }
             }
             tvErrorTime.setVisibility(View.GONE);
@@ -149,41 +146,37 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
         if (edtTimeStart.getText().toString().trim().length() > 0) {
             int time = Integer.valueOf(edtTimeStart.getText().toString());
             if (time >= TIME_MIN && time <= TIME_MAX) {
-                List<ItemAction> itemActions = service.getActionsInWeek().get(dayOfWeek);
-                List<ItemAction> actions = new ArrayList<>();
-                for (ItemAction action : itemActions) {
-                    actions.add(action);
-                }
-                ItemAction item = actions.remove(positionItemAction);
-                try {
-                    int timeStart = time;
-                    int timeEnd = timeStart + count;
-                    if (actions.size() > 0) {
-                        for (ItemAction action : actions) {
-                            int start = action.getHourOfDay();
-                            int end = action.getHourOfDay() + action.getTimeDoIt();
-                            if(end <= timeStart || start >= timeEnd){
-                                tvErrorTimeStart.setVisibility(View.GONE);
-                            }
-                            else {
-                                if(!item.isModifying()) {
-                                    tvErrorTimeStart.setVisibility(View.VISIBLE);
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                    tvErrorTimeStart.setVisibility(View.GONE);
-                } catch (Exception e) {
-                    tvErrorTimeStart.setVisibility(View.VISIBLE);
-                }
+//                List<ItemAction> itemActions = service.getActionsInWeek().get(dayOfWeek);
+//                List<ItemAction> actions = new ArrayList<>();
+//                for (ItemAction action : itemActions) {
+//                    actions.add(action);
+//                }
+//                ItemAction item = actions.remove(positionItemAction);
+//                try {
+//                    int timeStart = time;
+//                    int timeEnd = timeStart + count;
+//                    if (actions.size() > 0) {
+//                        for (ItemAction action : actions) {
+//                            int start = action.getHourOfDay();
+//                            int end = action.getHourOfDay() + action.getTimeDoIt();
+//                            if (end <= timeStart || start >= timeEnd) {
+//                                tvErrorTimeStart.setVisibility(View.GONE);
+//                            } else {
+//                                tvErrorTimeStart.setVisibility(View.VISIBLE);
+//                                return;
+//                            }
+//                        }
+//                    }
+//                    tvErrorTimeStart.setVisibility(View.GONE);
+//                } catch (Exception e) {
+//                    tvErrorTimeStart.setVisibility(View.VISIBLE);
+//                }
+                tvErrorTimeStart.setVisibility(View.GONE);
                 checkSameTime();
-            }
-            else {
+            } else {
                 tvErrorTimeStart.setVisibility(View.VISIBLE);
             }
-        }
-        else {
+        } else {
             tvErrorTimeStart.setVisibility(View.VISIBLE);
         }
     }
@@ -195,8 +188,7 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
                 if (isModify) {
                     isModify = false;
                     setModifyingData(false);
-                }
-                else service.deleteActionByPositionItemAction(dayOfWeek, oldPositionItemAction);
+                } else service.deleteActionByPositionItemAction(dayOfWeek, oldPositionItemAction);
                 iListener.changedActionItem();
                 dismiss();
                 break;

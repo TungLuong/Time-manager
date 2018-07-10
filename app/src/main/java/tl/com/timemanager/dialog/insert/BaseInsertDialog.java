@@ -152,7 +152,7 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
                 kindOfAction = position;
                 switch (position) {
                     case NO_ACTION:
-                        ivAction.setImageResource(R.drawable.no_action);
+                        ivAction.setImageResource(R.drawable.free_time);
                         //colorId = R.color.colorNoAction;
                         break;
                     case OUTSIDE_ACTION:

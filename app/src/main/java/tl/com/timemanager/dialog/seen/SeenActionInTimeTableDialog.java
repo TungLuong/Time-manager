@@ -37,8 +37,8 @@ public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.
         tvTimeEnd.setText((timeStart + item.getTimeDoIt()) + " h");
         switch (item.getAction()) {
             case NO_ACTION:
-                ivAction.setImageResource(R.drawable.no_action);
-                tvKindOfAction.setText("Không xác định");
+                ivAction.setImageResource(R.drawable.free_time);
+                tvKindOfAction.setText("Hoạt động tự do");
                 break;
             case OUTSIDE_ACTION:
                 ivAction.setImageResource(R.drawable.school);
