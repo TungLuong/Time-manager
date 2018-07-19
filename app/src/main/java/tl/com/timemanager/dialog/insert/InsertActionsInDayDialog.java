@@ -12,7 +12,7 @@ import tl.com.timemanager.R;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
-import static tl.com.timemanager.Constant.NO_ACTION;
+import static tl.com.timemanager.Constant.FREE_TIME;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 import static tl.com.timemanager.Constant.TIME_MAX;
@@ -57,7 +57,7 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
             } else swDoNotDisturb.setChecked(false);
 
             switch (item.getAction()) {
-                case NO_ACTION:
+                case FREE_TIME:
                     ivAction.setImageResource(R.drawable.no_action);
                     break;
                 case OUTSIDE_ACTION:

@@ -13,7 +13,7 @@ import tl.com.timemanager.R;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
-import static tl.com.timemanager.Constant.NO_ACTION;
+import static tl.com.timemanager.Constant.FREE_TIME;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
@@ -68,7 +68,7 @@ public class DataItemInTimeTableAdapter extends RecyclerView.Adapter<DataItemInT
         }
         else {
             switch (item.getAction()){
-                case NO_ACTION : holder.itemView.setBackgroundResource(R.color.colorFreeTime);break;
+                case FREE_TIME: holder.itemView.setBackgroundResource(R.color.colorFreeTime);break;
                 case OUTSIDE_ACTION : holder.itemView.setBackgroundResource(R.color.colorOutSideAction); break;
                 case AT_HOME_ACTION : holder.itemView.setBackgroundResource(R.color.colorHomework); break;
                 case AMUSING_ACTION : holder.itemView.setBackgroundResource(R.color.colorEntertainment); break;

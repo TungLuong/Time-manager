@@ -6,12 +6,12 @@ import android.view.View;
 
 import tl.com.timemanager.Item.ItemDataInTimeTable;
 import tl.com.timemanager.R;
-import tl.com.timemanager.dialog.insert.InsertActionInTimeTableDialog;
+import tl.com.timemanager.dialog.insert.InsertItemDataInTimeTableDialog;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
 import static tl.com.timemanager.Constant.COUNT_TIME;
-import static tl.com.timemanager.Constant.NO_ACTION;
+import static tl.com.timemanager.Constant.FREE_TIME;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
@@ -36,7 +36,7 @@ public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.
         tvTimeStart.setText(timeStart + " h");
         tvTimeEnd.setText((timeStart + item.getTimeDoIt()) + " h");
         switch (item.getAction()) {
-            case NO_ACTION:
+            case FREE_TIME:
                 ivAction.setImageResource(R.drawable.free_time);
                 tvKindOfAction.setText("Hoạt động tự do");
                 break;
@@ -68,12 +68,12 @@ public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.
     }
 
     protected void showDialogModifyAction() {
-        InsertActionInTimeTableDialog insertActionInTimeTableDialog = new InsertActionInTimeTableDialog(getContext());
-        insertActionInTimeTableDialog.setPositionItemData(positionItemData);
-        insertActionInTimeTableDialog.setService(service);
-        insertActionInTimeTableDialog.setiListener(iListener);
-        insertActionInTimeTableDialog.initView();
-        insertActionInTimeTableDialog.show();
+        InsertItemDataInTimeTableDialog insertItemDataInTimeTableDialog = new InsertItemDataInTimeTableDialog(getContext());
+        insertItemDataInTimeTableDialog.setPositionItemData(positionItemData);
+        insertItemDataInTimeTableDialog.setService(service);
+        insertItemDataInTimeTableDialog.setiListener(iListener);
+        insertItemDataInTimeTableDialog.initView();
+        insertItemDataInTimeTableDialog.show();
     }
 
     protected void deleteAction() {

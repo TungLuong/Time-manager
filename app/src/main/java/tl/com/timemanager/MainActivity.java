@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import tl.com.timemanager.ActionStatistics.ActionStatisticsFragment;
 import tl.com.timemanager.ActionsInDay.ActionsInDayFragment;
 import tl.com.timemanager.Base.BaseActivity;
 import tl.com.timemanager.DaysInWeek.DaysInWeekFragment;
@@ -142,6 +143,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         transaction.commit();
     }
 
+    public void openActionStatisticsFragment(){
+        ActionStatisticsFragment fragment = new ActionStatisticsFragment(timeService);
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.setCustomAnimations(
+                R.anim.enter_right_to_left,
+                R.anim.exit_right_to_left,
+                R.anim.enter_left_to_right,
+                R.anim.exit_left_to_right
+        );
+        transaction.replace(R.id.content,fragment,ActionStatisticsFragment.class.getName());
+        transaction.commit();
+    }
+
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
        // mDrawerLayout.setAnimation(anim);
@@ -158,8 +175,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     }
                 }
                 if(!fragmentIsVisible){
-                    openDaysInWeekFragment();
                     mDrawerLayout.closeDrawer(Gravity.LEFT, false);
+                    openDaysInWeekFragment();
                 }
                 else mDrawerLayout.closeDrawer(Gravity.LEFT,true);
                 return true;
@@ -173,14 +190,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     }
                 }
                 if(!fragmentIsVisible) {
-                    openTimeTableFragment();
                     mDrawerLayout.closeDrawer(Gravity.LEFT, false);
+                    openTimeTableFragment();
                 }
                 else {
                     mDrawerLayout.closeDrawer(Gravity.LEFT, true);
                 }
                 return true;
             case R.id.it_statistics:
+                if(fragments != null){
+                    for(Fragment fragment : fragments){
+                        if(fragment != null && fragment instanceof ActionStatisticsFragment && fragment.isVisible()){
+                            fragmentIsVisible = true;
+                            break;
+                        }
+                    }
+                }
+                if(!fragmentIsVisible){
+                    mDrawerLayout.closeDrawer(Gravity.LEFT, false);
+                    openActionStatisticsFragment();
+                }
+                else mDrawerLayout.closeDrawer(Gravity.LEFT,true);
                 return true;
         }
         return false;

@@ -12,17 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import java.util.List;
 
 import tl.com.timemanager.Adapter.ActionItemAdapter;
 import tl.com.timemanager.Base.BaseFragment;
 import tl.com.timemanager.Item.ItemAction;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
-import tl.com.timemanager.dialog.calendar.CalendarDialog;
+import tl.com.timemanager.dialog.calendar.BaseCalendarDialog;
+import tl.com.timemanager.dialog.calendar.CalendarActionInDayDialog;
 import tl.com.timemanager.dialog.insert.BaseInsertDialog;
 import tl.com.timemanager.dialog.insert.InsertActionsInDayDialog;
 import tl.com.timemanager.dialog.seen.SeenActionsInDayDialog;
@@ -158,8 +155,8 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
     }
 
     private void displayCalendarDialog() {
-        CalendarDialog dialog = new CalendarDialog(getActivity());
-        dialog.setIDateChangedListener((CalendarDialog.IDateChangedListener) getParentFragment());
+        CalendarActionInDayDialog dialog = new CalendarActionInDayDialog(getActivity());
+        dialog.setIDateChangedListener((BaseCalendarDialog.IDateChangedListener) getParentFragment());
         dialog.setDayOfWeek(dayOfWeek);
         dialog.setWeekOfYear(weekOfYear);
         dialog.setYear(year);

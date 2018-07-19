@@ -19,13 +19,12 @@ import tl.com.timemanager.Adapter.DataItemInTimeTableAdapter;
 import tl.com.timemanager.Adapter.TimeItemAdapter;
 import tl.com.timemanager.Base.BaseFragment;
 import tl.com.timemanager.Item.ItemDataInTimeTable;
-import tl.com.timemanager.MainActivity;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
-import tl.com.timemanager.dialog.insert.InsertActionInTimeTableDialog;
+import tl.com.timemanager.dialog.insert.InsertItemDataInTimeTableDialog;
 import tl.com.timemanager.dialog.seen.SeenActionInTimeTableDialog;
 
-public class TimeTableFragment extends BaseFragment implements DataItemInTimeTableAdapter.IDataItem, View.OnClickListener, InsertActionInTimeTableDialog.IDataChangedListener {
+public class TimeTableFragment extends BaseFragment implements DataItemInTimeTableAdapter.IDataItem, View.OnClickListener, InsertItemDataInTimeTableDialog.IDataChangedListener {
 
     private static final String TAG = TimeTableFragment.class.getSimpleName() ;
     private RecyclerView rcvTime;
@@ -170,7 +169,7 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
     }
 
     private void displayInsertActionDialog(int position) {
-        InsertActionInTimeTableDialog dialog = new InsertActionInTimeTableDialog(getActivity());
+        InsertItemDataInTimeTableDialog dialog = new InsertItemDataInTimeTableDialog(getActivity());
         dialog.setPositionItemData(position);
         dialog.setService(timeService);
         dialog.setiListener(this);

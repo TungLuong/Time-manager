@@ -2,6 +2,7 @@ package tl.com.timemanager.dialog.insert;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -12,20 +13,20 @@ import tl.com.timemanager.R;
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
 import static tl.com.timemanager.Constant.COUNT_DAY;
-import static tl.com.timemanager.Constant.NO_ACTION;
+import static tl.com.timemanager.Constant.FREE_TIME;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 import static tl.com.timemanager.Constant.TIME_MAX;
 import static tl.com.timemanager.Constant.TIME_MIN;
 
-public class InsertActionInTimeTableDialog extends BaseInsertDialog {
+public class InsertItemDataInTimeTableDialog extends BaseInsertDialog {
 
-    private static final String TAG = InsertActionInTimeTableDialog.class.getSimpleName();
+    private static final String TAG = InsertItemDataInTimeTableDialog.class.getSimpleName();
 
     private int positionItemData;
     private int oldPositionIdItemData;
 
-    public InsertActionInTimeTableDialog(@NonNull Context context) {
+    public InsertItemDataInTimeTableDialog(@NonNull Context context) {
         super(context);
     }
 
@@ -54,7 +55,7 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
             } else swDoNotDisturb.setChecked(false);
 
             switch (item.getAction()) {
-                case NO_ACTION:
+                case FREE_TIME:
                     ivAction.setImageResource(R.drawable.no_action);
                     break;
                 case OUTSIDE_ACTION:
@@ -102,6 +103,7 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
         int i;
         while (j < count) {
             i = positionItemData + COUNT_DAY * j;
+            Log.d(TAG,"position" + i);
             if (i >= service.getCountItemData()) {
                 tvErrorTime.setVisibility(View.VISIBLE);
                 return;
@@ -218,14 +220,14 @@ public class InsertActionInTimeTableDialog extends BaseInsertDialog {
             if (time >= TIME_MIN && time <= TIME_MAX) {
                 int day = service.getItemDataInTimeTable(positionItemData).getDayOfWeek();
                 int newId = day + COUNT_DAY * (time - TIME_MIN);
-                if (newId > service.getCountItemData()) {
-                    tvErrorTimeStart.setVisibility(View.VISIBLE);
-                    return;
-                }
-                if (service.getItemDataInTimeTable(newId).isActive() && !service.getItemDataInTimeTable(newId).isModifying()) {
-                    tvErrorTimeStart.setVisibility(View.VISIBLE);
-                    return;
-                }
+//                if (newId > service.getCountItemData()) {
+//                    tvErrorTimeStart.setVisibility(View.VISIBLE);
+//                    return;
+//                }
+//                if (service.getItemDataInTimeTable(newId).isActive() && !service.getItemDataInTimeTable(newId).isModifying()) {
+//                    tvErrorTimeStart.setVisibility(View.VISIBLE);
+//                    return;
+//                }
                 positionItemData = newId;
                 checkSameTime();
                 tvErrorTimeStart.setVisibility(View.GONE);
