@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="114dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:text="Title"
+        android:textColor="@color/colorAccent"
+        android:id="@+id/tv_title"/>
+    <ImageView
+        android:id="@+id/icon_notification"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/icon_notification"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"/>
+    <TextView
+        android:layout_below="@id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_time_finish"
+        android:text="Time Finish:"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"/>
+    <ProgressBar
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:id="@+id/progressbar"
+        android:layout_height="26dp"
+        android:layout_below="@id/tv_time_finish"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Complete"
+        android:textSize="26sp"
+        android:id="@+id/btn_complete"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

@@ -11,5 +11,14 @@ public interface Constant {
     int TIME_MAX = 22;
     int COUNT_DAY = 7;
     int COUNT_TIME = TIME_MAX - TIME_MIN + 1;
+    String NOTIFICATION_BEGIN="action.begin";
+    String NOTIFICATION_LATTER="action.latter";
+    String NOTIFICATION_OKE="action.oke";
+    String NOTIFICATION_COMPLETE="action.complete";
+    String MAIN_ACTION="action_main";
+    int FOREGROUND_NOTIFICATION_FLAG = 101;
+    int FOREGROUND_NOTIFICATION_COMPLETE=100;
+    int FOREGROUND_NOTIFICATION_OKE=99;
+    String START_ALARM="action.start.alarm";
 
 }

@@ -1,33 +1,49 @@
 package tl.com.timemanager.Service;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.View;
+import android.widget.RemoteViews;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import tl.com.timemanager.Constant;
 import tl.com.timemanager.DataBase.Data;
 import tl.com.timemanager.Item.ItemAction;
 import tl.com.timemanager.Item.ItemDataInTimeTable;
+import tl.com.timemanager.MainActivity;
 import tl.com.timemanager.MyBinder;
+import tl.com.timemanager.R;
 
+import static tl.com.timemanager.Constant.AMUSING_ACTION;
+import static tl.com.timemanager.Constant.AT_HOME_ACTION;
 import static tl.com.timemanager.Constant.COUNT_DAY;
 import static tl.com.timemanager.Constant.COUNT_TIME;
+import static tl.com.timemanager.Constant.NO_ACTION;
+import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
+import static tl.com.timemanager.Constant.RELAX_ACTION;
 import static tl.com.timemanager.Constant.TIME_MAX;
 import static tl.com.timemanager.Constant.TIME_MIN;
 
 public class TimeService extends Service {
     String TAG = TimeService.class.getSimpleName();
-
+    private NotificationManager manager;
+    private Notification notification;
     private List<ItemDataInTimeTable> itemDatas = new ArrayList<>();
     private  List<List<ItemAction>> actionsInWeek;
 //    private RealmAsyncTask transaction;
@@ -49,6 +65,7 @@ public class TimeService extends Service {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void initData() {
+        manager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         List<ItemDataInTimeTable> list = data.getAllItemData();
         if( list.size() == 0 ) {
             for (int i = 0; i < COUNT_TIME; i++) {
@@ -101,6 +118,33 @@ public class TimeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if(Constant.START_ALARM.equals(intent.getAction())){
+            showNotificationStart(1);
+        }
+        if(Constant.NOTIFICATION_BEGIN.equals(intent.getAction())){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                manager.cancel(Constant.FOREGROUND_NOTIFICATION_FLAG);
+                stopForeground(true);
+                stopSelf();
+            }
+            showProgressingRunTime(0);
+        }
+        if(Constant.NOTIFICATION_COMPLETE.equals(intent.getAction())){
+            manager.cancel(Constant.FOREGROUND_NOTIFICATION_COMPLETE);
+            stopForeground(true);
+            stopSelf();
+        }
+        if(Constant.NOTIFICATION_LATTER.equals(intent.getAction())){
+            manager.cancel(Constant.FOREGROUND_NOTIFICATION_COMPLETE);
+            stopForeground(true);
+            stopSelf();
+            showNotificationOk();
+        }
+        if(Constant.NOTIFICATION_OKE.equals(intent.getAction())){
+            manager.cancel(Constant.FOREGROUND_NOTIFICATION_OKE);
+            stopForeground(true);
+            stopSelf();
+        }
         return START_NOT_STICKY;
     }
 
@@ -310,6 +354,133 @@ public class TimeService extends Service {
         }
         return valid;
     }
+    public  void setAlarm(int hour,int minute){
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE,minute);
+        Intent intent=new Intent(this,TimeService.class);
+        intent.setAction(Constant.START_ALARM);
+        PendingIntent pIntent=PendingIntent.getService(this,0,intent,0);
+        AlarmManager manager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            manager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pIntent);
+        }
+    }
+    public  void cancelAlarm(){
+        AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+    }
+    public void showNotificationStart(int currentPosition) {
+//        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_flag);
+//        contentView.setTextViewText(R.id.tv_set_time_start, timeStart + "");
+//        contentView.setTextViewText(R.id.tv_set_time_finish, timeFinish + "");
+//        contentView.setTextViewText(R.id.tv_title, title);
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+//        builder.setSmallIcon(R.drawable.icon_notification);
+//        builder.setContent(contentView);
+//        Notification notification = builder.build();
+//        notification.flags=Notification.FLAG_AUTO_CANCEL;
+//        notificationManager.notify(Constant.ID_NOTIFICATION_START,notification);
+        RemoteViews views = new RemoteViews(getPackageName(), R.layout.notification_flag);
+        views.setTextViewText(R.id.tv_title, itemDatas.get(currentPosition).getTitle());
+        views.setTextViewText(R.id.tv_set_time_start, itemDatas.get(currentPosition).getFlag() + "");
+        views.setTextViewText(R.id.tv_set_time_finish, itemDatas.get(currentPosition).getTimeDoIt() + "");
+        views.setImageViewBitmap(R.id.icon_notification, getBitMap(itemDatas.get(currentPosition).getAction()));
 
+        Intent intentStart = new Intent(this, TimeService.class);
+        intentStart.setAction(Constant.NOTIFICATION_BEGIN);
+        PendingIntent pendingIntentStart = PendingIntent.getService(this, 0, intentStart, 0);
+        views.setOnClickPendingIntent(R.id.btn_start, pendingIntentStart);
+
+        Intent intentLatter = new Intent(this, TimeService.class);
+        intentLatter.setAction(Constant.NOTIFICATION_LATTER);
+        PendingIntent pendingIntentLatter = PendingIntent.getService(this, 0, intentLatter, 0);
+        views.setOnClickPendingIntent(R.id.btn_latter, pendingIntentLatter);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.setAction(Constant.MAIN_ACTION);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification = new Notification.Builder(this).build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notification.bigContentView = views;
+        } else {
+            notification.contentView = views;
+
+        }
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        notification.icon = R.drawable.icon_notification;
+        notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_INSISTENT;
+        notification.contentIntent = pendingIntent;
+        startForeground(Constant.FOREGROUND_NOTIFICATION_FLAG, notification);
+    }
+
+    private void showProgressingRunTime(int currentPosition) {
+        RemoteViews views = new RemoteViews(getPackageName(), R.layout.notification_start);
+        views.setTextViewText(R.id.tv_title, itemDatas.get(currentPosition).getTitle());
+        views.setTextViewText(R.id.tv_time_finish, "Time Finish:"+itemDatas.get(currentPosition).getFlag() );
+        views.setImageViewBitmap(R.id.icon_notification, getBitMap(itemDatas.get(currentPosition).getAction()));
+        Intent intentComplete = new Intent(this, TimeService.class);
+        intentComplete.setAction(Constant.NOTIFICATION_COMPLETE);
+        PendingIntent pendingIntentStart = PendingIntent.getService(this, 0, intentComplete, 0);
+        views.setOnClickPendingIntent(R.id.btn_complete, pendingIntentStart);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.setAction(Constant.MAIN_ACTION);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification = new Notification.Builder(this).build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notification.bigContentView = views;
+        } else {
+            notification.contentView = views;
+
+        }
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        notification.icon = R.drawable.icon_notification;
+        notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_INSISTENT;
+        notification.contentIntent = pendingIntent;
+        startForeground(Constant.FOREGROUND_NOTIFICATION_COMPLETE, notification);
+    }
+    private  void showNotificationOk(){
+        RemoteViews views=new RemoteViews(getPackageName(),R.layout.notification_cancel);
+        Intent intent=new Intent(this,TimeService.class);
+        intent.setAction(Constant.NOTIFICATION_OKE);
+        PendingIntent pending=PendingIntent.getService(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.btn_ok,pending);
+        Intent intent1=new Intent(this,MainActivity.class);
+        intent1.setAction(Constant.MAIN_ACTION);
+        intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
+        notification=new Notification.Builder(this).build();
+        notification.icon=R.drawable.icon_notification;
+        notification.contentView=views;
+        notification.contentIntent=pendingIntent;
+        startForeground(Constant.FOREGROUND_NOTIFICATION_OKE,notification);
+    }
+
+
+    private Bitmap getBitMap(int action) {
+        Bitmap bm = null;
+        switch (action) {
+            case NO_ACTION:
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.no_action);
+                break;
+            case OUTSIDE_ACTION:
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.school);
+                break;
+            case AT_HOME_ACTION:
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.homework);
+                break;
+            case AMUSING_ACTION:
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.giaitri);
+                break;
+            case RELAX_ACTION:
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.sleep);
+                break;
+            default:
+                break;
+        }
+        return bm;
+    }
 
 }
