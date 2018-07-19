@@ -5,11 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,15 +15,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
-import tl.com.timemanager.dialog.seen.BaseSeenDialog;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
-import static tl.com.timemanager.Constant.NO_ACTION;
+import static tl.com.timemanager.Constant.FREE_TIME;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
@@ -151,7 +146,7 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
             case R.id.spinner_kind_of_action:
                 kindOfAction = position;
                 switch (position) {
-                    case NO_ACTION:
+                    case FREE_TIME:
                         ivAction.setImageResource(R.drawable.free_time);
                         //colorId = R.color.colorNoAction;
                         break;

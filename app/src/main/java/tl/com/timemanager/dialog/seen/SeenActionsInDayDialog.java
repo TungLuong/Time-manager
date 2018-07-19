@@ -10,7 +10,7 @@ import tl.com.timemanager.dialog.insert.InsertActionsInDayDialog;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
-import static tl.com.timemanager.Constant.NO_ACTION;
+import static tl.com.timemanager.Constant.FREE_TIME;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
@@ -40,7 +40,7 @@ public class SeenActionsInDayDialog extends BaseSeenDialog {
         tvTimeStart.setText(timeStart + " h");
         tvTimeEnd.setText((timeStart + item.getTimeDoIt()) + " h");
         switch (item.getAction()) {
-            case NO_ACTION:
+            case FREE_TIME:
                 ivAction.setImageResource(R.drawable.free_time);
                 tvKindOfAction.setText("Hoạt động tự do");
                 break;

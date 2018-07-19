@@ -13,15 +13,15 @@ import java.util.GregorianCalendar;
 import tl.com.timemanager.R;
 import tl.com.timemanager.dialog.insert.BaseInsertDialog;
 
-public class CalendarDialog extends BottomSheetDialog implements View.OnClickListener, CalendarView.OnDateChangeListener {
+public class BaseCalendarDialog extends BottomSheetDialog implements View.OnClickListener, CalendarView.OnDateChangeListener {
 
-    private CalendarView calendarView;
-    private ImageView ivClose;
-    private IDateChangedListener iDateChangedListener;
-    private int dayOfWeek;
-    private int weekOfYear;
-    private int year;
-    public CalendarDialog(@NonNull Context context) {
+    protected CalendarView calendarView;
+    protected ImageView ivClose;
+    protected IDateChangedListener iDateChangedListener;
+    protected int dayOfWeek;
+    protected int weekOfYear;
+    protected int year;
+    public BaseCalendarDialog(@NonNull Context context) {
         super(context,R.style.Theme_Design_Light_BottomSheetDialog);
         setContentView(R.layout.dialog_calender);
         initView();
@@ -43,7 +43,7 @@ public class CalendarDialog extends BottomSheetDialog implements View.OnClickLis
         this.year = year;
     }
 
-    private void initView() {
+    protected void initView() {
         calendarView= findViewById(R.id.calendar);
         ivClose = findViewById(R.id.iv_close);
         ivClose.setOnClickListener(this);
@@ -53,7 +53,6 @@ public class CalendarDialog extends BottomSheetDialog implements View.OnClickLis
 
     public void initCalendar() {
         int day = dayOfWeek + 1;
-
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
@@ -71,18 +70,12 @@ public class CalendarDialog extends BottomSheetDialog implements View.OnClickLis
 
     @Override
     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-        Calendar calendar = new GregorianCalendar();
-        calendar.set(year,month,dayOfMonth);
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        int dayOfWeek = day - 1;
-        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
-        iDateChangedListener.setCurrentItemFragment(dayOfWeek);
-        iDateChangedListener.updateActionsInWeek(dayOfWeek,weekOfYear,year);
 
     }
 
     public interface IDateChangedListener {
         void setCurrentItemFragment(int day);
         void updateActionsInWeek(int dayOfWeek, int weekOfYear, int year);
+        void updateActionStatisticFragment(int day);
     }
 }

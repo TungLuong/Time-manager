@@ -11,11 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
-import tl.com.timemanager.dialog.insert.InsertActionInTimeTableDialog;
+import tl.com.timemanager.dialog.insert.InsertItemDataInTimeTableDialog;
 
 public class BaseSeenDialog extends BottomSheetDialog implements View.OnClickListener {
 
-    protected static final String TAG = InsertActionInTimeTableDialog.class.getSimpleName();
+    protected static final String TAG = InsertItemDataInTimeTableDialog.class.getSimpleName();
     protected ImageView ivAction;
     protected TextView tvAction;
     protected ImageView ivClose;
@@ -28,7 +28,7 @@ public class BaseSeenDialog extends BottomSheetDialog implements View.OnClickLis
     protected ImageView ivDoNotDisturb;
 
     protected TimeService service;
-    protected InsertActionInTimeTableDialog.IDataChangedListener iListener;
+    protected InsertItemDataInTimeTableDialog.IDataChangedListener iListener;
 
     public BaseSeenDialog(@NonNull Context context) {
         super(context,R.style.StyleDialogBottom);
@@ -43,7 +43,7 @@ public class BaseSeenDialog extends BottomSheetDialog implements View.OnClickLis
     }
 
 
-    public void setiListener(InsertActionInTimeTableDialog.IDataChangedListener listener) {
+    public void setiListener(InsertItemDataInTimeTableDialog.IDataChangedListener listener) {
         this.iListener = listener;
     }
 

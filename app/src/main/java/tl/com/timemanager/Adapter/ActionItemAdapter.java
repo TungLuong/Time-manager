@@ -15,7 +15,7 @@ import tl.com.timemanager.R;
 
 import static tl.com.timemanager.Constant.AMUSING_ACTION;
 import static tl.com.timemanager.Constant.AT_HOME_ACTION;
-import static tl.com.timemanager.Constant.NO_ACTION;
+import static tl.com.timemanager.Constant.FREE_TIME;
 import static tl.com.timemanager.Constant.OUTSIDE_ACTION;
 import static tl.com.timemanager.Constant.RELAX_ACTION;
 
@@ -58,7 +58,7 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
             holder.background.setAlpha( ALPHA_DEFAULT );
         }
         switch (action.getAction()){
-            case NO_ACTION:
+            case FREE_TIME:
                 holder.ivAction.setImageResource(R.drawable.free_time);
                 holder.background.setBackgroundResource(R.drawable.background_free_time);
                 break;

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +19,9 @@ import tl.com.timemanager.Adapter.DaysInWeekAdapter;
 import tl.com.timemanager.Base.BaseFragment;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
-import tl.com.timemanager.dialog.calendar.CalendarDialog;
+import tl.com.timemanager.dialog.calendar.BaseCalendarDialog;
 
-import static tl.com.timemanager.Constant.COUNT_DAY;
-
-public class DaysInWeekFragment extends BaseFragment implements CalendarDialog.IDateChangedListener {
+public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDialog.IDateChangedListener {
 
     private static final String TITLE_WEEK_OF_YEAR = "Hoạt động trong tuần " ;
     private TabLayout tab;
@@ -65,7 +62,6 @@ public class DaysInWeekFragment extends BaseFragment implements CalendarDialog.I
         adapter = new DaysInWeekAdapter(getChildFragmentManager(),timeService,weekOfYear,year);
         pager.setAdapter(adapter);
         tab.setupWithViewPager(pager);
-
         setCurrentFragment(dayOfWeek);
     }
 
@@ -84,6 +80,11 @@ public class DaysInWeekFragment extends BaseFragment implements CalendarDialog.I
         adapter.setYear(year);
         changedDateInChildFragment();
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateActionStatisticFragment(int day) {
+
     }
 
     private void changedDateInChildFragment() {
