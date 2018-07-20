@@ -25,8 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_title"
         android:textColor="@color/colorAccent"
+        android:text="0"
+        android:layout_marginLeft="4dp"
         android:textSize="12sp"
-        android:layout_alignRight="@id/tv_time_start"/>
+        android:layout_toRightOf="@id/tv_time_start"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,10 +43,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
+        android:layout_marginLeft="4dp"
         android:textColor="@color/colorAccent"
         android:layout_marginTop="4dp"
+        android:text="0"
         android:layout_below="@id/tv_set_time_start"
-        android:layout_alignRight="@id/tv_time_finish"/>
+        android:layout_toRightOf="@id/tv_time_finish"/>
     <Button
         android:id="@+id/btn_latter"
         android:layout_width="72dp"

@@ -96,6 +96,7 @@ public class TimeService extends Service {
 
         Calendar calendar = Calendar.getInstance();
         checkActionDoneAndComplete();
+        showNotificationStart(0);
         setAlarm((calendar.get(Calendar.HOUR_OF_DAY) + 1) % 24, 0);
     }
 
@@ -134,7 +135,13 @@ public class TimeService extends Service {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        Binder binder = new MyBinder(this);
+        return binder;
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Constant.START_ALARM.equals(intent.getAction())) {
@@ -165,13 +172,6 @@ public class TimeService extends Service {
             stopSelf();
         }
         return START_NOT_STICKY;
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        Binder binder = new MyBinder(this);
-        return binder;
     }
 
     public int getCountItemData() {
@@ -402,18 +402,8 @@ public class TimeService extends Service {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+
     public void showNotificationStart(int currentPosition) {
-//        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_flag);
-//        contentView.setTextViewText(R.id.tv_set_time_start, timeStart + "");
-//        contentView.setTextViewText(R.id.tv_set_time_finish, timeFinish + "");
-//        contentView.setTextViewText(R.id.tv_title, title);
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-//        builder.setSmallIcon(R.drawable.icon_notification);
-//        builder.setContent(contentView);
-//        Notification notification = builder.build();
-//        notification.flags=Notification.FLAG_AUTO_CANCEL;
-//        notificationManager.notify(Constant.ID_NOTIFICATION_START,notification);
         RemoteViews views = new RemoteViews(getPackageName(), R.layout.notification_flag);
         views.setTextViewText(R.id.tv_title, itemDatas.get(currentPosition).getTitle());
         views.setTextViewText(R.id.tv_set_time_start, itemDatas.get(currentPosition).getFlag() + "");
@@ -434,7 +424,9 @@ public class TimeService extends Service {
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notification = new Notification.Builder(this).build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notification = new Notification.Builder(this).build();
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             notification.bigContentView = views;
         } else {
@@ -448,7 +440,6 @@ public class TimeService extends Service {
         startForeground(Constant.FOREGROUND_NOTIFICATION_FLAG, notification);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void showProgressingRunTime(int currentPosition) {
         RemoteViews views = new RemoteViews(getPackageName(), R.layout.notification_start);
         views.setTextViewText(R.id.tv_title, itemDatas.get(currentPosition).getTitle());
@@ -463,7 +454,9 @@ public class TimeService extends Service {
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notification = new Notification.Builder(this).build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notification = new Notification.Builder(this).build();
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             notification.bigContentView = views;
         } else {
@@ -477,7 +470,6 @@ public class TimeService extends Service {
         startForeground(Constant.FOREGROUND_NOTIFICATION_COMPLETE, notification);
     }
 
-    @SuppressLint("NewApi")
     private void showNotificationOk() {
         RemoteViews views = new RemoteViews(getPackageName(), R.layout.notification_cancel);
         Intent intent = new Intent(this, TimeService.class);
@@ -488,7 +480,9 @@ public class TimeService extends Service {
         intent1.setAction(Constant.MAIN_ACTION);
         intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-        notification = new Notification.Builder(this).build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notification = new Notification.Builder(this).build();
+        }
         notification.icon = R.drawable.icon_notification;
         notification.contentView = views;
         notification.contentIntent = pendingIntent;
