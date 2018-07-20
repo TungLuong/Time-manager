@@ -10,8 +10,8 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_action_entertainment"
-        android:alpha="0.5">
+        android:background="@drawable/background_free_time"
+        android:alpha="0.1">
     </RelativeLayout>
     <ImageView
         android:padding="15dp"

@@ -21,7 +21,7 @@ import static tl.com.timemanager.Constant.RELAX_ACTION;
 
 public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.ViewHolder> {
 
-    private static final float ALPHA_DEFAULT = 0.4f;
+    private static final float ALPHA_DEFAULT = 0.2f;
     private static final float ALPHA_ACTION_DONE = 0.9f ;
     private IActionItem iActionItem;
 

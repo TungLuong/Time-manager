@@ -21,7 +21,7 @@ import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
 import tl.com.timemanager.dialog.calendar.BaseCalendarDialog;
 
-public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDialog.IDateChangedListener {
+public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDialog.IDateChangedListener, TimeService.IUpdateUI {
 
     private static final String TITLE_WEEK_OF_YEAR = "Hoạt động trong tuần " ;
     private TabLayout tab;
@@ -42,6 +42,7 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
     public void setTimeService(TimeService timeService) {
         this.timeService = timeService;
         this.timeService.updateActionsInWeekFromTimeTable();
+        this.timeService.setiUpdateUI(this);
     }
 
     private void initView(View view) {
@@ -103,4 +104,9 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
         pager.setCurrentItem(dayOfWeek);
     }
 
+
+    @Override
+    public void updateUI() {
+        changedDateInChildFragment();
+    }
 }

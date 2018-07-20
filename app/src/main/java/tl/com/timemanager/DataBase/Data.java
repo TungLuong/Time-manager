@@ -124,4 +124,10 @@ public class Data {
         item.setModifying(b);
         realm.commitTransaction();
     }
+
+    public void setDoneForItemAction(ItemAction action, boolean b) {
+        realm.beginTransaction();
+        action.setDone(b);
+        realm.commitTransaction();
+    }
 }
