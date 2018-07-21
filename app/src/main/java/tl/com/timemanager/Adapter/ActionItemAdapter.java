@@ -21,8 +21,8 @@ import static tl.com.timemanager.Constant.RELAX_ACTION;
 
 public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.ViewHolder> {
 
-    private static final float ALPHA_DEFAULT = 0.2f;
-    private static final float ALPHA_ACTION_DONE = 0.9f ;
+    private static final float ALPHA_DEFAULT = 0.3f;
+    private static final float ALPHA_ACTION_DONE = 0.99f ;
     private IActionItem iActionItem;
 
 
@@ -42,6 +42,14 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
                 iActionItem.onClickItem(viewHolder.getAdapterPosition());
             }
         });
+
+        viewHolder.ivActionDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iActionItem.setCompleteForAction(viewHolder.getAdapterPosition());
+                notifyItemChanged(viewHolder.getAdapterPosition());
+            }
+        });
         return viewHolder;
     }
 
@@ -53,8 +61,16 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
         holder.tvTitle.setText(action.getTitle() + "");
         if(action.isDone()){
             holder.background.setAlpha( ALPHA_ACTION_DONE );
+            holder.ivActionDone.setVisibility(View.VISIBLE);
+            if(action.isComplete()){
+                holder.ivActionDone.setImageResource(R.drawable.ic_complete_24dp);
+            }
+            else {
+                holder.ivActionDone.setImageResource(R.drawable.ic_not_complete_24dp);
+            }
         }
         else {
+            holder.ivActionDone.setVisibility(View.GONE);
             holder.background.setAlpha( ALPHA_DEFAULT );
         }
         switch (action.getAction()){
@@ -93,12 +109,14 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
         private TextView tvTitle;
         private TextView tvTime;
         private RelativeLayout background;
+        private ImageView ivActionDone;
         public ViewHolder(View itemView) {
             super(itemView);
             ivAction = itemView.findViewById(R.id.iv_img_action);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvTime = itemView.findViewById(R.id.tv_time);
             background = itemView.findViewById(R.id.background);
+            ivActionDone = itemView.findViewById(R.id.iv_action_done);
         }
     }
 
@@ -106,6 +124,6 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
         int getCount();
         ItemAction getItemAction(int position);
         void onClickItem(int position);
-
+        void setCompleteForAction(int adapterPosition);
     }
 }

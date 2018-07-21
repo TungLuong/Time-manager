@@ -133,6 +133,11 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
     }
 
     @Override
+    public void setCompleteForAction(int adapterPosition) {
+        service.setCompleteForAction(dayOfWeek,adapterPosition);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fab_insert:

@@ -520,6 +520,10 @@ public class TimeService extends Service {
         return bm;
     }
 
+    public void setCompleteForAction(int dayOfWeek, int adapterPosition) {
+        data.setCompleteForAction(actionsInWeek.get(dayOfWeek).get(adapterPosition));
+    }
+
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

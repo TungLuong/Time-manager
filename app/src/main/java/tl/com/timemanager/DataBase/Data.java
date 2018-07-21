@@ -130,4 +130,10 @@ public class Data {
         action.setDone(b);
         realm.commitTransaction();
     }
+
+    public void setCompleteForAction(ItemAction action) {
+        realm.beginTransaction();
+        action.setComplete(!action.isComplete());
+        realm.commitTransaction();
+    }
 }
