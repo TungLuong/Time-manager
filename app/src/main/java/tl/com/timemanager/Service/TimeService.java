@@ -95,7 +95,6 @@ public class TimeService extends Service {
         setActionsInCurrentWeek();
 
         Calendar calendar = Calendar.getInstance();
-        checkActionDoneAndComplete();
         setAlarm((calendar.get(Calendar.HOUR_OF_DAY) + 1) % 24, 0);
     }
 
@@ -137,6 +136,7 @@ public class TimeService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        checkActionDoneAndComplete();
         if (Constant.START_ALARM.equals(intent.getAction())) {
             showNotificationStart(1);
         }
@@ -534,7 +534,7 @@ public class TimeService extends Service {
             Calendar calendar = Calendar.getInstance();
             int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
             setAlarm((hourOfDay + 1) % 24, 0);
-             iUpdateUI.updateUI();
+            iUpdateUI.updateUI();
         }
     }
 

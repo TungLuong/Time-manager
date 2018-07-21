@@ -12,11 +12,14 @@ public class DaysInWeekAdapter extends FragmentPagerAdapter {
     private TimeService timeService;
     private int weekOfYear;
     private int year;
-    public DaysInWeekAdapter(FragmentManager fm,TimeService timeService,int weekOfYear,int year) {
+    private boolean fabPlusIsOpen[];
+    public DaysInWeekAdapter(FragmentManager fm,TimeService timeService,int weekOfYear,int year,boolean fabPlusIsOpen[]) {
         super(fm);
         this.timeService = timeService;
         this.weekOfYear = weekOfYear;
         this.year = year;
+        this.fabPlusIsOpen = fabPlusIsOpen;
+
     }
 
     public void setWeekOfYear(int weekOfYear) {
@@ -29,7 +32,7 @@ public class DaysInWeekAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        ActionsInDayFragment fragment = new ActionsInDayFragment(timeService,position,weekOfYear,year);
+        ActionsInDayFragment fragment = new ActionsInDayFragment(timeService,position,weekOfYear,year, fabPlusIsOpen);
         return fragment;
     }
 

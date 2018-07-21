@@ -31,6 +31,7 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
     private TextView tvWeekOfYear;
     private int weekOfYear;
     private int year;
+    private boolean fabPlusIsOpen[] = {false};
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
         tvWeekOfYear.setText(TITLE_WEEK_OF_YEAR + weekOfYear);
 
 
-        adapter = new DaysInWeekAdapter(getChildFragmentManager(),timeService,weekOfYear,year);
+        adapter = new DaysInWeekAdapter(getChildFragmentManager(),timeService,weekOfYear,year, fabPlusIsOpen);
         pager.setAdapter(adapter);
         tab.setupWithViewPager(pager);
         setCurrentFragment(dayOfWeek);
@@ -83,6 +84,10 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
         adapter.notifyDataSetChanged();
     }
 
+    public void notifyDataSetChangedInAdapter(){
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public void updateActionStatisticFragment(int day) {
 
@@ -96,6 +101,7 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
                ((ActionsInDayFragment)fragment).setYear(year);
                ((ActionsInDayFragment)fragment).setWeekOfYear(weekOfYear);
                ((ActionsInDayFragment)fragment).changedActionItem();
+               ((ActionsInDayFragment)fragment).updateFloatingActionButton();
            }
        }
     }

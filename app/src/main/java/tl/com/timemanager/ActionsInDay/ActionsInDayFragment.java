@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 
 import tl.com.timemanager.Adapter.ActionItemAdapter;
 import tl.com.timemanager.Base.BaseFragment;
+import tl.com.timemanager.DaysInWeek.DaysInWeekFragment;
 import tl.com.timemanager.Item.ItemAction;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
@@ -35,7 +36,7 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
     private int year;
     private FloatingActionButton fabInsert,fabPlus, fabOpenCalendar;
     private Animation animFabClose,animFabOpen,animRotateClose,animRotateOpen;
-    private boolean isOpen;
+    private boolean fabPlusIsOpen[];
 
     @Nullable
     @Override
@@ -46,11 +47,12 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
     }
 
     @SuppressLint("ValidFragment")
-    public ActionsInDayFragment(TimeService service, int dayOfWeek,int weekOfYear,int year) {
+    public ActionsInDayFragment(TimeService service, int dayOfWeek, int weekOfYear, int year, boolean[] fabPlusIsOpen) {
         this.service = service;
         this.dayOfWeek = dayOfWeek;
         this.weekOfYear = weekOfYear;
         this.year = year;
+        this.fabPlusIsOpen = fabPlusIsOpen;
     }
 
     public void setWeekOfYear(int weekOfYear) {
@@ -88,8 +90,29 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
         animRotateOpen = AnimationUtils.loadAnimation(getContext(),R.anim.rotate_open);
         animRotateClose = AnimationUtils.loadAnimation(getContext(),R.anim.rotate_close);
 
+        updateFloatingActionButton();
 
+    }
 
+    public void updateFloatingActionButton(){
+        if(fabPlusIsOpen[0]){
+            fabPlus.setAnimation(animRotateOpen);
+//            fabInsert.setAnimation(animFabOpen);
+//            fabOpenCalendar.setAnimation(animFabOpen);
+            fabInsert.setClickable(true);
+            fabInsert.setVisibility(View.VISIBLE);
+            fabOpenCalendar.setClickable(true);
+            fabOpenCalendar.setVisibility(View.VISIBLE);
+        }
+        else {
+            fabPlus.setAnimation(animRotateClose);
+//            fabInsert.setAnimation(animFabClose);
+//            fabOpenCalendar.setAnimation(animFabClose);
+            fabInsert.setClickable(false);
+            fabInsert.setVisibility(View.INVISIBLE);
+            fabOpenCalendar.setClickable(false);
+            fabOpenCalendar.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -130,24 +153,26 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
                 displayCalendarDialog();
                 break;
             case R.id.fab_plus:
-                if(isOpen){
+                if(fabPlusIsOpen[0]){
                     fabPlus.setAnimation(animRotateClose);
-                    fabInsert.setAnimation(animFabClose);
-                    fabOpenCalendar.setAnimation(animFabClose);
+//                    fabInsert.setAnimation(animFabClose);
+//                    fabOpenCalendar.setAnimation(animFabClose);
                     fabInsert.setClickable(false);
                     fabInsert.setVisibility(View.INVISIBLE);
                     fabOpenCalendar.setClickable(false);
                     fabOpenCalendar.setVisibility(View.INVISIBLE);
-                    isOpen = false;
+                    fabPlusIsOpen[0] = false;
+                    ((DaysInWeekFragment)getParentFragment()).updateUI();
                 }else {
                     fabPlus.setAnimation(animRotateOpen);
-                    fabInsert.setAnimation(animFabOpen);
-                    fabOpenCalendar.setAnimation(animFabOpen);
+//                    fabInsert.setAnimation(animFabOpen);
+//                    fabOpenCalendar.setAnimation(animFabOpen);
                     fabInsert.setClickable(true);
                     fabInsert.setVisibility(View.VISIBLE);
                     fabOpenCalendar.setClickable(true);
                     fabOpenCalendar.setVisibility(View.VISIBLE);
-                    isOpen = true;
+                    fabPlusIsOpen[0] = true;
+                    ((DaysInWeekFragment)getParentFragment()).updateUI();
                 }
                 break;
         }
