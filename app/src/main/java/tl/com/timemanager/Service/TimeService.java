@@ -126,11 +126,13 @@ public class TimeService extends Service {
                 sortActionByTime(i);
             }
         }
+        checkActionDoneAndComplete();
     }
 
     public void insertItemAction(int dayOfWeek, ItemAction action) {
         actionsInWeek.get(dayOfWeek).add(action);
         data.insertItemAction(action);
+        checkActionDoneAndComplete();
     }
 
 

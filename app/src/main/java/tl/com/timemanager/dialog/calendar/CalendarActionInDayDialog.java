@@ -22,8 +22,10 @@ public class CalendarActionInDayDialog extends BaseCalendarDialog {
         calendar.set(year,month,dayOfMonth);
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         dayOfWeek = day - 1;
-        weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
         iDateChangedListener.setCurrentItemFragment(dayOfWeek);
-        iDateChangedListener.updateActionsInWeek(dayOfWeek,weekOfYear,year);
+        if(weekOfYear != calendar.get(Calendar.WEEK_OF_YEAR)) {
+            weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+            iDateChangedListener.updateActionsInWeek(dayOfWeek, weekOfYear, year);
+        }
     }
 }
