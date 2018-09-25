@@ -57,43 +57,48 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemAction action = iActionItem.getItemAction(position);
-        holder.tvTime.setText(action.getHourOfDay() + " h - " + (action.getHourOfDay() + action.getTimeDoIt())  +" h ");
-        holder.tvTitle.setText(action.getTitle() + "");
-        if(action.isDone()){
-            holder.background.setAlpha( ALPHA_ACTION_DONE );
-            holder.ivActionDone.setVisibility(View.VISIBLE);
-            if(action.isComplete()){
-                holder.ivActionDone.setImageResource(R.drawable.ic_complete_24dp);
+        if(action.getTitle() != null){
+            holder.tvTime.setText(action.getHourOfDay() + " h - " + (action.getHourOfDay() + action.getTimeDoIt())  +" h ");
+            holder.tvTitle.setText(action.getTitle() + "");
+            if(action.isDone()){
+                holder.background.setAlpha( ALPHA_ACTION_DONE );
+                holder.ivActionDone.setVisibility(View.VISIBLE);
+                if(action.isComplete()){
+                    holder.ivActionDone.setImageResource(R.drawable.ic_complete_24dp);
+                }
+                else {
+                    holder.ivActionDone.setImageResource(R.drawable.ic_action_not_complete_24dp);
+                }
             }
             else {
-                holder.ivActionDone.setImageResource(R.drawable.ic_not_complete_24dp);
+                holder.ivActionDone.setVisibility(View.GONE);
+                holder.background.setAlpha( ALPHA_DEFAULT );
             }
-        }
-        else {
-            holder.ivActionDone.setVisibility(View.GONE);
-            holder.background.setAlpha( ALPHA_DEFAULT );
-        }
-        switch (action.getAction()){
-            case FREE_TIME:
-                holder.ivAction.setImageResource(R.drawable.free_time);
-                holder.background.setBackgroundResource(R.drawable.background_free_time);
-                break;
-            case OUTSIDE_ACTION:
-                holder.ivAction.setImageResource(R.drawable.school);
-                holder.background.setBackgroundResource(R.drawable.background_action_outside);
-                break;
-            case AT_HOME_ACTION:
-                holder.ivAction.setImageResource(R.drawable.homework);
-                holder.background.setBackgroundResource(R.drawable.background_action_at_home);
-                break;
-            case AMUSING_ACTION:
-                holder.ivAction.setImageResource(R.drawable.giaitri);
-                holder.background.setBackgroundResource(R.drawable.background_action_entertainment);
-                break;
-            case RELAX_ACTION:
-                holder.ivAction.setImageResource(R.drawable.sleep);
-                holder.background.setBackgroundResource(R.drawable.background_action_relax);
-                break;
+            switch (action.getAction()){
+                case FREE_TIME:
+                    holder.ivAction.setImageResource(R.drawable.free_time);
+                    holder.background.setBackgroundResource(R.drawable.background_free_time);
+                    break;
+                case OUTSIDE_ACTION:
+                    holder.ivAction.setImageResource(R.drawable.school);
+                    holder.background.setBackgroundResource(R.drawable.background_action_outside);
+                    break;
+                case AT_HOME_ACTION:
+                    holder.ivAction.setImageResource(R.drawable.homework);
+                    holder.background.setBackgroundResource(R.drawable.background_action_at_home);
+                    break;
+                case AMUSING_ACTION:
+                    holder.ivAction.setImageResource(R.drawable.giaitri);
+                    holder.background.setBackgroundResource(R.drawable.background_action_entertainment);
+                    break;
+                case RELAX_ACTION:
+                    holder.ivAction.setImageResource(R.drawable.sleep);
+                    holder.background.setBackgroundResource(R.drawable.background_action_relax);
+                    break;
+            }
+        }else {
+//            iActionItem.removeItemAction(position);
+//            notifyDataSetChanged();
         }
 
     }
@@ -125,5 +130,8 @@ public class ActionItemAdapter extends RecyclerView.Adapter<ActionItemAdapter.Vi
         ItemAction getItemAction(int position);
         void onClickItem(int position);
         void setCompleteForAction(int adapterPosition);
+
+      //  void removeItemAction(int position);
+        //  void deleteAction(int day,int position);
     }
 }

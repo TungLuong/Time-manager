@@ -28,21 +28,30 @@ import static tl.com.timemanager.Constant.RELAX_ACTION;
 public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.OnItemSelectedListener, View.OnClickListener, TextWatcher, TextView.OnEditorActionListener {
 
     protected ImageView ivAction;
+    // box chọn thời gian
     protected Spinner spin_time;
+    // box chọn loại hoạt động
     protected Spinner spin_action;
-    protected EditText edtAction;
+    // tên hoạt động
+    protected EditText edtTitleAction;
     protected ImageView ivClose;
     protected Button btnSave;
+    // bật thông báo hay k
     protected Switch swNotification;
+    // bật chế độ DND hay k
     protected Switch swDoNotDisturb;
+    // Loại hoạt động
     protected int kindOfAction;
+    // đếm giờ
     protected int count = 1;
     protected TimeService service;
     protected TextView tvErrorTime;
     protected TextView tvErrorTitle;
     protected TextView tvErrorTimeStart;
     protected EditText edtTimeStart;
+    // dialog thêm hay sửa hoạt động
     protected boolean isModify;
+    // lắng nghe dữ liệu thay đổi
     protected IDataChangedListener iListener;
 
     public BaseInsertDialog(@NonNull Context context) {
@@ -115,7 +124,7 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
         ivAction = findViewById(R.id.iv_img_action);
         ivClose =findViewById(R.id.iv_close);
         btnSave =findViewById(R.id.btn_save);
-        edtAction =findViewById(R.id.edt_name_action);
+        edtTitleAction =findViewById(R.id.edt_name_action);
         edtTimeStart =findViewById(R.id.edt_time_start);
 
         swNotification =findViewById(R.id.sw_notification);
@@ -126,7 +135,7 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
 
         ivClose.setOnClickListener(this);
         btnSave.setOnClickListener(this);
-        edtAction.addTextChangedListener(this);
+        edtTitleAction.addTextChangedListener(this);
         edtTimeStart.addTextChangedListener(this);
         setData();
 
@@ -140,6 +149,13 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
 
     }
 
+    /**
+     * khi chọn spinner
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
@@ -209,9 +225,12 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
 
     }
 
+    /**
+     * kiểm tra xem tiêu đề có hợp lệ hay k
+     */
 
     protected void checkInvalidTitle() {
-        String title = String.valueOf(edtAction.getText());
+        String title = String.valueOf(edtTitleAction.getText());
         if (title.trim().length() > 0) {
             tvErrorTitle.setVisibility(View.GONE);
         } else {
@@ -240,7 +259,7 @@ public class BaseInsertDialog extends BottomSheetDialog implements AdapterView.O
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (edtAction.getText().hashCode() == s.hashCode()) {
+        if (edtTitleAction.getText().hashCode() == s.hashCode()) {
             checkInvalidTitle();
         } else if (edtTimeStart.getText().hashCode() == s.hashCode()) {
             checkInvalidTimeStart();

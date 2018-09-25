@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="148dp"
+    android:background="@color/colorFreeTime"
     >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/time"
+        android:alpha="0.2"></RelativeLayout>
     <TextView
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:layout_marginTop="8dp"
+        android:textColor="#000"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:text="Không thể sắp xếp được thười gian  thực hiện công việc"/>
+        android:text="Không thể sắp xếp được thời gian  thực hiện công việc"
+        android:textSize="20dp" />
     <Button
+        android:textSize="15dp"
         android:id="@+id/btn_ok"
-        android:layout_width="48dp"
+        android:layout_width="64dp"
         android:layout_height="32dp"
-        android:text="OK"
-        android:layout_marginRight="4dp"
+        android:text="Đồng ý"
+        android:textColor="#000"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="25dp"
         android:layout_below="@id/tv"
-        android:background="@drawable/background_button"
+        android:background="@drawable/background_button_cancel"
+        android:textAllCaps="false"
         android:layout_alignParentRight="true"/>
 </RelativeLayout>

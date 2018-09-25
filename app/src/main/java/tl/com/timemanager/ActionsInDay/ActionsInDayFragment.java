@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import tl.com.timemanager.Adapter.ActionItemAdapter;
 import tl.com.timemanager.Base.BaseFragment;
@@ -31,11 +32,14 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
     private RecyclerView rcvAction;
     private TimeService service;
     private ActionItemAdapter actionItemAdapter;
+    // ngày tháng năm của các hoạt động hiển thị
     private int dayOfWeek;
     private int weekOfYear;
     private int year;
-    private FloatingActionButton fabInsert,fabPlus, fabOpenCalendar;
+    // các nút thêm,+, đồng bộ, mở lịch
+    private FloatingActionButton fabInsert,fabPlus, fabSync, fabOpenCalendar;
     private Animation animFabClose,animFabOpen,animRotateClose,animRotateOpen;
+    // các nút khác có đc hiển thị không
     private boolean fabPlusIsOpen[];
 
     @Nullable
@@ -80,10 +84,12 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
         fabInsert = view.findViewById(R.id.fab_insert);
         fabOpenCalendar = view.findViewById(R.id.fab_open_calendar);
         fabPlus = view.findViewById(R.id.fab_plus);
+        fabSync = view.findViewById(R.id.fab_sync);
 
         fabPlus.setOnClickListener(this);
         fabInsert.setOnClickListener(this);
         fabOpenCalendar.setOnClickListener(this);
+        fabSync.setOnClickListener(this);
 
         animFabOpen = AnimationUtils.loadAnimation(getContext(),R.anim.fab_open);
         animFabClose = AnimationUtils.loadAnimation(getContext(),R.anim.fab_close);
@@ -94,6 +100,9 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
 
     }
 
+    /*
+    Cập nhật lại tình trạng các nút
+     */
     public void updateFloatingActionButton(){
         if(fabPlusIsOpen[0]){
             fabPlus.setAnimation(animRotateOpen);
@@ -103,6 +112,8 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
             fabInsert.setVisibility(View.VISIBLE);
             fabOpenCalendar.setClickable(true);
             fabOpenCalendar.setVisibility(View.VISIBLE);
+            fabSync.setClickable(true);
+            fabSync.setVisibility(View.VISIBLE);
         }
         else {
             fabPlus.setAnimation(animRotateClose);
@@ -112,6 +123,8 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
             fabInsert.setVisibility(View.INVISIBLE);
             fabOpenCalendar.setClickable(false);
             fabOpenCalendar.setVisibility(View.INVISIBLE);
+            fabSync.setClickable(false);
+            fabSync.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -137,10 +150,25 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
         service.setCompleteForAction(dayOfWeek,adapterPosition);
     }
 
+//    @Override
+//    public void removeItemAction(int position) {
+//        service.getActionsInDay(dayOfWeek).remove(position);
+//    }
+
+//    @Override
+//    public void deleteAction(int day,int position) {
+//
+//        service.deleteActionByPositionItemAction(day,position);
+//    }
+
+    /*
+    khi nhấn vào nút
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fab_insert:
+                // thêm hoạt động
                 int size = service.getCountActionsInDay(dayOfWeek);
                 ItemAction action = new ItemAction();
                 action.setTimeDoIt(1);
@@ -148,16 +176,18 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
                 action.setWeekOfYear(weekOfYear);
                 action.setYear(year);
                 if(size > 0) {
-                    int time = service.setNewTimeForAction(dayOfWeek, 0);
+                    int time = service.setTimeForAction(dayOfWeek, 1);
                     action.setHourOfDay(time);
                 }
                 service.insertItemAction(dayOfWeek,action);
                 displayInsertActionDialog(dayOfWeek,size);
                 break;
             case R.id.fab_open_calendar:
+                // mở lịch
                 displayCalendarDialog();
                 break;
             case R.id.fab_plus:
+                // mở hoặc đóng hiển thị các nút
                 if(fabPlusIsOpen[0]){
                     fabPlus.setAnimation(animRotateClose);
 //                    fabInsert.setAnimation(animFabClose);
@@ -180,10 +210,22 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
                     ((DaysInWeekFragment)getParentFragment()).updateUI();
                 }
                 break;
+            case R.id.fab_sync:
+                // đồng bộ dữ liệu hiển thị
+                service.updateActionsInWeekFromTimeTable(dayOfWeek);
+                service.checkActionsDone(dayOfWeek);
+                service.updateActionsInWeek(weekOfYear,year);
+                actionItemAdapter.notifyDataSetChanged();
+                ((DaysInWeekFragment)getParentFragment()).updateUI();
+                Toast.makeText(getActivity(),"Đồng bộ thành công",Toast.LENGTH_LONG).show();
+                break;
         }
 
     }
 
+    /**
+     * Mở dialog lịch để xem hoạt động các ngày khác nhau trong lịch
+     */
     private void displayCalendarDialog() {
         CalendarActionInDayDialog dialog = new CalendarActionInDayDialog(getActivity());
         dialog.setIDateChangedListener((BaseCalendarDialog.IDateChangedListener) getParentFragment());
@@ -194,6 +236,11 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
         dialog.show();
     }
 
+    /**
+     * Mở dialog để thêm hoạt động
+     * @param day ngày thêm hoạt động
+     * @param position vị trí của hoạt động ý
+     */
     private void displayInsertActionDialog(int day, int position) {
         InsertActionsInDayDialog dialog = new InsertActionsInDayDialog(getActivity());
         dialog.setPositionItemAction(position);
@@ -204,6 +251,11 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
         dialog.show();
     }
 
+    /**
+     * mở ra dialog để xem hoạt động
+     * @param day ngày
+     * @param position vị trí của hoạt động
+     */
     private void displaySeenActionsInDayDialog(int day, int position) {
         SeenActionsInDayDialog dialog = new SeenActionsInDayDialog(getActivity());
         dialog.setPositionItemAction(position);
@@ -220,6 +272,9 @@ public class ActionsInDayFragment extends BaseFragment implements ActionItemAdap
 
     }
 
+    /**
+     * cập nhật lại hoạt động trong ngày
+     */
     @Override
     public void changedActionItem() {
         if(actionItemAdapter != null) {

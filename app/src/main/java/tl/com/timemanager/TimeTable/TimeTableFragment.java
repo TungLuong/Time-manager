@@ -15,10 +15,13 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 
+import com.otaliastudios.zoom.ZoomLayout;
+
 import tl.com.timemanager.Adapter.DataItemInTimeTableAdapter;
 import tl.com.timemanager.Adapter.TimeItemAdapter;
 import tl.com.timemanager.Base.BaseFragment;
 import tl.com.timemanager.Item.ItemDataInTimeTable;
+import tl.com.timemanager.MainActivity;
 import tl.com.timemanager.R;
 import tl.com.timemanager.Service.TimeService;
 import tl.com.timemanager.dialog.insert.InsertItemDataInTimeTableDialog;
@@ -33,7 +36,7 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
     private DataItemInTimeTableAdapter dataItemInTimeTableAdapter;
     private int currPos;
 
-    private RelativeLayout test ;
+    private RelativeLayout openTimeTableTwo;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
@@ -41,8 +44,11 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_time_table,container,false);
         initRecyclerView(view);
+        openTimeTableTwo = view.findViewById(R.id.relative_layout_A);
+        openTimeTableTwo.setOnClickListener(this);
         return view;
     }
+
 
     public void setTimeService(TimeService timeService) {
         this.timeService = timeService;
@@ -189,6 +195,10 @@ public class TimeTableFragment extends BaseFragment implements DataItemInTimeTab
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.relative_layout_A:
+                ((MainActivity)getActivity()).openTimeTableFragmentTwo();
+        }
     }
+
 }

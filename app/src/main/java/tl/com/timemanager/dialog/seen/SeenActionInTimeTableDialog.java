@@ -67,6 +67,9 @@ public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.
         } else ivDoNotDisturb.setVisibility(View.GONE);
     }
 
+    /**
+     * hiển thị dialog để sửa thông tin
+     */
     protected void showDialogModifyAction() {
         InsertItemDataInTimeTableDialog insertItemDataInTimeTableDialog = new InsertItemDataInTimeTableDialog(getContext());
         insertItemDataInTimeTableDialog.setPositionItemData(positionItemData);
@@ -76,8 +79,12 @@ public class SeenActionInTimeTableDialog extends BaseSeenDialog implements View.
         insertItemDataInTimeTableDialog.show();
     }
 
+    /**
+     * xoá hoạt động
+     */
     protected void deleteAction() {
-        service.deleteActionByPositionItemData(positionItemData);
+        // delete item data not changed item action
+        service.deleteItemDataFromTimeTable(positionItemData);
         iListener.changedDataItem();
     }
 

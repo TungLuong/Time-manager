@@ -42,7 +42,7 @@ public class InsertItemDataInTimeTableDialog extends BaseInsertDialog {
         ItemDataInTimeTable item = service.getItemDataInTimeTable(i);
         if (item.isActive()) {
             isModify = true;
-            edtAction.setText(item.getTitle());
+            edtTitleAction.setText(item.getTitle());
             spin_time.setSelection(item.getTimeDoIt() - 1);
             spin_action.setSelection(item.getAction());
 
@@ -84,6 +84,10 @@ public class InsertItemDataInTimeTableDialog extends BaseInsertDialog {
 
     }
 
+    /**
+     * xét thuộc tính modify cho dữ liệu
+     * @param b
+     */
     protected void setModifyingData(boolean b) {
         ItemDataInTimeTable item = service.getItemDataInTimeTable(oldPositionIdItemData);
         int i = oldPositionIdItemData - item.getFlag() * COUNT_DAY;
@@ -98,6 +102,9 @@ public class InsertItemDataInTimeTableDialog extends BaseInsertDialog {
     }
 
 
+    /**
+     * kiểm tra thời gian có bị trùng
+     */
     protected void checkSameTime() {
         int j = 0;
         int i;
@@ -141,7 +148,8 @@ public class InsertItemDataInTimeTableDialog extends BaseInsertDialog {
                         && tvErrorTitle.getVisibility() == View.GONE
                         && tvErrorTimeStart.getVisibility() == View.GONE) {
                     if (isModify) {
-                        service.deleteActionByPositionItemData(oldPositionIdItemData);
+                        // Xoa item data not changed item action
+                       service.deleteItemDataFromTimeTable(oldPositionIdItemData);
                     }
                     updateData();
                     isModify = false;
@@ -164,17 +172,20 @@ public class InsertItemDataInTimeTableDialog extends BaseInsertDialog {
     }
 
 
+    /**
+     * cập nhật lại dữ liệu
+     */
     protected void updateData() {
         if (isModify) {
             positionItemData = positionItemData - service.getItemDataInTimeTable(positionItemData).getFlag() * COUNT_DAY;
         }
-        updateItemAction();
+        //updateItemAction();
 
         int i = positionItemData;
         int j = 0;
         boolean notifi = swNotification.isChecked();
         boolean doNotDisturb = swDoNotDisturb.isChecked();
-        String title = String.valueOf(edtAction.getText());
+        String title = String.valueOf(edtTitleAction.getText());
         while (j < count && i < service.getCountItemData()) {
             ItemDataInTimeTable itemData = service.getItemDataInTimeTable(i);
             if (!itemData.isActive()) {
@@ -199,21 +210,24 @@ public class InsertItemDataInTimeTableDialog extends BaseInsertDialog {
         service.updateTimeTable();
     }
 
-    private void updateItemAction() {
-        ItemDataInTimeTable itemDataInTimeTable = service.getItemDataInTimeTable(positionItemData);
-        String title = String.valueOf(edtAction.getText());
-        ItemAction action = new ItemAction();
-        action.setTitle(title);
-        action.setAction(kindOfAction);
-        action.setDayOfWeek(itemDataInTimeTable.getDayOfWeek());
-        action.setHourOfDay(itemDataInTimeTable.getHourOfDay());
-        action.setTimeDoIt(count);
-        action.setNotification(swNotification.isChecked());
-        action.setDoNotDisturb(swDoNotDisturb.isChecked());
-        int day = service.getItemDataInTimeTable(positionItemData).getDayOfWeek();
-        service.insertItemActionFromTimeTable(day,action);
-    }
+//    private void updateItemAction() {
+//        ItemDataInTimeTable itemDataInTimeTable = service.getItemDataInTimeTable(positionItemData);
+//        String title = String.valueOf(edtTitleAction.getText());
+//        ItemAction action = new ItemAction();
+//        action.setTitle(title);
+//        action.setAction(kindOfAction);
+//        action.setDayOfWeek(itemDataInTimeTable.getDayOfWeek());
+//        action.setHourOfDay(itemDataInTimeTable.getHourOfDay());
+//        action.setTimeDoIt(count);
+//        action.setNotification(swNotification.isChecked());
+//        action.setDoNotDisturb(swDoNotDisturb.isChecked());
+//        int day = service.getItemDataInTimeTable(positionItemData).getDayOfWeek();
+//        service.insertItemActionFromTimeTable(day,action);
+//    }
 
+    /**
+     * kiểm tra thời gian bắt đầu có hợp lệ hay k
+     */
     protected void checkInvalidTimeStart() {
         if (edtTimeStart.getText().toString().trim().length() > 0) {
             int time = Integer.valueOf(edtTimeStart.getText().toString());

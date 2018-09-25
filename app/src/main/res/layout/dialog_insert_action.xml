@@ -23,22 +23,24 @@
         android:text="Tên hoạt động :"
         android:textSize="15sp"
         android:textColor="#000"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="10dp"/>
     <EditText
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="35dp"
+        android:layout_marginRight="7dp"
         android:id="@+id/edt_name_action"
         android:layout_toRightOf="@id/tv_action"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:hint=" action name"/>
+        android:hint=" tên hoạt động"
+        android:singleLine="true"
+        />
     <TextView
         android:visibility="gone"
         android:id="@+id/tv_error_title"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="47dp"
         android:layout_toRightOf="@id/edt_name_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,7 +66,7 @@
         android:layout_width="50dp"
         android:layout_height="40dp"
         android:textSize="15sp"
-        android:hint=" hourOfDay"/>
+        android:hint=" 0 "/>
     <TextView
         android:layout_below="@id/tv_action"
         android:layout_marginTop="20dp"

@@ -92,6 +92,9 @@ public class BaseSeenDialog extends BottomSheetDialog implements View.OnClickLis
 
     }
 
+    /**
+     * hiển thị dialog xoá
+     */
     protected void showDialogDelete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Xoá hoạt động");

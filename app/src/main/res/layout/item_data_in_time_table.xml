@@ -7,11 +7,12 @@
     android:id="@+id/ll_root"
     android:background="#E1F5FE">
     <TextView
+        android:layout_margin="5dp"
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text=""
+        android:text="TH quản trị cơ sở dữ liệu"
         android:textSize="10dp"
         android:textColor="#000"/>
 

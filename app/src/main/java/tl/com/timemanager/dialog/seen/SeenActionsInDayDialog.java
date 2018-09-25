@@ -71,6 +71,9 @@ public class SeenActionsInDayDialog extends BaseSeenDialog {
         } else ivDoNotDisturb.setVisibility(View.GONE);
     }
 
+    /**
+     * hiển thị dialog sửa hoạt động
+     */
     protected void showDialogModifyAction() {
         InsertActionsInDayDialog dialog = new InsertActionsInDayDialog(getContext());
         dialog.setPositionItemAction(positionItemAction);
@@ -81,6 +84,9 @@ public class SeenActionsInDayDialog extends BaseSeenDialog {
         dialog.show();
     }
 
+    /**
+     * xoá hoạt động
+     */
     @Override
     protected void deleteAction() {
         service.deleteActionByPositionItemAction(dayOfWeek, positionItemAction);

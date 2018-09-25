@@ -14,6 +14,10 @@
         android:id="@+id/it_statistics"
         android:icon="@drawable/ic_assignment_black_24dp">
     </item>
+    <item android:title=" Thoát "
+        android:id="@+id/it_exit"
+        android:icon="@drawable/ic_exit_to_app_black_24dp">
+    </item>
 
 
 </menu>

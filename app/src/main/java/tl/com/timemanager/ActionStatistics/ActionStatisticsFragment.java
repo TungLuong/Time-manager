@@ -23,14 +23,17 @@ import tl.com.timemanager.dialog.calendar.CalendarActionStatisticsDialog;
 
 @SuppressLint("ValidFragment")
 public class ActionStatisticsFragment extends BaseFragment implements View.OnClickListener,BaseCalendarDialog.IDateChangedListener{
+    // biểu đồ tròn thể hiện tỉ lệ các hoạt động
     private ActionStatisticsView statisticsView ;
     private TimeService service;
     private int countHour[] = {0,0,0,0,0};
     private int countHourComplete[] = {0,0,0,0,0};
     private TextView tvCountHour[] = new TextView[5];
+    // ngày tháng năm của hoạt động đang xét
     private int dayOfWeek;
     private int year;
     private int weekOfYear;
+    // nút mở ra lịch để xem thống kê các ngày khác
     private FloatingActionButton btOpenCalendar;
 
     @SuppressLint("ValidFragment")
@@ -80,6 +83,7 @@ public class ActionStatisticsFragment extends BaseFragment implements View.OnCli
 
         for (int i =0;i<5;i++){
             countHour[i] = 0;
+            countHourComplete[i] = 0;
         }
         List<ItemAction> actions = service.getActionsInDay(dayOfWeek);
         for (ItemAction action : actions) {
@@ -91,6 +95,13 @@ public class ActionStatisticsFragment extends BaseFragment implements View.OnCli
         }
     }
 
+    public int getWeekOfYear() {
+        return weekOfYear;
+    }
+
+    /**
+     * mở ra dialog lịch để xem thống kê các ngày khác
+     */
     private void displayCalendarDialog() {
         CalendarActionStatisticsDialog dialog = new CalendarActionStatisticsDialog(getActivity());
         dialog.setIDateChangedListener(this);
@@ -113,6 +124,12 @@ public class ActionStatisticsFragment extends BaseFragment implements View.OnCli
 
     }
 
+    /**
+     * cập nhật lại hoạt động trong tuần
+     * @param dayOfWeek
+     * @param weekOfYear
+     * @param year
+     */
     @Override
     public void updateActionsInWeek(int dayOfWeek, int weekOfYear, int year) {
         service.updateActionsInWeek(weekOfYear,year);
@@ -121,8 +138,13 @@ public class ActionStatisticsFragment extends BaseFragment implements View.OnCli
         this.year = year;
     }
 
+    /**
+     * cập nhật lại biểu đồ thống kê
+     * @param day
+     */
     @Override
     public void updateActionStatisticFragment(int day) {
+        dayOfWeek = day;
         initData();
         for (int i =0;i<5;i++){
             tvCountHour[i].setText(countHourComplete[i] +" / "+countHour[i]);

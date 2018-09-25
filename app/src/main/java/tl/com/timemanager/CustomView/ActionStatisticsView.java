@@ -28,7 +28,7 @@ import static tl.com.timemanager.Constant.RELAX_ACTION;
 
 public class ActionStatisticsView extends View {
 
-    private int countHour[];
+    private int countHour[] = {0,0,0,0,0};
     private int color[] = {0, 0, 0, 0, 0, 0};
     private int totalHour = COUNT_TIME;
     private Paint paint = new Paint();

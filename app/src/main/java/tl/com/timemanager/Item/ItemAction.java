@@ -1,6 +1,10 @@
 package tl.com.timemanager.Item;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+
+import java.io.Serializable;
 
 import javax.annotation.PropertyKey;
 
@@ -11,22 +15,35 @@ import static tl.com.timemanager.Constant.TIME_MIN;
 
 public class ItemAction extends RealmObject implements Comparable {
 
+    // id của hoạt động
     @PrimaryKey
     private int id;
 
 
+    // tiêu đề hoạt động
     private String title;
+    // loại hoạt động
     private int action;
+    // thông báo
     private boolean notification;
+    // không làm phiền
     private boolean doNotDisturb;
+    // đang đc chỉnh sửa thuộc tính
     private boolean isModifying = false;
+    // thời gian thực hiện
     private int timeDoIt;
+    //ngày thực hiện
     private int dayOfWeek;
+    // giờ thực hiện
     private int hourOfDay = TIME_MIN;
+    // tuần thực hiện
     private int weekOfYear;
+    // năm thực hiện
     private int year;
 
+    // hoạt động đã hoàn thành chưa
     private boolean isComplete = false;
+    // hoạt động đã đến giờ thực hiện chưa
     private boolean done = false;
 
     public boolean isComplete() {
@@ -137,6 +154,7 @@ public class ItemAction extends RealmObject implements Comparable {
     }
 
 
+    // so sánh 2 hoạt động
     @Override
     public int compareTo(@NonNull Object o) {
         ItemAction itemAction = (ItemAction) o;
@@ -144,5 +162,4 @@ public class ItemAction extends RealmObject implements Comparable {
         int b = itemAction.getHourOfDay();
         return a > b ? +1 : a < b ? -1 : 0;
     }
-
 }

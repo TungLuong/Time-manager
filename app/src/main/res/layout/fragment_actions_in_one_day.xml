@@ -28,24 +28,34 @@
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:visibility="invisible"
+        android:visibility="visible"
+        android:id="@+id/fab_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="265dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/ic_sync_white_24dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:visibility="visible"
         android:id="@+id/fab_insert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="220dp"
+        android:layout_marginBottom="200dp"
         android:layout_marginRight="20dp"
         android:src="@drawable/ic_library_add_white_24dp" />
 
     <android.support.design.widget.FloatingActionButton
-        android:visibility="invisible"
+        android:visibility="visible"
         android:id="@+id/fab_open_calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="135dp"
         android:layout_marginRight="20dp"
         android:src="@drawable/ic_date_range_white_24dp" />
 
@@ -55,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="70dp"
         android:layout_marginRight="20dp"
         android:src="@drawable/ic_add_white_24dp" />
 

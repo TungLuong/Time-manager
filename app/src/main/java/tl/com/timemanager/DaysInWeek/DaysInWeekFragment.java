@@ -40,10 +40,18 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
         return view;
     }
 
+    /**
+     * xét service và khởi tạo service
+     * @param timeService
+     */
     public void setTimeService(TimeService timeService) {
         this.timeService = timeService;
-        this.timeService.updateActionsInWeekFromTimeTable();
-        this.timeService.setiUpdateUI(this);
+        timeService.setActionsInCurrentWeek();
+        timeService.setiUpdateUI(this);
+    }
+
+    public int getWeekOfYear() {
+        return weekOfYear;
     }
 
     private void initView(View view) {
@@ -67,11 +75,22 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
         setCurrentFragment(dayOfWeek);
     }
 
+    /**
+     * xét fragment hiện tại
+     * @param dayOfWeek ngày
+     */
     @Override
     public void setCurrentItemFragment(int dayOfWeek){
+
         setCurrentFragment(dayOfWeek);
     }
 
+    /**
+     * cập nhât lại hoạt động trong tuần
+     * @param dayOfWeek
+     * @param weekOfYear
+     * @param year
+     */
     @Override
     public void updateActionsInWeek(int dayOfWeek, int weekOfYear, int year) {
         timeService.updateActionsInWeek(weekOfYear,year);
@@ -84,16 +103,19 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
         adapter.notifyDataSetChanged();
     }
 
-    public void notifyDataSetChangedInAdapter(){
-        adapter.notifyDataSetChanged();
-    }
+//    public void notifyDataSetChangedInAdapter(){
+//        adapter.notifyDataSetChanged();
+//    }
 
     @Override
     public void updateActionStatisticFragment(int day) {
 
     }
 
-    private void changedDateInChildFragment() {
+    /**
+     * thay đổi ngày tại các fragment con
+     */
+    public void changedDateInChildFragment() {
 
        List<Fragment> fragments =  getChildFragmentManager().getFragments();
        if(fragments != null) {
@@ -106,11 +128,18 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
        }
     }
 
+    /**
+     * mở fragment hoạt động trong ngày
+     * @param dayOfWeek ngày
+     */
     public void setCurrentFragment(int dayOfWeek) {
         pager.setCurrentItem(dayOfWeek);
     }
 
 
+    /**
+     * cập nhật lại giao diện
+     */
     @Override
     public void updateUI() {
         changedDateInChildFragment();

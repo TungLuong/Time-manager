@@ -30,7 +30,9 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:hint=" action name"/>
+        android:hint=" action name"
+        android:singleLine="true"
+        />
     <TextView
         android:layout_below="@id/tv_action"
         android:id="@+id/tv_time"

@@ -44,7 +44,7 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
         ItemAction item = service.getActionsInWeek().get(dayOfWeek).get(positionItemAction);
         if (item.getTitle() != null) {
             isModify = true;
-            edtAction.setText(item.getTitle());
+            edtTitleAction.setText(item.getTitle());
             spin_time.setSelection(item.getTimeDoIt() - 1);
             spin_action.setSelection(item.getAction());
 
@@ -85,12 +85,19 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
 
     }
 
+    /**
+     * xet hoạt động có phải đang đc chỉnh sửa
+     * @param b
+     */
     @Override
     protected void setModifyingData(boolean b) {
         ItemAction item = service.getActionsInWeek().get(dayOfWeek).get(oldPositionItemAction);
         service.setModifyForItemAction(b, item);
     }
 
+    /**
+     * kiểm tra trùng thời gian
+     */
     protected void checkSameTime() {
         List<ItemAction> itemActions = service.getActionsInWeek().get(dayOfWeek);
         List<ItemAction> actions = new ArrayList<>();
@@ -102,6 +109,10 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
         try {
             int timeStart = Integer.valueOf(String.valueOf(edtTimeStart.getText() + ""));
             int timeEnd = timeStart + count;
+            if(timeEnd > TIME_MAX + 1){
+                tvErrorTime.setVisibility(View.VISIBLE);
+                return;
+            }
             if (actions.size() > 0) {
                 for (ItemAction action : actions) {
                     int start = action.getHourOfDay();
@@ -121,8 +132,11 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
 
     }
 
+    /**
+     * cập nhật dữ liệu
+     */
     protected void updateData() {
-        String title = String.valueOf(edtAction.getText());
+        String title = String.valueOf(edtTitleAction.getText());
         int time = Integer.valueOf(String.valueOf(edtTimeStart.getText() + ""));
         ItemAction itemAction = service.getActionsInWeek().get(dayOfWeek).remove(positionItemAction);
         ItemAction action = new ItemAction();
@@ -137,13 +151,17 @@ public class InsertActionsInDayDialog extends BaseInsertDialog {
         action.setTimeDoIt(count);
         action.setNotification(swNotification.isChecked());
         action.setDoNotDisturb(swDoNotDisturb.isChecked());
+        action.setComplete(itemAction.isComplete());
         service.updateItemAction(action);
         service.getActionsInWeek().get(dayOfWeek).add(action);
 
     }
 
+    /**
+     * kiểm tra thời gian bắt đầu có phù hợp k
+     */
     protected void checkInvalidTimeStart() {
-        if (edtTimeStart.getText().toString().trim().length() > 0) {
+        if (edtTimeStart.getText().toString().trim().length() > 0 && edtTimeStart.getText().toString().trim().length() < 3) {
             int time = Integer.valueOf(edtTimeStart.getText().toString());
             if (time >= TIME_MIN && time <= TIME_MAX) {
 //                List<ItemAction> itemActions = service.getActionsInWeek().get(dayOfWeek);

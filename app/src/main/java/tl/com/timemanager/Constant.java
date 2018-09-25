@@ -20,5 +20,8 @@ public interface Constant {
     int FOREGROUND_NOTIFICATION_COMPLETE=100;
     int FOREGROUND_NOTIFICATION_OKE=99;
     String START_ALARM="action.start.alarm";
+    String CHANNEL_ID_NOTIFICATION = "my_channel_notification";
+    String CHANNEL_ID_RUNNING_IN_BACKGROUND = "my_channel_running_in_background";
+    int DELAY_MINUTE = 1;
 
 }

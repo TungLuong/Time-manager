@@ -5,19 +5,28 @@ import io.realm.annotations.PrimaryKey;
 
 public class ItemDataInTimeTable extends RealmObject{
 
+    // id của item
     @PrimaryKey
     private int id;
-
-
+    // item đã đc kích hoạt
     private boolean isActive = false;
+    // item có đang đc chỉnh sửa
     private boolean isModifying = false;
+    // tên item
     private String title;
+    // thứ thự item
     private int flag;
+    // thuộc loại hoạt động nào
     private int action;
+    // thông báo
     private boolean notification;
+    // không làm phiền
     private boolean doNotDisturb;
+    //thời gian thực hiên
     private int timeDoIt;
+    //ngày
     private int dayOfWeek;
+    // giờ
     private int hourOfDay;
 
     public ItemDataInTimeTable() {
