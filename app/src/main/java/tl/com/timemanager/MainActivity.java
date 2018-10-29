@@ -238,6 +238,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        timeService.setiUpdateUI(null);
     }
 
     @Override
@@ -289,4 +290,5 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         fragment.setTimeService(timeService);
         transaction.commit();
     }
+
 }

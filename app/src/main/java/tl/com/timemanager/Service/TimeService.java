@@ -319,10 +319,12 @@ public class TimeService extends Service {
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
         if (currDay != day) {
             currDay = day;
-            if (currDay == 0 && iUpdateUI != null) {
-                Calendar cal = Calendar.getInstance();
-                iUpdateUI.updateActionsInWeek(currDay, cal.get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.YEAR));
+            if (currDay == 0) {
                 updateActionsInWeekFromTimeTable(currDay);
+                if(iUpdateUI != null){
+                    Calendar cal = Calendar.getInstance();
+                    iUpdateUI.updateActionsInWeek(currDay, cal.get(Calendar.WEEK_OF_YEAR), cal.get(Calendar.YEAR));
+                }
             }
             setCurrAction();
             if(iUpdateUI != null) {
