@@ -142,6 +142,7 @@ public class DaysInWeekFragment extends BaseFragment implements BaseCalendarDial
      */
     @Override
     public void updateUI() {
+
         changedDateInChildFragment();
     }
 }

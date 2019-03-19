@@ -198,7 +198,16 @@ public class TimeService extends Service {
         this.weekOfYear = weekOfYear;
         this.year = year;
         List<ItemAction> actions = data.getActionsInWeek(weekOfYear, year);
-        actions.size();
+
+        if(actions.size() == 0){
+            ItemAction action = new ItemAction();
+            action.setDayOfWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK ) -1);
+            action.setYear(year);
+            action.setWeekOfYear(weekOfYear);
+            action.setTitle("Hoạt động 1 ");
+            insertItemAction(Calendar.getInstance().get(Calendar.DAY_OF_WEEK ) -1, action);
+        }
+
         actionsInWeek = new ArrayList<>();
         for (int i = 0; i < COUNT_DAY; i++) {
             actionsInWeek.add(new ArrayList<ItemAction>());
